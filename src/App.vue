@@ -12,6 +12,12 @@
 <style lang="less">
     @navHeight: 50px;
 
+    #nprogress .bar {
+        background: deeppink !important; //自定义颜色
+        height: 5px !important;
+
+    }
+
     #app {
         font-family: Avenir, Helvetica, Arial, sans-serif;
         -webkit-font-smoothing: antialiased;
