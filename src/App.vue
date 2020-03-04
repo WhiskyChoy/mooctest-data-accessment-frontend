@@ -1,16 +1,58 @@
 <template lang="pug">
     div#app
         header#nav
+            div.hamburger-container
+                i(:class="menuClosed?'el-icon-s-unfold':'el-icon-s-fold'" @click="handleClick")
             div.link-container
                 router-link(to="/")
                     img.logo-lg(src="./assets/logo_200x75_1.png")
             div.link-container
                 router-link(to="/about") 数据质量测评系统
-        router-view
+        div.my-mask(ref="myMask" :style="'transition: opacity '+transitionSecond+'s'")
+        div.my-menu-container
+            my-nav-menu.my-menu(:collapse="menuClosed")
+        router-view.center-router-view
 </template>
 
+<script>
+
+    import MyNavMenu from "@/components/MyNavMenu";
+
+    export default {
+        name: 'App',
+        components: {MyNavMenu},
+        data() {
+            return {
+                menuClosed: true,
+                transitionSecond: 0.3
+            }
+        },
+        methods: {
+            handleClick() {
+                let myMask = this.$refs['myMask'];
+                if (this.menuClosed) {
+                    myMask.style.opacity = 0.5;
+                    myMask.style.display = "block";
+                } else {
+                    myMask.style.opacity = 0;
+                    setTimeout(() => {
+                        myMask.style.display = "none";
+                    }, 1000 * this.transitionSecond);
+                }
+                this.menuClosed = !this.menuClosed;
+            }
+        }
+    }
+</script>
 <style lang="less">
     @navHeight: 50px;
+    @menuTotalWidth: 140px;
+    @menuMinWidth: 64px;
+    @hoverColor: #23527c;
+
+    body {
+        margin: 0
+    }
 
     #nprogress .bar {
         background: deeppink !important; //自定义颜色
@@ -24,7 +66,46 @@
         -moz-osx-font-smoothing: grayscale;
         text-align: center;
         color: #2c3e50;
-        margin-top: @navHeight;
+
+        .my-mask {
+            background-color: #000;
+            position: fixed;
+            display: none;
+            left: 0;
+            top: @navHeight;
+            right: 0;
+            bottom: 0;
+        }
+
+        .center-router-view {
+            margin-top: @navHeight;
+            margin-left: @menuMinWidth
+        }
+
+        @media screen and (max-width: 900px) {
+            .center-router-view {
+                margin-left: 0
+            }
+
+            .el-menu--collapse {
+                width: 0;
+                * {
+                    display: none;
+                }
+            }
+        }
+
+        .my-menu-container {
+            position: fixed;
+            width: @menuTotalWidth;
+            top: @navHeight;
+            left: 0;
+            bottom: 0;
+            text-align: left;
+            .my-menu:not(.el-menu--collapse) {
+                width: @menuTotalWidth;
+            }
+        }
 
         #nav {
             height: @navHeight;
@@ -42,14 +123,28 @@
                 object-fit: fill;
             }
 
-            .link-container{
+            .hamburger-container {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 100%;
+                width: 56px;
+                color: white;
+                font-size: 2rem;
+                cursor: pointer;
+                &:hover {
+                    background-color: @hoverColor;
+                }
+            }
+
+            .link-container {
                 width: 200px;
                 height: 100%;
                 display: flex;
                 align-items: center;
 
-                &:hover{
-                    background-color: #23527c;;
+                &:hover {
+                    background-color: @hoverColor;
                 }
 
                 a {
@@ -59,8 +154,8 @@
                     width: 100%;
                     text-decoration: none;
                 }
-            };
-
+            }
+        ;
 
         }
     }
