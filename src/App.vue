@@ -4,11 +4,11 @@
             div.hamburger-container
                 i(:class="menuClosed?'el-icon-s-unfold':'el-icon-s-fold'" @click="handleClick")
             div.link-container
-                router-link(to="/")
+                a(href="http://mooctest.net" target="_blank")
                     img.logo-lg(src="./assets/logo_200x75_1.png")
             div.link-container
-                router-link(to="/about") 数据质量测评系统
-        div.my-mask(ref="myMask" :style="'transition: opacity '+transitionSecond+'s'")
+                router-link(to="/") 数据质量测评系统
+        div.my-mask(ref="myMask" :style="'transition: opacity '+transitionSecond+'s'" @click="handleClick")
         div.my-menu-container
             my-nav-menu.my-menu(:collapse="menuClosed")
         router-view.center-router-view
@@ -24,22 +24,27 @@
         data() {
             return {
                 menuClosed: true,
-                transitionSecond: 0.3
+                transitionSecond: 0.3,
+                inTransition: false
             }
         },
         methods: {
             handleClick() {
-                let myMask = this.$refs['myMask'];
-                if (this.menuClosed) {
-                    myMask.style.opacity = 0.5;
-                    myMask.style.display = "block";
-                } else {
-                    myMask.style.opacity = 0;
-                    setTimeout(() => {
-                        myMask.style.display = "none";
-                    }, 1000 * this.transitionSecond);
+                if(!this.inTransition) {
+                    let myMask = this.$refs['myMask'];
+                    if (this.menuClosed) {
+                        myMask.style.display = "block";
+                        myMask.style.opacity = 0.5;
+                    } else {
+                        myMask.style.opacity = 0;
+                        this.inTransition = true;
+                        setTimeout(() => {
+                            myMask.style.display = "none";
+                            this.inTransition = false;
+                        }, 1000 * this.transitionSecond);
+                    }
+                    this.menuClosed = !this.menuClosed;
                 }
-                this.menuClosed = !this.menuClosed;
             }
         }
     }
@@ -72,7 +77,7 @@
             position: fixed;
             display: none;
             left: 0;
-            top: @navHeight;
+            top: 0;
             right: 0;
             bottom: 0;
         }
@@ -115,6 +120,7 @@
             right: 0;
             display: flex;
             background-color: dodgerblue;
+            z-index: 1000;
 
             align-items: center;
 
