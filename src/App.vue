@@ -41,7 +41,7 @@
                         setTimeout(() => {
                             myMask.style.display = "none";
                             this.inTransition = false;
-                        }, 1000 * this.transitionSecond);
+                        }, 1000 * transitionSecond);
                     }
                     this.menuClosed = !this.menuClosed;
                 }
