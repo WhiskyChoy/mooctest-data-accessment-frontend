@@ -50,7 +50,7 @@ paths:
       - writ
       summary: 根据文书名或时间获取文件列表
       operationId: getWrit
-        parameters:
+      parameters:
       - name: name
         description: 文书名的一部分，如果查询字段为空，为全匹配，使用like检索
         in: query
@@ -75,6 +75,7 @@ paths:
             type: array
             items:
               $ref: '#/definitions/writ'
+
   /writ-report/{writ-id}:
     get:
       tags:
@@ -92,10 +93,24 @@ paths:
       responses:
         200:
           description: 查到对应报告
-          schema:
 
-
-
+  /task-report/{task-id}:
+    get:
+      tags:
+      - 'task-report'
+      summary: 拿取总体报告
+      operationId: getTaskReport
+      parameters:
+      - name: 'task-id'
+        required: true
+        description: 任务的id
+        type: integer
+        format: int64
+        minimum: 1
+        in: path
+      responses:
+        200:
+          description: 查到对应报告
 
 
 definitions:
