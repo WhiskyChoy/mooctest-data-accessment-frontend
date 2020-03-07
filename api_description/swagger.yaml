@@ -50,7 +50,7 @@ paths:
       - writ
       summary: 根据文书名或时间获取文件列表
       operationId: getWrit
-      parameters:
+        parameters:
       - name: name
         description: 文书名的一部分，如果查询字段为空，为全匹配，使用like检索
         in: query
@@ -75,21 +75,34 @@ paths:
             type: array
             items:
               $ref: '#/definitions/writ'
-  /writ-report:
+  /writ-report/{writ-id}:
     get:
       tags:
-        - 'writ-report'
-      summary:
-      operationId:
+      - 'writ-report'
+      summary: 拿取报告。由于一篇文书只有一篇报告，这里用文书id拿去报告。
+      operationId: getWritReport
       parameters:
-        -
+      - name: 'writ-id'
+        required: true
+        description: 文书的id
+        type: integer
+        format: int64
+        minimum: 1
+        in: path
       responses:
+        200:
+          description: 查到对应报告
+          schema:
 
-        
+
 
 
 
 definitions:
+  writ-status:
+    type: string
+    description: 文书当前所处的状态，分别是未检测，等待检测，检测中，检测完成，格式错误，意外中止
+    enum: [untested, waiting, onging, finished, wrong, accident]
   writ:
     type: object
     properties:
@@ -109,8 +122,9 @@ definitions:
         format: int32
         description: 文书的长度
       status:
-        $ref: '#/definitions/writ-satus'
-  writ-satus:
-    type: string
-    description: 文书当前所处的状态，分别是未检测，等待检测，检测中，检测完成，格式错误，意外中止
-    enum: [untested, waiting, onging, finished, wrong, accident]
+        $ref: '#/definitions/writ-status'
+
+
+
+
+
