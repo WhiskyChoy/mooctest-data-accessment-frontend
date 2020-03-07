@@ -1,25 +1,25 @@
 swagger: "2.0"
 info:
-  description: "This is a product for MoocTest. You can find more about MoocTest at [mooctest.net](mooctest.net)."
-  version: "1.0.0"
-  title: "MoocTest Data Assessment - customized for civil judgment document"
-  termsOfService: "No TOS available"
+  description: This is a product for MoocTest. You can find more about MoocTest at [mooctest.net](http://mooctest.net).
+  version: 1.0.0
+  title: MoocTest Data Assessment - customized for civil judgment document
+  termsOfService: No TOS available
   contact:
-    email: "161250002@smail.nju.edu.cn"
+    email: 161250002@smail.nju.edu.cn
   license:
-    name: "Closed Source"
-host: "localhost:5000"
-basePath: "/"
+    name: Closed Source
+host: localhost:5000
+basePath: /
 tags:
-- name: "writ"
-  description: "所有与文书相关的接口."
-- name: "writ-report"
-  description: "所有单篇文书相关的接口"
-- name: "task-report"
-  description: "所有任务总结报告相关的接口"
+- name: writ
+  description: 所有与文书相关的接口.
+- name: writ-report
+  description: 所有单篇文书相关的接口
+- name: task-report
+  description: 所有任务总结报告相关的接口
 schemes:
-- "https"
-- "http"
+- https
+- http
 paths:
   /writ:
     post:
@@ -48,16 +48,16 @@ paths:
     get:
       tags:
       - writ
-      summary: 获取文件列表
+      summary: 根据文书名或日期获取文件列表
       operationId: getWrit
       parameters:
       - name: name
-        description: 文书名的一部分，如果查询字段为空，为全匹配
+        description: 文书名的一部分，如果查询字段为空，为全匹配，使用like检索
         in: query
         type: string
         required: false
       - name: date
-        description: 文书日期的一部分，如果查询字段为空，为全匹配
+        description: 文书日期，如果查询字段为空，为全匹配
         in: query
         type: string
         format: date
@@ -69,6 +69,16 @@ paths:
             type: array
             items:
               $ref: '#/definitions/writ'
+  /writ-report:
+    get:
+      tags:
+        - 'writ-report'
+      summary:
+      operationId:
+      parameters:
+        -
+      responses:
+
         
 
 
@@ -80,16 +90,21 @@ definitions:
       id:
         type: integer
         format: int64
+        description: 文书的id
       name:
         type: string
+        description: 文书的文件名
       date:
-        type: string
-        format: date
+        type: integer
+        format: int64
+        description: 时间戳，从1970年1月1日开始的毫秒数，可以是负数
       length:
         type: integer
         format: int32
+        description: 文书的长度
       status:
         $ref: '#/definitions/writ-satus'
   writ-satus:
     type: string
-    enum: [untested, waiting, onging, finished, wrong-format, exception]
+    description: 文书当前所处的状态，分别是未检测，等待检测，检测中，检测完成，格式错误，意外中止
+    enum: [untested, waiting, onging, finished, wrong, accident]

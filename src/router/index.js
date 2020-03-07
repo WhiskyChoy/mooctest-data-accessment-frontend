@@ -1,19 +1,46 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import Resources from '@/views/Resources'
+import WritOverall from '@/views/WritOverall'
+import NotFound from '@/views/NotFound'
+import TaskOverall from '@/views/TaskOverall'
+import ConfigDefault from '@/views/ConfigDefault'
+import Login from '@/views/Login'
 
 Vue.use(VueRouter);
 
 const routes = [
     {
         path: '*',
-        component: () => import(/* webpackChunkName: "about" */ '../views/NotFound.vue')
+        component: NotFound
     },
     {
-        path: '/',
-        name: 'Home',
-        component: Home
+        path: '/resources',
+        name: 'Resources',
+        component: Resources,
+        children: [
+            {
+                path: 'writ-overall',
+                name: 'WritOverall',
+                component: WritOverall
+            },
+            {
+                path: 'task-overall',
+                name: 'TaskOverall',
+                component: TaskOverall
+            },
+            {
+                path: 'config-default',
+                name: 'ConfigDefault',
+                component: ConfigDefault
+            },
+        ]
     },
+    {
+        path: '/login',
+        name: 'Login',
+        component: Login
+    }
 ];
 
 const router = new VueRouter({
