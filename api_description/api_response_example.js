@@ -45,13 +45,13 @@ const rader = [
         total: 10
     }
 ];
-
+// 重构检测，界面显示为抄袭检测
 const cgjx = {
   score: 5,
   total: 10,
   conclusion: '这句和那句可能是抄袭来的'
 };
-
+// 语言风格
 const yyfg = [
     {
         sentence: '一个句子，包含结束标点。',
@@ -61,7 +61,7 @@ const yyfg = [
 ];
 
 
-//情感分类，和上面类似
+//情感分类，和上面类似，界面显示为写作情感
 const qgfl = [
     {
         sentence: '一个句子，包含结束标点。',
