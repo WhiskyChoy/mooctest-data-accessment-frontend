@@ -6,6 +6,8 @@ import NotFound from '@/views/NotFound'
 import TaskOverall from '@/views/TaskOverall'
 import ConfigDefault from '@/views/ConfigDefault'
 import Login from '@/views/Login'
+import WritReport from '@/views/WritReport'
+import TaskReport from '@/views/TaskReport'
 
 Vue.use(VueRouter);
 
@@ -16,9 +18,13 @@ const routes = [
     },
     {
         path: '/resources',
-        name: 'Resources',
+        // 有默认子路由，不要命名，去掉name属性
         component: Resources,
         children: [
+            {
+                path: '',
+                redirect: { name: 'WritOverall' }
+            },
             {
                 path: 'writ-overall',
                 name: 'WritOverall',
@@ -34,6 +40,20 @@ const routes = [
                 name: 'ConfigDefault',
                 component: ConfigDefault
             },
+            {
+                // 传值的时候，参数命名不能为writ-id，横杠要替换为下划线，否则识别不到。
+                path: 'writ-report/:writ_id',
+                name: 'WritReport',
+                component: WritReport,
+                props: true
+            },
+            {
+                path: 'task-report/:task_id',
+                name: 'TaskReport',
+                component: TaskReport,
+                props: true
+            }
+
         ]
     },
     {

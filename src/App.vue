@@ -10,8 +10,11 @@
     }
 </script>
 <style lang="less">
+    @import "assets/global";
+
     body {
-        margin: 0
+        margin: 0;
+        min-width: @projectMinWidth;
     }
 
     h1 {

@@ -27,9 +27,6 @@
                 inTransition: false
             }
         },
-        mounted() {
-            this.$router.push({name: 'WritOverall'})
-        },
         methods: {
             handleClick() {
                 if (!this.inTransition) {
@@ -53,10 +50,7 @@
 </script>
 
 <style lang="less">
-    @navHeight: 50px;
-    @menuTotalWidth: 140px;
-    @menuMinWidth: 64px;
-    @hoverColor: #23527c;
+    @import "../assets/global";
 
     #resources {
 
@@ -68,6 +62,7 @@
             top: 0;
             right: 0;
             bottom: 0;
+            z-index: 1000;
         }
 
         .center-router-view {
@@ -90,11 +85,12 @@
 
         .my-menu-container {
             position: fixed;
-            width: @menuTotalWidth;
+            width: 0;
             top: @navHeight;
             left: 0;
             bottom: 0;
             text-align: left;
+            z-index: 1000;
             .my-menu:not(.el-menu--collapse) {
                 width: @menuTotalWidth;
             }
@@ -102,13 +98,14 @@
 
         #nav {
             height: @navHeight;
+            min-width: @projectMinWidth;
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             display: flex;
             background-color: dodgerblue;
-            z-index: 1000;
+            z-index: 10000;
 
             align-items: center;
 
