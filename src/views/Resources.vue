@@ -62,7 +62,7 @@
             top: 0;
             right: 0;
             bottom: 0;
-            z-index: 1000;
+            z-index: 10010;
         }
 
         .center-router-view {
@@ -70,7 +70,7 @@
             margin-left: @menuMinWidth
         }
 
-        @media screen and (max-width: 900px) {
+        @media screen and (max-width: @hideMenuScreenWidth) {
             .center-router-view {
                 margin-left: 0
             }
@@ -90,7 +90,7 @@
             left: 0;
             bottom: 0;
             text-align: left;
-            z-index: 1000;
+            z-index: 10010;
             .my-menu:not(.el-menu--collapse) {
                 width: @menuTotalWidth;
             }
@@ -105,7 +105,7 @@
             right: 0;
             display: flex;
             background-color: dodgerblue;
-            z-index: 10000;
+            z-index: 10100;
 
             align-items: center;
 
