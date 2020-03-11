@@ -1,6 +1,6 @@
 <template lang="pug">
     div(v-if="transformedSeq")
-        my-sentence-color-gradient(v-for="item of transformedSeq" :h-val="hVal" :sentence="item.sentence" :start-val="item.startVal" :end-val="item.endVal")
+        my-sentence-color-gradient(:h-val="hVal" :show-advance="showAdvance" v-for="item of transformedSeq" :sentence="item.sentence" :start-val="item.startVal" :end-val="item.endVal")
 </template>
 
 <script>
@@ -34,9 +34,13 @@
                 type: Array,
                 required: true
             },
-            hVal:{
+            hVal: {
                 type: Number,
                 default: 0
+            },
+            showAdvance: {
+                type: Boolean,
+                default: true
             }
         },
         name: "MyParagraphColorGradient",

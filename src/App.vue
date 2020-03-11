@@ -21,6 +21,10 @@
         text-align: center;
     }
 
+    .el-loading-mask {
+        z-index: @basicZIndex+3 !important;
+    }
+
     #nprogress .bar {
         background: deeppink !important; //自定义颜色
         height: 5px !important;

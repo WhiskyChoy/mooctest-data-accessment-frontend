@@ -1,16 +1,10 @@
 <template lang="pug">
     span(v-if="sequence")
-        span.my-gradient-text(v-for="item of sequence" :style="getBackground(item.startVal, item.endVal)") {{item.char}}
+        my-word-color-gradient(v-for="item of sequence" :h-val="hVal" :start-val="item.startVal" :end-val="item.endVal" :char="item.char" :show-advance="showAdvance")
 </template>
 
 <script>
-    const HSL_MAX = {
-        H: 360,
-        S: 100,
-        L: 100,
-    };
-
-    const L_VISUAL_MAX = HSL_MAX.L / 2;
+    import MyWordColorGradient from "@/components/MyWordColorGradient";
 
     const getSequence = (sentence, sentenceStartVal, sentenceEndVal) => {
         let sequence = [];
@@ -28,6 +22,7 @@
 
     export default {
         name: "MySentenceColorGradient",
+        components: {MyWordColorGradient},
         props: {
             sentence: {
                 type: String,
@@ -41,18 +36,17 @@
                 type: Number,
                 required: true
             },
-            hVal:{
+            hVal: {
                 type: Number,
                 default: 0
+            },
+            showAdvance: {
+                type: Boolean,
+                default: true
             }
         },
         beforeMount() {
             this.sequence = getSequence(this.sentence, this.startVal, this.endVal)
-        },
-        methods: {
-            getBackground(startVal, endVal){
-                return `background: linear-gradient(to right, hsl(${this.hVal}, 100%, ${startVal * L_VISUAL_MAX}%), hsl(${this.hVal}, 100%, ${endVal * L_VISUAL_MAX}%))`
-            }
         },
         data() {
             return {
@@ -61,11 +55,3 @@
         }
     }
 </script>
-
-<style scoped lang="less">
-    .my-gradient-text {
-        text-transform: uppercase;
-        -webkit-background-clip:text!important;
-        -webkit-text-fill-color: transparent;
-    }
-</style>

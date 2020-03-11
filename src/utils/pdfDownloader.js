@@ -5,12 +5,15 @@ import JS_PDF from 'jspdf'
 // 报告那边考虑提供仪表盘视图
 // 下载时要展开所有数据
 // 返回的是一个promise，可以把VUE的一个method声明为async，就可以使用await，另可以采用loading布尔值来判断是否下载完成
+// https://github.com/niklasvh/html2canvas/issues/1878 必须指定cnpm install html2canvas@1.0.0-rc.1来避免这一问题
 async function jsPdfDownload(pdfName = new Date().getTime().toString(), target) {
     const scaleRate = 2;
     const borderWidthSaver = target.style.borderWidth;
     target.style.borderWidth = 0;
     const canvas = await html2canvas(target, {
         scale: window.devicePixelRatio * scaleRate,
+        //确认没问题后把logging关掉
+        logging: false
     });
 
     let contentWidth = canvas.width;
@@ -40,7 +43,7 @@ async function jsPdfDownload(pdfName = new Date().getTime().toString(), target) 
             leftHeight -= pageHeight;
             position -= 841.89;
             //避免添加空白页
-            if (leftHeight > 0) {
+            if (leftHeight > 841.89) {
                 pdf.addPage();
             }
         }

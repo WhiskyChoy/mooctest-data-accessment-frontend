@@ -62,7 +62,7 @@
             top: 0;
             right: 0;
             bottom: 0;
-            z-index: 10010;
+            z-index: @basicZIndex+2;
         }
 
         .center-router-view {
@@ -90,7 +90,7 @@
             left: 0;
             bottom: 0;
             text-align: left;
-            z-index: 10010;
+            z-index: @basicZIndex+2;
             .my-menu:not(.el-menu--collapse) {
                 width: @menuTotalWidth;
             }
@@ -105,7 +105,7 @@
             right: 0;
             display: flex;
             background-color: dodgerblue;
-            z-index: 10100;
+            z-index: @basicZIndex+3;
 
             align-items: center;
 

@@ -116,7 +116,7 @@
                                 template(slot="title")
                                     h4 语言风格
                                 div.indicator-body
-                                    my-paragraph-color-gradient.my-gradient(:h-val="0" :sentence-seq="received_data.yyfg")
+                                    my-paragraph-color-gradient.my-gradient(:show-advance="show_gradient_advance" :h-val="0" :sentence-seq="received_data.yyfg")
                                     div 可能存在问题的句子/词组：
                                     ul
                                         li(v-for="item of received_data.yyfg.filter(val=>{return val.delta>0.5})") {{item.sentence}}
@@ -125,7 +125,7 @@
                                 template(slot="title")
                                     h4 客观程度
                                 div.indicator-body
-                                    my-paragraph-color-gradient.my-gradient(:h-val="60" :sentence-seq="received_data.kgcd")
+                                    my-paragraph-color-gradient.my-gradient(:show-advance="show_gradient_advance" :h-val="60" :sentence-seq="received_data.kgcd")
                                     div 可能存在问题的句子/词组：
                                     ul
                                         li(v-for="item of received_data.kgcd.filter(val=>{return val.delta>0.5})") {{item.sentence}}
@@ -146,6 +146,8 @@
     import MyRadar from "@/components/MyRadar";
     import MyParagraphColorGradient from "@/components/MyParagraphColorGradient";
     import jsPdfDownload from "@/utils/pdfDownloader"
+    import {wait,waitVue} from "@/utils/loadWaiter";
+
     let outer_active, objective_active, subjective_active;
 
     export default {
@@ -170,10 +172,12 @@
         },
         data() {
             return {
+                show_gradient_advance: true,
                 outer_active: null,
                 objective_active: null,
                 subjective_active: null,
-                received_data: null
+                received_data: null,
+                force_open_gradient: true
             }
         },
         methods: {
@@ -189,12 +193,13 @@
                 objective_active = this.objective_active;
                 subjective_active = this.subjective_active;
             },
-            recoverCollapseStatus(){
-              this.outer_active = outer_active;
-              this.objective_active = objective_active;
-              this.subjective_active = subjective_active;
+            recoverCollapseStatus() {
+                this.outer_active = outer_active;
+                this.objective_active = objective_active;
+                this.subjective_active = subjective_active;
             },
             async downloadPDF() {
+                const loading = this.$loading({fullscreen: true});
                 const target = this.$refs['my-report'];
                 let fileName = '单篇裁判文书报告：';
                 if (this.received_data && this.received_data && this.received_data.title) {
@@ -203,8 +208,19 @@
                 fileName += new Date().getTime().toString();
                 this.saveCollapseStatus();
                 this.openAllCollapse();
-                await jsPdfDownload(fileName,target);
+                this.show_gradient_advance = false;
+                target.classList.add('report-body-to-print');
+                //等待VUE渲染完毕
+                await waitVue();
+                //再等1000毫秒保险
+                await wait(1000);
+                await jsPdfDownload(fileName, target);
+                this.show_gradient_advance = true;
                 this.recoverCollapseStatus();
+                target.classList.remove('report-body-to-print');
+                //以服务的方式调用的 Loading 需要异步关闭
+                await waitVue();
+                loading.close();
             }
         }
     }
@@ -231,7 +247,7 @@
         position: fixed;
         top: @navHeight+@reportHeaderMargin;
         right: 1rem;
-        z-index: 10001;
+        z-index: @basicZIndex+1;
     }
 
     @media screen and (max-width: 750px) {
@@ -280,6 +296,10 @@
         padding: 1rem;
         min-height: 800px;
         margin-bottom: 2rem;
+    }
+
+    .report-body-to-print ul{
+        list-style-type: none;
     }
 
     .indicator-container {
