@@ -206,7 +206,9 @@ definitions:
         type: boolean
         description: 是否使用默认配置
       config:
-        $ref: '#/definitions/config-item'
+        type: array
+        items:
+          $ref: '#/definitions/config-item'
   task-config:
     type: object
     required:
@@ -217,7 +219,9 @@ definitions:
         type: boolean
         description: 是否使用默认配置
       config:
-        $ref: '#/definitions/config-item'
+        type: array
+        items:
+          $ref: '#/definitions/config-item'
       writs:
         type: array
         items:
