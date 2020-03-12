@@ -1,8 +1,10 @@
+import {getWritReport} from "@/requests/api/writReportAPI";
+import {getWrits} from "@/requests/api/writAPI";
 
-const api = {};
+const api = {getWritReport, getWrits};
 
-const install = (Vue)=>{
-    if(install.installed){
+const install = (Vue) => {
+    if (install.installed) {
         return;
     }
     install.installed = true;

@@ -6,10 +6,10 @@
                 el-button(@click="downloadPDF") 下载为PDF
                 el-button 查看原文
         div.report-body-outer-container
-            div.report-body-inner-container(ref="my-report")
+            div.report-body-inner-container(ref="my-report" v-loading="loading")
                 // 有了多种类型裁判文书支持后这里"民事"最好用传值的形式带进来
                 h2.inner-report-title 民事裁判文书测评报告
-                el-collapse(v-model="outer_active")
+                el-collapse(v-model="outer_active"  v-if="received_data")
                     el-collapse-item.indicator-container(name="basic-info")
                         template(slot="title")
                             h3 基本信息
@@ -141,37 +141,38 @@
 
 <script>
     //el-col大小分布 [xs]768[sm]992[md]1200[lg]1920[xl]
-    import fakeData from '@/fake_data/test_report'
     import MyProgress from "@/components/MyProgress";
     import MyRadar from "@/components/MyRadar";
     import MyParagraphColorGradient from "@/components/MyParagraphColorGradient";
     import jsPdfDownload from "@/utils/pdfDownloader"
-    import {wait,waitVue} from "@/utils/loadWaiter";
+    import {wait, waitVue} from "@/utils/loadWaiter";
 
     let outer_active, objective_active, subjective_active;
 
     export default {
         name: "WritReport",
         components: {MyParagraphColorGradient, MyRadar, MyProgress},
-        beforeMount() {
-            // debug模式用桩数据
-            if (process.env.NODE_ENV === 'debug') {
-                this.received_data = fakeData;
-            }
-
-            // 其他模式用http请求获取
-
+        async beforeMount() {
             //展开所有列表
             this.openAllCollapse();
+            //获取数据
+            this.loading = true;
+            const data = await this.$api.getWritReport(this.writ_id);
+            //如果不是undefined
+            if (data) {
+                this.received_data = data;
+            }
+            this.loading = false;
         },
         props: {
-            "writ_id": {
+            writ_id: {
                 type: String,
                 required: true
             }
         },
         data() {
             return {
+                loading: false,
                 show_gradient_advance: true,
                 outer_active: null,
                 objective_active: null,
@@ -205,7 +206,7 @@
                 if (this.received_data && this.received_data && this.received_data.title) {
                     fileName += this.received_data.title;
                 }
-                fileName += new Date().getTime().toString();
+                fileName += '_' + new Date().getTime().toString();
                 this.saveCollapseStatus();
                 this.openAllCollapse();
                 this.show_gradient_advance = false;
@@ -298,7 +299,7 @@
         margin-bottom: 2rem;
     }
 
-    .report-body-to-print ul{
+    .report-body-to-print ul {
         list-style-type: none;
     }
 

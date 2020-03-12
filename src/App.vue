@@ -22,6 +22,11 @@
     }
 
     .el-loading-mask {
+        z-index: @basicZIndex+1 !important;
+    }
+
+    //不留空格，同时拥有类名 且后面的覆盖前面的
+    .el-loading-mask.is-fullscreen {
         z-index: @basicZIndex+3 !important;
     }
 

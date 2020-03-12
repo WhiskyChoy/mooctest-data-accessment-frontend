@@ -1,6 +1,7 @@
 <template lang="pug">
-    div
-        h1 This is a page to show overall writ
+    div.my-writ-container
+        h1 我上传的文书
+
 </template>
 
 <script>

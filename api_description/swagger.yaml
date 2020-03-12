@@ -17,6 +17,8 @@ tags:
   description: 所有单篇文书相关的接口
 - name: task-report
   description: 所有任务总结报告相关的接口
+- name: default-config
+  description: 所有与默认配置有关的接口
 schemes:
 - https
 - http
@@ -49,7 +51,8 @@ paths:
       tags:
       - writ
       summary: 根据文书名或时间获取文件列表
-      operationId: getWrit
+      # 这里改了，getWrit->getWrits
+      operationId: getWrits
       parameters:
       - name: name
         description: 文书名的一部分，如果查询字段为空，为全匹配，使用like检索
@@ -76,6 +79,25 @@ paths:
             items:
               $ref: '#/definitions/writ'
 
+  /writ-report:
+    post:
+      tags:
+      - 'writ-report'
+      summary: 发起生成单篇报告的请求
+      operationId: postWritReport
+      consumes:
+      - application/json
+      parameters:
+      - in: body
+        # The payload name. It is required but ignored (it is used for documentation purposes only)
+        name: reportConfig
+        required: true
+        schema:
+          $ref: '#/definitions/report-config'
+      responses:
+        200:
+          description: 提交成功
+
   /writ-report/{writ-id}:
     get:
       tags:
@@ -93,6 +115,24 @@ paths:
       responses:
         200:
           description: 查到对应报告
+
+  /task-report:
+    post:
+      tags:
+      - 'task-report'
+      summary: 发起任务的请求
+      operationId: postTaskReport
+      consumes:
+      - application/json
+      parameters:
+      - in: body
+        name: taskConfig
+        required: true
+        schema:
+          $ref: '#/definitions/task-config'
+      responses:
+        200:
+          description: 提交成功
 
   /task-report/{task-id}:
     get:
@@ -112,12 +152,83 @@ paths:
         200:
           description: 查到对应报告
 
+  /default-config:
+    get:
+      tags:
+      - 'default-config'
+      summary: 获取默认配置
+      operationId: getDefaultConfig
+      responses:
+        200:
+          description: 拿到默认配置
+          schema:
+            $ref: '#/definitions/config'
+    put:
+      tags:
+      - 'default-config'
+      summary: 提交/更改默认配置（idempotent的，只是覆盖，不会产生新的）
+      operationId: putDefaultConfig
+      consumes:
+      - application/json
+      parameters:
+      - in: body
+        name: defaultConfig
+        required: true
+        description: 各种默认配置项
+        schema:
+          $ref: '#/definitions/config'
+      responses:
+        200:
+          description: 成功提交配置项
+
+
 
 definitions:
   writ-status:
     type: string
     description: 文书当前所处的状态，分别是未检测，等待检测，检测中，检测完成，格式错误，意外中止
     enum: [untested, waiting, onging, finished, wrong, accident]
+  config-component:
+    type: string
+    description: 配置项的展现方式
+    enum: [radio, checkbox, input, select, switch, slider, time, date, datetime]
+  config-type:
+    type: string
+    description: 配置型的类型
+    enum: [boolean, number, string, list, cascade]
+  config-list:
+    type: array
+    items:
+      type: object
+    description: 配置项的list补充值
+  config-cascade:
+    type: object
+    description: 配置项的cascade补充值
+  report-config:
+    required:
+    - default
+    type: object
+    properties:
+      default:
+        type: boolean
+        description: 是否使用默认配置
+      config:
+        $ref: '#/definitions/config-item'
+  task-config:
+    type: object
+    required:
+    - default
+    - writs
+    properties:
+      default:
+        type: boolean
+        description: 是否使用默认配置
+      config:
+        $ref: '#/definitions/config-item'
+      writs:
+        type: array
+        items:
+          $ref: '#/definitions/config-list-item'
   writ:
     type: object
     properties:
@@ -138,6 +249,38 @@ definitions:
         description: 文书的长度
       status:
         $ref: '#/definitions/writ-status'
+  config-item:
+    type: object
+    properties:
+      value:
+        type: string
+        description: 传给后端的值
+      label:
+        type: string
+        description: 要显示在网页上的字符
+      component:
+        $ref: '#/definitions/config-component'
+      type:
+        $ref: '#/definitions/config-type'
+      list:
+        $ref: '#/definitions/config-list'
+      cascade:
+        $ref: '#/definitions/config-cascade'
+  config:
+    type: array
+    items:
+      $ref: '#/definitions/config-item'
+  config-list-item:
+    type: object
+    required:
+      - value
+      - label
+    properties:
+      value:
+        description: 传给后端的值
+      label:
+        type: string
+        description: 要显示在网页上的字符
 
 
 

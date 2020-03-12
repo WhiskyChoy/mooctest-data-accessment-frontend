@@ -1,7 +1,7 @@
 import axios from 'axios'
 import {Notification} from 'element-ui'
 import router from '@/router'
-import baseURL from '@/requests/api/baseURL'
+import baseURL from '@/requests/baseURL'
 
 const tokenType = 'Bearer';
 const tokenKey = 'mooctest-civil-judicial-document-accessment-token';
@@ -77,8 +77,7 @@ const errorHandle = (status, payloadMsg) => {
     }
 };
 
-const instance = axios.create();
-instance.defaults.baseURL = baseURL;
+const instance = axios.create({baseURL});
 
 
 /**
@@ -97,25 +96,28 @@ instance.interceptors.request.use(
 
 // 响应拦截器
 instance.interceptors.response.use(
-    // 请求成功
-    res => res.status === 200 ? Promise.resolve(res) : Promise.reject(res),
+    // 请求成功，原封不动（这里如果写Promise.resolve(response)是一样的，会原样返回Promise）
+    response => response,
     // 请求失败
     error => {
         const {response} = error;
         if (response) {
             // 请求已发出，但是不在2xx的范围
             errorHandle(response.status, response.data.message);
-            return Promise.reject(response);
+            //这里处理过后就不再往后丢reject了，下同，最后如果axios调了Promise.reject(error)则返回的是undefined
+            // return Promise.reject(response);
         } else {
             // 处理断网的情况
             // eg:请求超时或断网时，更新state的network状态
             // network状态在app.vue中控制着一个全局的断网提示组件的显示隐藏
             // 关于断网组件中的刷新重新获取数据，会在断网组件中说明
             if (!window.navigator.onLine) {
-                showError('已断网，请检查网络连接')
+                showError('已断网，请检查网络连接');
                 // store.commit('changeNetwork', false);
+                // return Promise.reject(error);
             } else {
-                return Promise.reject(error);
+                showError('未知错误');
+                // return Promise.reject(error);
             }
         }
     });
