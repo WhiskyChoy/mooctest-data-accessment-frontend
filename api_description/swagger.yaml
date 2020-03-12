@@ -235,9 +235,9 @@ definitions:
         type: integer
         format: int64
         description: 文书的id
-      name:
+      title:
         type: string
-        description: 文书的文件名
+        description: 文书的标题
       time:
         type: integer
         format: int64
