@@ -1,0 +1,14 @@
+[
+  {
+    "value": "met_CSR_",
+    "label": "参诉人信息细致性",
+    "component": "switch",
+    "type": "number"
+  },
+  {
+    "value": "met_AJJBQK_",
+    "label": "案件基本情况",
+    "component": "switch",
+    "type": "number"
+  }
+]
