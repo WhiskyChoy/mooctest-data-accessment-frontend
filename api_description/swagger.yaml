@@ -176,7 +176,8 @@ paths:
         required: true
         description: 各种默认配置项
         schema:
-          $ref: '#/definitions/config'
+          type: object
+          description: key是config-item的value，value是指定的config-type的值
       responses:
         200:
           description: 成功提交配置项
@@ -195,15 +196,7 @@ definitions:
   config-type:
     type: string
     description: 配置型的类型
-    enum: [boolean, number, string, list, cascade]
-  config-list:
-    type: array
-    items:
-      type: object
-    description: 配置项的list补充值
-  config-cascade:
-    type: object
-    description: 配置项的cascade补充值
+    enum: [boolean, number, string]
   report-config:
     required:
     - default
@@ -228,7 +221,9 @@ definitions:
       writs:
         type: array
         items:
-          $ref: '#/definitions/config-list-item'
+          type: integer
+          format: int64
+          description: 文书的id
   writ:
     type: object
     properties:
@@ -262,26 +257,10 @@ definitions:
         $ref: '#/definitions/config-component'
       type:
         $ref: '#/definitions/config-type'
-      list:
-        $ref: '#/definitions/config-list'
-      cascade:
-        $ref: '#/definitions/config-cascade'
   config:
     type: array
     items:
       $ref: '#/definitions/config-item'
-  config-list-item:
-    type: object
-    required:
-      - value
-      - label
-    properties:
-      value:
-        type: string
-        description: 传给后端的值
-      label:
-        type: string
-        description: 要显示在网页上的字符
 
 
 
