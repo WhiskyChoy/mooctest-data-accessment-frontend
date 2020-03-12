@@ -277,6 +277,7 @@ definitions:
       - label
     properties:
       value:
+        type: string
         description: 传给后端的值
       label:
         type: string
