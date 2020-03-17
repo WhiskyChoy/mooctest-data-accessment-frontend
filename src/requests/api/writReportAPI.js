@@ -4,7 +4,7 @@ import {wait} from "@/utils/loadWaiter";
 
 /**
  *
- * @param{Number} writId
+ * @param{String} writId
  */
 const getWritReport = async (writId) => {
     if (process.env.NODE_ENV === 'debug') {
@@ -14,12 +14,16 @@ const getWritReport = async (writId) => {
     }
     let URL;
     if (process.env.NODE_ENV === 'v1') {
-        URL = '/writ-report/getWrit'
+        URL = `/writ-report/${writId}/getWrit`
     }
     if (process.env.NODE_ENV === 'v2') {
-        URL = '/writ-report'
+        URL = `/writ-report/${writId}`
     }
-    return http.get(URL, {params: {'writ-id': writId}});
+    return http.get(URL);
+};
+
+const postWritReport = async ({})=>{
+
 };
 
 export {getWritReport}

@@ -79,6 +79,29 @@ paths:
             items:
               $ref: '#/definitions/writ'
 
+  /writ/{writ-id}/status:
+    get:
+      tags:
+      - writ
+      summary: 获得一篇已上传文书的状态信息
+      operationId: getWritStatus
+      parameters:
+      - name: 'writ-id'
+        in: path
+        required: true
+        description: 文书的id
+        type: string
+      responses:
+        200:
+          description: 查到该文书了
+          schema:
+            # json是可以只有一个字符串/一个布尔值/一个数字/一个数组的，不一定要是一个对象
+            $ref: '#/definitions/writ-status'
+        404:
+          description: 该文书不存在
+
+
+
   /writ-report:
     post:
       tags:
@@ -102,14 +125,13 @@ paths:
     get:
       tags:
       - 'writ-report'
-      summary: 拿取报告。由于一篇文书只有一篇报告，这里用文书id拿去报告。
+      summary: 拿取报告。
       operationId: getWritReport
       parameters:
       - name: 'writ-id'
         required: true
-        description: 文书的id
-        type: integer
-        format: int64
+        description: 文书的id，由于一篇文书只有一篇报告，这里用文书id拿去报告，本来应该用writ-report-id的
+        type: string
         minimum: 1
         in: path
       responses:
@@ -144,8 +166,7 @@ paths:
       - name: 'task-id'
         required: true
         description: 任务的id
-        type: integer
-        format: int64
+        type: string
         minimum: 1
         in: path
       responses:
@@ -209,6 +230,9 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/config-item'
+      writId:
+        type: string
+        description: 要生成单篇报告的文书的Id
   task-config:
     type: object
     required:
@@ -225,15 +249,13 @@ definitions:
       writs:
         type: array
         items:
-          type: integer
-          format: int64
+          type: string
           description: 文书的id
   writ:
     type: object
     properties:
       id:
-        type: integer
-        format: int64
+        type: string
         description: 文书的id
       title:
         type: string
@@ -250,6 +272,11 @@ definitions:
         $ref: '#/definitions/writ-status'
   config-item:
     type: object
+    required:
+    - value
+    - label
+    - compnent
+    - type
     properties:
       value:
         type: string
@@ -261,6 +288,8 @@ definitions:
         $ref: '#/definitions/config-component'
       type:
         $ref: '#/definitions/config-type'
+      result:
+        description: 目前该配置项的存储结果
   config:
     type: array
     items:

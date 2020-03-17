@@ -1,12 +1,12 @@
 <template lang="pug">
-    div.writ-report-container
-        div.report-header
-            h1.writ-report-title 裁判文书单篇测评结果
+    div.center-view-container
+        div.center-view-header
+            h1.center-view-title 裁判文书单篇测评结果
             div.header-button-container
                 el-button(@click="downloadPDF") 下载为PDF
                 el-button 查看原文
-        div.report-body-outer-container
-            div.report-body-inner-container(ref="my-report" v-loading="loading")
+        div.center-view-body
+            div.writ-report-container(ref="my-report" v-loading="loading")
                 // 有了多种类型裁判文书支持后这里"民事"最好用传值的形式带进来
                 h2.inner-report-title 民事裁判文书测评报告
                 el-collapse(v-model="outer_active"  v-if="received_data")
@@ -230,25 +230,10 @@
 <style scoped lang="less">
     @import "../assets/global";
 
-    .writ-report-container {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .report-header {
-        text-align: center;
-    }
-
-    .writ-report-title {
-        margin-top: @reportHeaderMargin;
-        margin-bottom: @reportHeaderMargin;
-    }
-
     .header-button-container {
         position: fixed;
         top: @navHeight+@reportHeaderMargin;
         right: 1rem;
-        z-index: @basicZIndex+1;
     }
 
     @media screen and (max-width: 750px) {
@@ -282,14 +267,7 @@
         font-size: 1.15rem;
     }
 
-    .report-body-outer-container {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .report-body-inner-container {
+    .writ-report-container {
         width: 80%;
         max-width: 1000px;
         border-radius: 10px;
@@ -297,6 +275,7 @@
         padding: 1rem;
         min-height: 800px;
         margin-bottom: 2rem;
+        /*box-sizing: border-box;*/
     }
 
     .report-body-to-print ul {
@@ -347,7 +326,7 @@
             color: red;
         }
         &.el-icon-warning {
-            color: orange;
+            color: chocolate;
         }
         &.el-icon-question {
             color: gray;

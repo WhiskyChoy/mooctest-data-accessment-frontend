@@ -21,9 +21,9 @@ const endDate = new Date();
 const get_one_item = () => {
     return {
         id: get_id(),
-        name: courts[Math.floor(Math.random() * (courts.length))] + '人民法院' + keyWords[Math.floor(Math.random() * (keyWords.length))] + '类合编',
+        title: courts[Math.floor(Math.random() * (courts.length))] + '人民法院' + keyWords[Math.floor(Math.random() * (keyWords.length))] + '类合编',
         time: randomDate(startDate, endDate),
-        number: Math.floor(100 + Math.random() * 1000),
+        length: Math.floor(100 + Math.random() * 1000),
         status: listStatus[Math.floor(Math.random() * listStatus.length)]
     }
 };
@@ -35,6 +35,7 @@ const getWritList = (num = 20) => {
     for (let i = 0; i < num; i++) {
         writList.push(get_one_item())
     }
+    return writList;
 };
 
 export {getWritList}

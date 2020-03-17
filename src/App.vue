@@ -12,6 +12,11 @@
 <style lang="less">
     @import "assets/global";
 
+    // 因为app不是scope，这个可以影响全局
+    button.el-button.el-picker-panel__link-btn.el-button--text.el-button--mini {
+        display: none;
+    }
+
     body {
         margin: 0;
         min-width: @projectMinWidth;
@@ -21,13 +26,25 @@
         text-align: center;
     }
 
+    .v-modal {
+        z-index:@elLoadingMaskFullScreenZIndex!important;
+    }
+
+    .el-dialog__wrapper {
+        z-index: @elLoadingMaskFullScreenZIndex+1!important;
+    }
+
+    .el-message{
+        z-index: @elMessageZIndex !important;
+    }
+
     .el-loading-mask {
-        z-index: @basicZIndex+1 !important;
+        z-index: @elLoadingMaskZIndex !important;
     }
 
     //不留空格，同时拥有类名 且后面的覆盖前面的
     .el-loading-mask.is-fullscreen {
-        z-index: @basicZIndex+3 !important;
+        z-index: @elLoadingMaskFullScreenZIndex !important;
     }
 
     #nprogress .bar {

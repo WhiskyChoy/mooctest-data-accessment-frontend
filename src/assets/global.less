@@ -6,3 +6,11 @@
 @hideMenuScreenWidth: 900px;
 @reportHeaderMargin: 30px;
 @basicZIndex: 10000;
+@myMaskZIndex: @basicZIndex + 100;
+@myMenuZIndex: @myMaskZIndex + 1;
+@myNavZIndex: @myMenuZIndex + 1;
+@elMessageZIndex: @myNavZIndex + 100;
+@elLoadingMaskZIndex: @basicZIndex + 1;
+@elLoadingMaskFullScreenZIndex: @myNavZIndex + 1;
+@centerHeaderZIndex: @elLoadingMaskZIndex + 1;
+@scrollbarThumbZIndex: @centerHeaderZIndex;
