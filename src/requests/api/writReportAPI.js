@@ -14,16 +14,34 @@ const getWritReport = async (writId) => {
     }
     let URL;
     if (process.env.NODE_ENV === 'v1') {
-        URL = `/writ-report/${writId}/getWrit`
+        URL = `/writ-report/${writId}/getWrit`;
     }
     if (process.env.NODE_ENV === 'v2') {
-        URL = `/writ-report/${writId}`
+        URL = `/writ-report/${writId}`;
     }
     return http.get(URL);
 };
 
-const postWritReport = async ({})=>{
 
+/**
+ * @param{Boolean} useDefault
+ * @param{Array} config
+ * @param{String} writId
+ * @returns {Promise<*>}
+ */
+const postWritReport = async ({useDefault, config, writId}) => {
+    if (process.env.NODE_ENV === 'debug') {
+        await wait(500);
+        return true;
+    }
+    let URL;
+    if (process.env.NODE_ENV === 'v1') {
+        URL = '/writ-report/postWritReport';
+    }
+    if (process.env.NODE_ENV === 'v2') {
+        URL = '/writ-report'
+    }
+    return http.post(URL, {useDefault, config, writId});
 };
 
-export {getWritReport}
+export {getWritReport, postWritReport}

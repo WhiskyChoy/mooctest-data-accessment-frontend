@@ -15,6 +15,8 @@ tags:
   description: 所有与文书相关的接口.
 - name: writ-report
   description: 所有单篇文书相关的接口
+- name: task
+  description: 所有与任务相关的接口
 - name: task-report
   description: 所有任务总结报告相关的接口
 - name: default-config
@@ -138,12 +140,42 @@ paths:
         200:
           description: 查到对应报告
 
-  /task-report:
+  /task:
+    get:
+      tags:
+      - task
+      summary: 获取任务列表的请求
+      operationId: getTasks
+      parameters:
+      - name: name
+        description: 任务名的一部分，如果查询字段为空，为全匹配，使用like检索
+        in: query
+        type: string
+        required: false
+      - name: startTime
+        description: 起始时间（晚于）
+        in: query
+        type: integer
+        format: int64
+        required: false
+      - name: endTime
+        description: 结束时间（早于）
+        in: query
+        type: integer
+        format: int64
+        required: false
+      responses:
+        200:
+          description: 正常查询
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/task'
     post:
       tags:
-      - 'task-report'
+      - task
       summary: 发起任务的请求
-      operationId: postTaskReport
+      operationId: postTask
       consumes:
       - application/json
       parameters:
@@ -210,6 +242,10 @@ definitions:
     type: string
     description: 文书当前所处的状态，分别是未检测，等待检测，检测中，检测完成，格式错误，意外中止
     enum: [untested, waiting, onging, finished, wrong, accident]
+  task-status:
+    type: string
+    description: 任务当前所处的状态，分别是等待检测，检测中，检测完成，检测失败
+    enum: [untested, waiting, onging, finished, failed]
   config-component:
     type: string
     description: 配置项的展现方式
@@ -220,10 +256,11 @@ definitions:
     enum: [boolean, number, string]
   report-config:
     required:
-    - default
+    - useDefault
     type: object
     properties:
-      default:
+      #  这里改成useDefault了，default在JS里是保留字，不好解构
+      useDefault:
         type: boolean
         description: 是否使用默认配置
       config:
@@ -236,10 +273,13 @@ definitions:
   task-config:
     type: object
     required:
-    - default
+    - useDefault
     - writs
     properties:
-      default:
+      title:
+        type: string
+        description: 任务的名称
+      useDefault:
         type: boolean
         description: 是否使用默认配置
       config:
@@ -251,12 +291,29 @@ definitions:
         items:
           type: string
           description: 文书的id
+  task:
+    type: object
+    properties:
+      id:
+        type: string
+        description: 任务的id
+      title:
+        type: string
+        description: 新建任务时的任务名（为和writ保持统一就叫title了）
+      time:
+        type: integer
+        format: int64
+        description: 时间戳，从1970年1月1日开始的毫秒数，可以是负数
+      status:
+        $ref: '#/definitions/task-status'
+
   writ:
     type: object
     properties:
       id:
         type: string
         description: 文书的id
+      # 注意查用的字段是name.回用的字段是title（按name查询title）
       title:
         type: string
         description: 文书的标题

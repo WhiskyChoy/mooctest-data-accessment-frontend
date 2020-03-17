@@ -1,6 +1,6 @@
 <template lang="pug">
     //表的总min-width应该等于project-max-width（见global.less）
-    el-table.my-writ-table(:data="writs" v-loading="loading" height="70%" max-height="600" @selection-change="handleSelectionChange" border stripe)
+    el-table.my-writ-table(ref="myWritTable" :data="writs" v-loading="loading" height="70%" max-height="600" @selection-change="handleSelectionChange" border stripe)
         el-table-column(type="selection" :selectable="checkSelectable" min-width="40" align="center")
         el-table-column(prop="id" label="文书id" min-width="45" align="center")
         //这里name是标题
@@ -37,7 +37,7 @@
         el-table-column(label="操作"  min-width="80" align="center")
             template(v-slot="{row, $index}")
                 div(v-if="row.status==='untested'")
-                    el-button.my-button(icon="el-icon-s-promotion" @click="handleTest(row.id)") 单独检测
+                    el-button.my-button(icon="el-icon-s-promotion" @click="handleTest(row.id, $index)") 单独检测
                 div(v-if="row.status==='waiting'||row.status==='onging'")
                     //row必须有fetching属性才行，下面用了map的方法。其实这里有个tricky的方法：row.fetching===undefined?false&&(row.fetching=false):row.fetching
                     el-button.my-button(icon="el-icon-sort" :loading="row.fetching" @click="updateStatus(row.id, $index)") 更新状态
@@ -46,7 +46,7 @@
                 div(v-if="row.status==='wrong'")
                     el-button.my-button(icon="el-icon-document-delete" disabled) 无法查看
                 div(v-if="row.status==='accident'")
-                    el-button.my-button(icon="el-icon-refresh" @click="handleTest(row.id)") 重新检测
+                    el-button.my-button(icon="el-icon-refresh" @click="handleTest(row.id, $index)") 重新检测
 </template>
 
 <script>
@@ -88,7 +88,7 @@
             return {
                 statusTable: {
                     untested: '尚未检测',
-                    waiting: '在任务中',
+                    waiting: '等待检测',
                     onging: '在检测中',
                     finished: '检测完成',
                     wrong: '解析错误',
@@ -132,8 +132,14 @@
             checkSelectable(row) {
                 return row.status === 'untested' || row.status === 'accident'
             },
-            handleTest(writId) {
-                this.$emit('handle-test', writId);
+            handleTest(writId, $index) {
+                this.$emit('handle-test', writId, $index);
+            },
+            clearSelection() {
+                this.$refs['myWritTable'].clearSelection();
+            },
+            changeStatus($index, status) {
+                this.writs[$index].status = status;
             }
 
         }
