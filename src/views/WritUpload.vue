@@ -5,7 +5,6 @@
             div.tool-container
                 el-button(@click="handleClear" icon="el-icon-refresh") 清空
                 el-button(@click="handleUpload" type="primary" :loading="loading" icon="el-icon-upload2") 上传
-                component(:is="comp")
         div.center-view-body
 
 </template>
@@ -25,7 +24,6 @@
         data() {
             return {
                 loading: false,
-                comp: {render(createElement){return createElement('div',['啥玩意'])}}
             }
         }
     }
