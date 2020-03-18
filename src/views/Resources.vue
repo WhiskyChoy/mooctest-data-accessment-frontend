@@ -68,20 +68,19 @@
             z-index: @myMaskZIndex;
         }
 
-        /deep/ .el-table__body-wrapper {
+        /*/deep/ .el-table__body-wrapper {*/
 
-            &::-webkit-scrollbar {
-                width: 8px;
-                height: 8px;
-                background-color: #fff;
-            }
+            /*&::-webkit-scrollbar {*/
+                /*width: 8px;*/
+                /*height: 8px;*/
+                /*background-color: #fff;*/
+            /*}*/
 
-            &::-webkit-scrollbar-thumb {
-                border-radius: 5px;
-                /*box-shadow: inset 0 0 6px rgba(0, 0, 0, .1);*/
-                background-color: rgba(0, 0, 0, .1)
-            }
-        }
+            /*&::-webkit-scrollbar-thumb {*/
+                /*border-radius: 5px;*/
+                /*background-color: rgba(0, 0, 0, .1)*/
+            /*}*/
+        /*}*/
 
         .el-scrollbar {
             position: fixed;

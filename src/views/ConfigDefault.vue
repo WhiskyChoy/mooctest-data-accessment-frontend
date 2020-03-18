@@ -1,7 +1,7 @@
 <template lang="pug">
     div.center-view-container
         div.center-view-header
-            h1 我的默认配置
+            h1.center-view-title 我的默认配置
             div.tool-container
                 el-button(@click="handleReset" icon="el-icon-refresh") 重置
                 el-button(@click="handleSubmit" type="primary" :loading="loading" icon="el-icon-upload2") 提交

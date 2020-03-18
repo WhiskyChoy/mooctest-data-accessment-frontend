@@ -10,7 +10,7 @@
     }
 </script>
 <style lang="less">
-    @import "assets/global";
+    @import "../assets/global";
 
     // 因为app不是scope，这个可以影响全局
     button.el-button.el-picker-panel__link-btn.el-button--text.el-button--mini {

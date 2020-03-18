@@ -1,6 +1,6 @@
 <template lang="pug">
     //表的总min-width应该等于project-max-width（见global.less）
-    el-table.my-writ-table(ref="myWritTable" :data="writs" v-loading="loading" height="70%" max-height="600" @selection-change="handleSelectionChange" border stripe)
+    el-table.my-writ-table(v-scrollable.el-table ref="myWritTable" :data="writs" v-loading="loading" height="70%" max-height="600" @selection-change="handleSelectionChange" border stripe)
         el-table-column(type="selection" :selectable="checkSelectable" min-width="40" align="center")
         el-table-column(prop="id" label="文书id" min-width="45" align="center")
         //这里name是标题

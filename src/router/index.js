@@ -8,6 +8,7 @@ import ConfigDefault from '@/views/ConfigDefault'
 import Login from '@/views/Login'
 import WritReport from '@/views/WritReport'
 import TaskReport from '@/views/TaskReport'
+import WritUpload from '@/views/WritUpload'
 
 Vue.use(VueRouter);
 
@@ -23,7 +24,7 @@ const routes = [
         children: [
             {
                 path: '',
-                redirect: { name: 'WritOverall' }
+                redirect: {name: 'WritOverall'}
             },
             {
                 path: 'writ-overall',
@@ -52,6 +53,11 @@ const routes = [
                 name: 'TaskReport',
                 component: TaskReport,
                 props: true
+            },
+            {
+                path: 'writ-upload',
+                name: 'writUpload',
+                component: WritUpload,
             }
 
         ]

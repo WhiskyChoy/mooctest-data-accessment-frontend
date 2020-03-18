@@ -16,7 +16,7 @@
         div.center-view-body
             my-writ-list(ref="overallWritList" @handle-test="handleTest" @selection-change="handleSelectionChange" :name-str="searchName" :start-date="searchTime[0]" :end-date="searchTime[1]")
         //设置:modal-append-to-body="false" :append-to-body="true" 这样dialog插入body，modal插入dialog的父元素（其实就是两者平级在body）
-        el-dialog(title="提交前的配置" :visible.sync="dialogVisible" center  :modal-append-to-body="false" :append-to-body="true" top="6vh")
+        el-dialog(v-draggable title="提交前的配置" :visible.sync="dialogVisible" center :modal-append-to-body="false" :append-to-body="true" top="6vh")
             div.dialog-body
                 el-input.task-title-container(v-if="submitType===SUBMIT_TYPE.TASK" placeholder="请输入任务名称" v-model="title" prefix-icon="el-icon-edit-outline" clearable)
                 el-row(:gutter="10").default-config-switch-container
@@ -99,7 +99,7 @@
                 let received = await this.$api.postWritReport({useDefault, config, writId});
                 if (received) {
                     this.$message.success({message: `已提交，等待生成${writId}号文书报告`, duration: 1500});
-                    this.$refs['overallWritList'].changeStatus(this.currentWritIndex,'waiting');
+                    this.$refs['overallWritList'].changeStatus(this.currentWritIndex, 'waiting');
                     this.currentWritId = null;
                     this.currentWritIndex = null;
                 }

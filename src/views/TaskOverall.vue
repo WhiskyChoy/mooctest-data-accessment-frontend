@@ -1,12 +1,14 @@
 <template lang="pug">
-    div
-        h1 This is a page to show overall task
+    div.center-view-container
+        div.center-view-header
+            h1.center-view-title 我创建的任务
+        div.center-view-body
 </template>
 
 <script>
-export default {
-name: "TaskOverall"
-}
+    export default {
+        name: "TaskOverall"
+    }
 </script>
 
 <style scoped lang="less">

@@ -1,8 +1,7 @@
 import Vue from 'vue'
-import App from './App.vue'
+import App from './app'
 import router from './router'
-import './plugins/element.js'
-import './plugins/api.js'
+import './plugin'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 
