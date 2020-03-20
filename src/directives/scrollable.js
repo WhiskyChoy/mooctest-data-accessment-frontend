@@ -52,10 +52,43 @@ const getElement = (el, modifiers) => {
     if (modifiers && modifiers['el-table']) {
         result = el.querySelector(".el-table__body-wrapper");
         if (!result) {
-            return console.warn("未发现className为el-table__body-wrapper的dom");
+            console.warn("未发现className为el-table__body-wrapper的dom");
+            return el;
+        }
+    }
+    if (modifiers && modifiers['el-upload']) {
+        //注意这里不能每次都创建，没有才创建
+        //perfect scrollba 必须挂在container上，container里面只有一个元素
+        result = el.querySelector('.upload-list-container');
+        if (!result) {
+            let ul = el.querySelector('.el-upload-list');
+
+            if (!ul) {
+                console.warn("未发现className为el-upload-list的dom");
+                return el;
+            }
+            let div = document.createElement('div');
+            div.className = 'upload-list-container';
+            let parentNode = ul.parentNode;
+            parentNode.removeChild(ul);
+            div.appendChild(ul);
+            parentNode.appendChild(div);
+            result = div;
         }
     }
     return result;
+};
+
+const doNextTick = (vnode, callback) => {
+    vnode.context.$nextTick(
+        () => {
+            try {
+                callback();
+            } catch (error) {
+                console.error(error);
+            }
+        }
+    )
 };
 
 const bind = (el, binding) => {
@@ -69,26 +102,26 @@ const unbind = () => {
     window.onresize = null;
 };
 
-const inserted = (el, binding) => {
+const inserted = (el, binding, vnode) => {
     const elem = getElement(el, binding.modifiers);
     const rules = ["fixed", "absolute", "relative"];
     if (!rules.includes(window.getComputedStyle(elem, null).position)) {
-        console.error(`perfect-scrollbar所在的容器的position属性必须是以下之一：${rules.join("、")}`)
+        console.info(`perfect-scrollbar所在的容器的position属性必须是以下之一：${rules.join("、")}，已修改为relative`);
+        elem.style.position = 'relative'
+    }
+    if (binding.modifiers && binding.modifiers['el-table']) {
+        doNextTick(vnode, () => {
+            el_scrollBar(elem)
+        });
     }
     el_scrollBar(elem);
 };
 
 const update = (el, binding, vnode) => {
     const elem = getElement(el, binding.modifiers);
-    vnode.context.$nextTick(
-        () => {
-            try {
-                el_scrollBar(elem);
-            } catch (error) {
-                console.error(error);
-            }
-        }
-    )
+    doNextTick(vnode, () => {
+        el_scrollBar(elem)
+    });
 };
 
 const scrollableNew = (Vue) => {
@@ -96,7 +129,6 @@ const scrollableNew = (Vue) => {
         bind,
         inserted,
         update,
-        componentUpdated: update,
         unbind
     });
 };

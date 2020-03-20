@@ -30,7 +30,7 @@ paths:
       tags:
       - writ
       summary: 文件上传、图片上传
-      operationId: uploadWrit
+      operationId: postWrit
       consumes:
       - multipart/form-data
       parameters:

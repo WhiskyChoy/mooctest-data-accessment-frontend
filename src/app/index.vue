@@ -27,14 +27,18 @@
     }
 
     .v-modal {
-        z-index:@elLoadingMaskFullScreenZIndex!important;
+        z-index: @elLoadingMaskFullScreenZIndex !important;
+    }
+
+    .el-message-box__wrapper {
+        z-index: @elLoadingMaskFullScreenZIndex+1 !important;
     }
 
     .el-dialog__wrapper {
-        z-index: @elLoadingMaskFullScreenZIndex+1!important;
+        z-index: @elLoadingMaskFullScreenZIndex+1 !important;
     }
 
-    .el-message{
+    .el-message {
         z-index: @elMessageZIndex !important;
     }
 

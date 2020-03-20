@@ -1,5 +1,6 @@
 <template lang="pug">
-    el-menu(router default-active="writ-overall" :collapse="collapse" style="height:100%")
+    //:default-active="$route.path"比较危险，要确保index里的路径确实在路由里注册了
+    el-menu(router :default-active="$route.path" :collapse="collapse" style="height:100%")
         el-menu-item(index="/resources/writ-upload")
             i.el-icon-upload
             span(slot="title") 上传文书

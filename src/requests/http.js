@@ -1,4 +1,5 @@
 import axios from 'axios'
+import qs from 'qs'
 import {Notification} from 'element-ui'
 import router from '@/router'
 import baseURL from '@/requests/baseURL'
@@ -86,6 +87,10 @@ const instance = axios.create({baseURL});
  */
 instance.interceptors.request.use(
     config => {
+        // 虽然没用到，但还是给它配置了
+        if (config.method === 'post' && config.headers['Content-Type'] === 'application/x-www-form-urlencoded') {
+            config.data = qs.stringify(config.data);
+        }
         // 本来是在state中拿的
         // const token = store.state.token;
         const token = localStorage.getItem(tokenKey);

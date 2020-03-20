@@ -5,9 +5,7 @@ function wait(time = 0) {
 }
 
 function waitVue() {
-    return new Promise(resolve => Vue.nextTick(() => {
-        resolve();
-    }))
+    return Vue.nextTick();
 }
 
 

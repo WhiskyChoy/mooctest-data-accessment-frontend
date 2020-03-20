@@ -51,4 +51,70 @@ const getWritStatus = async (writId) => {
     return http.get(URL);
 };
 
-export {getWrits, getWritStatus}
+
+const randomDistribute = (offer, servingNum) => {
+    let result = [];
+    let total = 1;
+    for (let i = 0; i < servingNum - 1; i++) {
+        let serving = total * Math.random();
+        result.push(offer * serving);
+        total -= serving;
+    }
+    result.push(offer * total);
+    return result;
+};
+
+/**
+ * @param{Blob} file
+ * @param{Function} onProgress
+ * @returns {Promise<*>}
+ */
+const postWrit = async ({file, onProgress}) => {
+    if (process.env.NODE_ENV === 'debug') {
+        const failRate = 0.3;
+        if (Math.random() < failRate) {
+            return false;
+        }
+        const steps = 10;
+        const totalProgress = 100;
+        const totalTime = 2000;
+        const progress = randomDistribute(totalProgress, steps);
+        let currentProgress = 0;
+        const time = randomDistribute(totalTime, steps);
+        for (let i = 0; i < steps; i++) {
+            await wait(time[i]);
+            onProgress({percent: currentProgress += progress[i]});
+        }
+        return true;
+    }
+    if (process.env.NODE_ENV === 'v1') {
+        URL = `/writ/postWrit`
+    }
+    if (process.env.NODE_ENV === 'v2') {
+        URL = `/writ`
+    }
+    const formData = new FormData();
+    formData.append('file', file, file.name);
+    // 用户在el-upload传入的on-progress只是el-upload自身执行的handleOnProgress的一部分
+    // 下方为源代码：
+    /* handleProgress(ev, rawFile) {
+         const file = this.getFile(rawFile);
+         this.onProgress(ev, file, this.uploadFiles);
+         file.status = 'uploading';
+         file.percentage = ev.percent || 0;
+    },
+    */
+    const configs = {
+        headers: {'Content-Type': 'multipart/form-data'},
+        onUploadProgress: (e) => {
+            if (e.total > 0) {
+                e.percent = e.loaded / e.total * 100;
+            }
+            onProgress(e);
+        }
+    };
+    return http.post(URL, formData, configs);
+};
+
+
+export {getWrits, getWritStatus, postWrit}

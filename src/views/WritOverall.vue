@@ -10,7 +10,7 @@
                     el-button-group
                         el-button(type="primary" icon="el-icon-search" @click="handleSearch" :disabled="noMsg")
                         el-button(type="primary" icon="el-icon-refresh" @click="handleRefresh")
-                    el-button.my-upload 上传文书
+                    el-button.my-upload(@click="handleUpload") 上传文书
                     el-badge.my-badge(:value="selectData.length" :hidden="selectData.length===0" :max="99")
                         el-button(:disabled="selectData.length===0" @click="handleCreateTask") 创建任务
         div.center-view-body
@@ -73,7 +73,9 @@
                 this.searchTime = [];
                 this.$refs['overallWritList'].refreshWrits();
             },
-
+            handleUpload() {
+                this.$router.push('/resources/writ-upload');
+            },
             handleTest(writId, $index) {
                 this.currentWritId = writId;
                 this.currentWritIndex = $index;
