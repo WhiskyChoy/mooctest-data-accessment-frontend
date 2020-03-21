@@ -92,7 +92,7 @@
                 display: none;
             }
 
-            /deep/ .my-writ-or-task-table .my-button /deep/ span {
+            /deep/ .my-writ-or-task-table .my-button span {
                 display: none;
             }
         }
