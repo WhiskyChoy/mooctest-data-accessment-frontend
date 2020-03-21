@@ -3,7 +3,7 @@ name: frontend build and deploy
 on:
   push:
     paths:
-      - 'sources/frontend/**'
+      - '**'
     branches:
       - master
 
