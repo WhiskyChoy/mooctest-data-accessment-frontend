@@ -1,11 +1,11 @@
 import {getWritReport, postWritReport} from "@/requests/api/writReportAPI";
 import {getWrits, getWritStatus, postWrit} from "@/requests/api/writAPI";
 import {getDefaultConfig, putDefaultConfig} from "@/requests/api/configAPI";
-import {postTask} from "@/requests/api/taskAPI";
+import {postTask, getTaskStatus, getTasks} from "@/requests/api/taskAPI";
 
 const api = {
     getWritReport, postWritReport, getWrits, getWritStatus, postWrit,
-    getDefaultConfig, putDefaultConfig, postTask
+    getDefaultConfig, putDefaultConfig, postTask, getTaskStatus, getTasks
 };
 
 const install = (Vue) => {

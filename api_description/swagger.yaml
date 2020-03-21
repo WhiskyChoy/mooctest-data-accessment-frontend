@@ -73,6 +73,11 @@ paths:
         type: integer
         format: int64
         required: false
+      - name: taskId
+        description: 所属的任务id
+        in: query
+        type: string
+        required: false
       responses:
         200:
           description: 正常查询
@@ -188,6 +193,28 @@ paths:
         200:
           description: 提交成功
 
+  # 新增
+  /task/{task-id}/status:
+    get:
+      tags:
+      - task
+      summary: 获得一篇已创建任务的状态信息
+      operationId: getTaskStatus
+      parameters:
+      - name: 'task-id'
+        in: path
+        required: true
+        description: 任务的id
+        type: string
+      responses:
+        200:
+          description: 查到该任务了
+          schema:
+            # json是可以只有一个字符串/一个布尔值/一个数字/一个数组的，不一定要是一个对象
+            $ref: '#/definitions/task-status'
+        404:
+          description: 该任务不存在
+
   /task-report/{task-id}:
     get:
       tags:
@@ -241,11 +268,12 @@ definitions:
   writ-status:
     type: string
     description: 文书当前所处的状态，分别是未检测，等待检测，检测中，检测完成，格式错误，意外中止
-    enum: [untested, waiting, onging, finished, wrong, accident]
+    # ongoing 拼错了
+    enum: [untested, waiting, ongoing, finished, wrong, accident]
   task-status:
     type: string
     description: 任务当前所处的状态，分别是等待检测，检测中，检测完成，检测失败
-    enum: [untested, waiting, onging, finished, failed]
+    enum: [waiting, ongoing, finished, failed]
   config-component:
     type: string
     description: 配置项的展现方式
@@ -304,6 +332,10 @@ definitions:
         type: integer
         format: int64
         description: 时间戳，从1970年1月1日开始的毫秒数，可以是负数
+      length:
+        type: integer
+        format: int32
+        description: 任务的数量
       status:
         $ref: '#/definitions/task-status'
 

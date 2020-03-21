@@ -82,6 +82,21 @@
             /*}*/
         /*}*/
 
+        /deep/ .my-writ-or-task-table {
+            min-height: 485px;
+            max-width: 1200px !important;
+        }
+
+        @media screen and (max-width: 1000px) {
+            /deep/ .my-writ-or-task-table .el-tag span {
+                display: none;
+            }
+
+            /deep/ .my-writ-or-task-table .my-button /deep/ span {
+                display: none;
+            }
+        }
+
         .el-scrollbar {
             position: fixed;
             top: @navHeight;

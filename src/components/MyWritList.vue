@@ -1,11 +1,12 @@
 <template lang="pug">
     //表的总min-width应该等于project-max-width（见global.less）
-    el-table.my-writ-table(v-scrollable.el-table ref="myWritTable" :data="writs" v-loading="loading" height="70%" max-height="600" @selection-change="handleSelectionChange" border stripe)
-        el-table-column(type="selection" :selectable="checkSelectable" min-width="40" align="center")
+    el-table.my-writ-or-task-table(v-scrollable.el-table ref="myWritTable" :data="writs" v-loading="loading" height="70%" max-height="600" @selection-change="handleSelectionChange" border stripe)
+        //总的min-width加上最右侧的gutter应当比projectMinWidth还小一些
+        el-table-column(v-if="taskId" type="selection" :selectable="checkSelectable" min-width="40" align="center")
         el-table-column(prop="id" label="文书id" min-width="45" align="center")
         //这里name是标题
-        el-table-column(prop="title" label="文书标题" min-width="135")
-        el-table-column(label="上传时间" min-width="140")
+        el-table-column(prop="title" label="文书标题" :min-width="taskId?165:125")
+        el-table-column(label="上传时间" min-width="120")
             template(slot-scope="scope") {{scope.row.time.toLocaleString()}}
         el-table-column(prop="length" label="文书长度"  min-width="80")
         el-table-column(label="文书状态" min-width="80" align="center")
@@ -18,7 +19,7 @@
                     el-tag(type="info")
                         i.el-icon-folder-opened
                         span {{statusTable[row.status]}}
-                div(v-if="row.status==='onging'")
+                div(v-if="row.status==='ongoing'")
                     el-tag(type="info")
                         i.el-icon-loading
                         span {{statusTable[row.status]}}
@@ -38,7 +39,7 @@
             template(v-slot="{row, $index}")
                 div(v-if="row.status==='untested'")
                     el-button.my-button(icon="el-icon-s-promotion" @click="handleTest(row.id, $index)") 单独检测
-                div(v-if="row.status==='waiting'||row.status==='onging'")
+                div(v-if="row.status==='waiting'||row.status==='ongoing'")
                     //row必须有fetching属性才行，下面用了map的方法。其实这里有个tricky的方法：row.fetching===undefined?false&&(row.fetching=false):row.fetching
                     el-button.my-button(icon="el-icon-sort" :loading="row.fetching" @click="updateStatus(row.id, $index)") 更新状态
                 div(v-if="row.status==='finished'")
@@ -76,6 +77,10 @@
             endDate: {
                 type: Date,
                 default: null
+            },
+            taskId: {
+                type: String,
+                default: null
             }
         },
         async beforeMount() {
@@ -89,7 +94,7 @@
                 statusTable: {
                     untested: '尚未检测',
                     waiting: '等待检测',
-                    onging: '在检测中',
+                    ongoing: '在检测中',
                     finished: '检测完成',
                     wrong: '解析错误',
                     accident: '意外中断',
@@ -108,9 +113,9 @@
                 }
                 this.writs[index].fetching = false;
             },
-            async handleLoad(nameStr, startDate, endDate) {
+            async handleLoad(nameStr, startDate, endDate, taskId) {
                 this.loading = true;
-                const data = await this.$api.getWrits({nameStr, startDate, endDate});
+                const data = await this.$api.getWrits({nameStr, startDate, endDate, taskId});
                 if (data) {
                     data.forEach(item => item.fetching = false);
                     this.writs = data;
@@ -118,7 +123,7 @@
                 this.loading = false;
             },
             loadWrits() {
-                this.handleLoad(this.nameStr, this.startDate, this.endDate)
+                this.handleLoad(this.nameStr, this.startDate, this.endDate, this.taskId)
             },
             refreshWrits() {
                 this.handleLoad();
@@ -145,20 +150,3 @@
         }
     }
 </script>
-
-<style lang="less" scoped>
-    .my-writ-table {
-        min-height: 500px;
-        max-width: 1200px !important;
-    }
-
-    @media screen and (max-width: 1000px) {
-        .el-tag span {
-            display: none;
-        }
-
-        .my-button /deep/ span {
-            display: none;
-        }
-    }
-</style>

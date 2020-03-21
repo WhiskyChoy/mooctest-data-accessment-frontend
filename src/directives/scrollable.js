@@ -91,10 +91,12 @@ const doNextTick = (vnode, callback) => {
     )
 };
 
-const bind = (el, binding) => {
+const bind = (el, binding, vnode) => {
     window.onresize = () => {
         const elem = getElement(el, binding.modifiers);
-        el_scrollBar(elem);
+        doNextTick(vnode, () => {
+            el_scrollBar(elem)
+        });
     }
 };
 

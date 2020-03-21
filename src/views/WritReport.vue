@@ -4,7 +4,8 @@
             h1.center-view-title 裁判文书单篇测评结果
             div.header-button-container
                 el-button(@click="downloadPDF") 下载为PDF
-                el-button 查看原文
+                //查看原文先不提供
+                el-button(:disabled="true") 查看原文
         div.center-view-body
             div.writ-report-container(ref="my-report" v-loading="loading")
                 // 有了多种类型裁判文书支持后这里"民事"最好用传值的形式带进来
