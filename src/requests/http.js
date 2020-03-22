@@ -2,7 +2,6 @@ import axios from 'axios'
 import qs from 'qs'
 import {Notification} from 'element-ui'
 import router from '@/router'
-import baseURL from '@/requests/baseURL'
 
 const tokenType = 'Bearer';
 const tokenKey = 'mooctest-civil-judicial-document-accessment-token';
@@ -77,6 +76,8 @@ const errorHandle = (status, payloadMsg) => {
             showError(payloadMsg, '其他错误，错误码：' + status)
     }
 };
+
+const baseURL = process.env.AJAX_BASE_URL ? process.env.AJAX_BASE_URL : '';
 
 const instance = axios.create({baseURL});
 

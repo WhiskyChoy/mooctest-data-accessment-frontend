@@ -7,7 +7,7 @@
                 //查看原文先不提供
                 el-button(:disabled="true") 查看原文
         div.center-view-body
-            div.writ-report-container(ref="my-report" v-loading="loading")
+            div.report-container(ref="my-report" v-loading="loading")
                 // 有了多种类型裁判文书支持后这里"民事"最好用传值的形式带进来
                 h2.inner-report-title 民事裁判文书测评报告
                 el-collapse(v-model="outer_active"  v-if="received_data")
@@ -17,22 +17,22 @@
                         div.indicator-body
                             el-row(:gutter="10")
                                 el-col(:sm="24" :lg="18")
-                                    div.writ-long-container
-                                        div.writ-long-indicator 文书标题：
-                                        div.writ-long {{received_data.title}}
+                                    div.report-long-container
+                                        div.report-long-indicator 文书标题：
+                                        div.report-long {{received_data.title}}
                                 el-col(:sm="24" :lg="6") 客观总分：
                                     span.score-total {{received_data.object_score.toFixed(1)}}
                             el-row(:gutter="10")
                                 el-col(:sm="24" :lg="18")
-                                    div.writ-long-container
-                                        div.writ-long-indicator 生成时间：
-                                        div.writ-long {{new Date(received_data.time).toLocaleString()}}
+                                    div.report-long-container
+                                        div.report-long-indicator 生成时间：
+                                        div.report-long {{new Date(received_data.time).toLocaleString()}}
                                 el-col(:sm="24" :lg="6") 主观总分：
                                     span.score-total {{received_data.subject_score.toFixed(1)}}
                             div.metrics
-                                div.writ-long-container
-                                    div.writ-long-indicator 度量指标：
-                                    div.writ-long
+                                div.report-long-container
+                                    div.report-long-indicator 度量指标：
+                                    div.report-long
                                         el-tag.my-tag(v-for="metric of received_data.metrics") {{metric}}
                     el-collapse-item.indicator-container(name="objective-indicator")
                         template(slot="title")
@@ -250,15 +250,15 @@
 
     }
 
-    .writ-long-container {
+    .report-long-container {
         display: flex;
     }
 
-    .writ-long-indicator {
+    .report-long-indicator {
         flex-shrink: 0;
     }
 
-    .writ-long {
+    .report-long {
         color: darkgray;
     }
 
@@ -268,7 +268,7 @@
         font-size: 1.15rem;
     }
 
-    .writ-report-container {
+    .report-container {
         width: 80%;
         max-width: 1000px;
         border-radius: 10px;

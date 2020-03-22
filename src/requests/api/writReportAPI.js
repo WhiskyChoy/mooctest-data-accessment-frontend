@@ -14,7 +14,7 @@ const getWritReport = async (writId) => {
     }
     let URL;
     if (process.env.NODE_ENV === 'v1') {
-        URL = `/writ-report/${writId}/getWrit`;
+        URL = `/writ-report/${writId}/getWritReport`;
     }
     if (process.env.NODE_ENV === 'v2') {
         URL = `/writ-report/${writId}`;

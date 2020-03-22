@@ -53,7 +53,7 @@ paths:
       tags:
       - writ
       summary: 根据文书名或时间获取文件列表
-      # 这里改了，getWrit->getWrits
+      # TODO 这里改了，getWrit->getWrits
       operationId: getWrits
       parameters:
       - name: name
@@ -139,11 +139,11 @@ paths:
         required: true
         description: 文书的id，由于一篇文书只有一篇报告，这里用文书id拿去报告，本来应该用writ-report-id的
         type: string
-        minimum: 1
         in: path
       responses:
         200:
           description: 查到对应报告
+
 
   /task:
     get:
@@ -193,7 +193,7 @@ paths:
         200:
           description: 提交成功
 
-  # 新增
+  # TODO 新增
   /task/{task-id}/status:
     get:
       tags:
@@ -226,11 +226,31 @@ paths:
         required: true
         description: 任务的id
         type: string
-        minimum: 1
         in: path
       responses:
         200:
           description: 查到对应报告
+
+
+  # TODO 新增
+  /task-report/{task-id}/json:
+    get:
+      tags:
+      - 'task-report'
+      summary: 获取JSON形式报告的下载地址
+      operationId: getTaskReportJSON
+      parameters:
+      - name: 'task-id'
+        required: true
+        description: 任务的id
+        type: string
+        in: path
+      responses:
+        200:
+          description: 提供下载地址
+          schema:
+            type: string
+            description: 该JSON的下载地址
 
   /default-config:
     get:
@@ -268,7 +288,7 @@ definitions:
   writ-status:
     type: string
     description: 文书当前所处的状态，分别是未检测，等待检测，检测中，检测完成，格式错误，意外中止
-    # ongoing 拼错了
+    # TODO ongoing 拼错了
     enum: [untested, waiting, ongoing, finished, wrong, accident]
   task-status:
     type: string
@@ -287,7 +307,7 @@ definitions:
     - useDefault
     type: object
     properties:
-      #  这里改成useDefault了，default在JS里是保留字，不好解构
+      #  TODO 这里改成useDefault了，default在JS里是保留字，不好解构
       useDefault:
         type: boolean
         description: 是否使用默认配置
@@ -345,7 +365,7 @@ definitions:
       id:
         type: string
         description: 文书的id
-      # 注意查用的字段是name.回用的字段是title（按name查询title）
+      # TODO 注意查用的字段是name.回用的字段是title（按name查询title）
       title:
         type: string
         description: 文书的标题
