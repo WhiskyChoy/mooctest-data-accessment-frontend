@@ -1,8 +1,8 @@
 <template lang="pug">
     div#resources
         header#nav
-            div.hamburger-container
-                i(:class="menuClosed?'el-icon-s-unfold':'el-icon-s-fold'" @click="handleClick")
+            div.hamburger-container(@click="handleClick")
+                i(:class="menuClosed?'el-icon-s-unfold':'el-icon-s-fold'")
             div.link-container
                 a(href="http://mooctest.net" target="_blank")
                     img.logo-lg(src="@/assets/logo_200x75_1.png")
@@ -70,16 +70,16 @@
 
         /*/deep/ .el-table__body-wrapper {*/
 
-            /*&::-webkit-scrollbar {*/
-                /*width: 8px;*/
-                /*height: 8px;*/
-                /*background-color: #fff;*/
-            /*}*/
+        /*&::-webkit-scrollbar {*/
+        /*width: 8px;*/
+        /*height: 8px;*/
+        /*background-color: #fff;*/
+        /*}*/
 
-            /*&::-webkit-scrollbar-thumb {*/
-                /*border-radius: 5px;*/
-                /*background-color: rgba(0, 0, 0, .1)*/
-            /*}*/
+        /*&::-webkit-scrollbar-thumb {*/
+        /*border-radius: 5px;*/
+        /*background-color: rgba(0, 0, 0, .1)*/
+        /*}*/
         /*}*/
 
         /deep/ .my-writ-or-task-table {
