@@ -320,4 +320,8 @@
         margin-right: 1rem;
         margin-bottom: 1rem;
     }
+
+    .inner-report-title {
+        text-align: center;
+    }
 </style>
