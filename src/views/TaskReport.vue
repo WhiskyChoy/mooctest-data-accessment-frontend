@@ -1,7 +1,7 @@
 <template lang="pug">
     div.center-view-container
         div.center-view-header
-            h1.center-view-title 裁判文书单篇测评结果
+            h1.center-view-title 裁判文书综合测评结果
             div.header-button-container
                 el-button(@click="downloadPDF") 下载为PDF
                 //查看原文先不提供
@@ -10,7 +10,7 @@
         div.center-view-body
             div.report-container(ref="my-report" v-loading="loading")
                 // 有了多种类型裁判文书支持后这里"民事"最好用传值的形式带进来
-                h2.inner-report-title 民事裁判文书测评报告
+                h2.inner-report-title 裁判文书质量综合测评报告
                 el-collapse(v-model="outer_active"  v-if="received_data")
                     el-collapse-item.indicator-container(name="basic-info")
                         template(slot="title")
@@ -253,7 +253,7 @@
         right: 1rem;
     }
 
-    @media screen and (max-width: 750px) {
+    @media screen and (max-width: 815px) {
 
         .header-button-container {
             position: static;
@@ -264,6 +264,9 @@
             margin-bottom: 1rem;
         }
 
+        .center-view-body {
+            margin-top: @navHeight+@reportHeaderMargin*2+10px+40px !important;
+        }
     }
 
 
@@ -292,7 +295,7 @@
         border: 2px dotted #000;
         padding: 1rem;
         min-height: 800px;
-        margin-bottom: 2rem;
+        margin-bottom: 5rem;
         /*box-sizing: border-box;*/
     }
 

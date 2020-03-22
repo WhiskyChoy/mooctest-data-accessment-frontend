@@ -24,7 +24,12 @@ const routes = [
         children: [
             {
                 path: '',
-                redirect: {name: 'WritOverall'}
+                redirect: {name: 'writUpload'}
+            },
+            {
+                path: 'writ-upload',
+                name: 'writUpload',
+                component: WritUpload,
             },
             {
                 path: 'writ-overall',
@@ -53,11 +58,6 @@ const routes = [
                 name: 'TaskReport',
                 component: TaskReport,
                 props: true
-            },
-            {
-                path: 'writ-upload',
-                name: 'writUpload',
-                component: WritUpload,
             }
 
         ]

@@ -9,7 +9,7 @@
         div.center-view-body
             div.report-container(ref="my-report" v-loading="loading")
                 // 有了多种类型裁判文书支持后这里"民事"最好用传值的形式带进来
-                h2.inner-report-title 民事裁判文书测评报告
+                h2.inner-report-title 民事裁判文书质量测评报告
                 el-collapse(v-model="outer_active"  v-if="received_data")
                     el-collapse-item.indicator-container(name="basic-info")
                         template(slot="title")
@@ -237,7 +237,7 @@
         right: 1rem;
     }
 
-    @media screen and (max-width: 750px) {
+    @media screen and (max-width: 815px) {
 
         .header-button-container {
             position: static;
@@ -248,6 +248,9 @@
             margin-bottom: 1rem;
         }
 
+        .center-view-body {
+            margin-top: @navHeight+@reportHeaderMargin*2+10px+40px !important;
+        }
     }
 
     .report-long-container {
