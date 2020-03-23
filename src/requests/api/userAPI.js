@@ -10,7 +10,7 @@ const getAuthCode = () => {
         const URL = 'http://api.mooctest.net/oauth/authorize';
         const response_type = 'code';
         //注意是uri不是url
-        const redirect_uri = encodeURIComponent(process.env.VUE_APP_FRONTEND_HOST + process.env.BASE_URL + callbackURL);
+        const redirect_uri = encodeURIComponent(process.env.VUE_APP_FRONTEND_HOST + '/' + process.env.BASE_URL.replace('/', '') + callbackURL);
         const scope = '';
         const client_id = 'MooctestDataAssessment';
         const query = qs.stringify({response_type, redirect_uri, scope, client_id});
