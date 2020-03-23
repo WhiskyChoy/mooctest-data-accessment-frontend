@@ -10,15 +10,15 @@ import {getTaskList} from "@/fake_data/js/list";
  * @returns {Promise<*>}
  */
 const postTask = async ({title, useDefault, config, writs}) => {
-    if (process.env.NODE_ENV === 'debug') {
+    if (process.env.VUE_APP_AJAX_VERSION === 'v0') {
         await wait(500);
         return true;
     }
     let URL;
-    if (process.env.NODE_ENV === 'v1') {
+    if (process.env.VUE_APP_AJAX_VERSION === 'v1') {
         URL = '//task/postTask';
     }
-    if (process.env.NODE_ENV === 'v2') {
+    if (process.env.VUE_APP_AJAX_VERSION === 'v2') {
         URL = '/task'
     }
     return http.post(URL, {title, useDefault, config, writs});
@@ -26,23 +26,23 @@ const postTask = async ({title, useDefault, config, writs}) => {
 
 
 const getTaskStatus = async (taskId) => {
-    if (process.env.NODE_ENV === 'debug') {
+    if (process.env.VUE_APP_AJAX_VERSION === 'v0') {
         //模拟等一会
         await wait(1000);
         return 'finished';
     }
     let URL;
-    if (process.env.NODE_ENV === 'v1') {
+    if (process.env.VUE_APP_AJAX_VERSION === 'v1') {
         URL = `/task/${taskId}/status/getTaskStatus`
     }
-    if (process.env.NODE_ENV === 'v2') {
+    if (process.env.VUE_APP_AJAX_VERSION === 'v2') {
         URL = `/task/${taskId}/status`
     }
     return http.get(URL);
 };
 
 const getTasks = async ({nameStr, startDate, endDate}) => {
-    if (process.env.NODE_ENV === 'debug') {
+    if (process.env.VUE_APP_AJAX_VERSION === 'v0') {
         //模拟等一会
         await wait(1000);
         return getTaskList();
@@ -51,10 +51,10 @@ const getTasks = async ({nameStr, startDate, endDate}) => {
     const startTime = startDate && startDate.getTime ? startDate.getTime() : '';
     const endTime = endDate && endDate.getTime ? endDate.getTime() : '';
     let URL;
-    if (process.env.NODE_ENV === 'v1') {
+    if (process.env.VUE_APP_AJAX_VERSION === 'v1') {
         URL = '/task/getTasks'
     }
-    if (process.env.NODE_ENV === 'v2') {
+    if (process.env.VUE_APP_AJAX_VERSION === 'v2') {
         URL = '/task'
     }
     // 这里不用return await，async函数遇到返回值为Promise的情况：

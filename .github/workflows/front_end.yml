@@ -22,7 +22,7 @@ jobs:
       run: npm install
       working-directory: ${{ env.working-directory }}
     - name: build
-      run: npm run build_debug
+      run: npm run build_github_local_v0
       working-directory: ${{ env.working-directory }}
     - name: copy 404.html
       run: |

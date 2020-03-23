@@ -221,8 +221,7 @@
                 this.show_gradient_advance = true;
                 this.recoverCollapseStatus();
                 target.classList.remove('report-body-to-print');
-                //以服务的方式调用的 Loading 需要异步关闭
-                await waitVue();
+                //以服务的方式调用的 Loading 需要异步关闭说的是引入{Loading}的还是this.$loading?
                 loading.close();
             },
             async downloadJSON() {
@@ -234,7 +233,6 @@
                     a.download = `${this.task_id}号任务分析结果.json`;
                     a.click();
                 }
-                await waitVue();
                 loading.close();
             },
             getWritsInTask() {

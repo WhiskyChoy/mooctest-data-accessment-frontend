@@ -9,16 +9,16 @@ import {wait} from "@/utils/loadWaiter";
  * @param{String} taskId
  */
 const getWrits = async ({nameStr, startDate, endDate, taskId}) => {
-    if (process.env.NODE_ENV === 'debug') {
+    if (process.env.VUE_APP_AJAX_VERSION === 'v0') {
         //模拟等一会
         await wait(1000);
         return getWritList();
     }
     let URL;
-    if (process.env.NODE_ENV === 'v1') {
+    if (process.env.VUE_APP_AJAX_VERSION === 'v1') {
         URL = '/writ/getWrits'
     }
-    if (process.env.NODE_ENV === 'v2') {
+    if (process.env.VUE_APP_AJAX_VERSION === 'v2') {
         URL = '/writ'
     }
     //给taskId的情况下先不给复合搜索了
@@ -41,16 +41,16 @@ const getWrits = async ({nameStr, startDate, endDate, taskId}) => {
  * @param{String} writId
  */
 const getWritStatus = async (writId) => {
-    if (process.env.NODE_ENV === 'debug') {
+    if (process.env.VUE_APP_AJAX_VERSION === 'v0') {
         //模拟等一会
         await wait(1000);
         return 'finished';
     }
     let URL;
-    if (process.env.NODE_ENV === 'v1') {
+    if (process.env.VUE_APP_AJAX_VERSION === 'v1') {
         URL = `/writ/${writId}/status/getWritStatus`
     }
-    if (process.env.NODE_ENV === 'v2') {
+    if (process.env.VUE_APP_AJAX_VERSION === 'v2') {
         URL = `/writ/${writId}/status`
     }
     return http.get(URL);
@@ -75,7 +75,7 @@ const randomDistribute = (offer, servingNum) => {
  * @returns {Promise<*>}
  */
 const postWrit = async ({file, onProgress}) => {
-    if (process.env.NODE_ENV === 'debug') {
+    if (process.env.VUE_APP_AJAX_VERSION === 'v0') {
         const failRate = 0.3;
         if (Math.random() < failRate) {
             return false;
@@ -92,10 +92,10 @@ const postWrit = async ({file, onProgress}) => {
         }
         return true;
     }
-    if (process.env.NODE_ENV === 'v1') {
+    if (process.env.VUE_APP_AJAX_VERSION === 'v1') {
         URL = `/writ/postWrit`
     }
-    if (process.env.NODE_ENV === 'v2') {
+    if (process.env.VUE_APP_AJAX_VERSION === 'v2') {
         URL = `/writ`
     }
     const formData = new FormData();

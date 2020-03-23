@@ -1,13 +1,19 @@
 <template lang="pug">
     div#resources
-        header#nav
-            div.hamburger-container(@click="handleClick")
-                i(:class="menuClosed?'el-icon-s-unfold':'el-icon-s-fold'")
-            div.link-container
-                a(href="http://mooctest.net" target="_blank")
-                    img.logo-lg(src="@/assets/logo_200x75_1.png")
-            div.link-container
-                router-link(to="/") 数据质量测评系统
+        header.nav
+            div.left-container
+                div.hamburger-container(@click="handleClick")
+                    i(:class="menuClosed?'el-icon-s-unfold':'el-icon-s-fold'")
+                div.link-container
+                    a(href="http://mooctest.net" target="_blank")
+                        img.logo-lg(src="@/assets/logo_200x75_1.png")
+                div.link-container
+                    router-link(to="/") 数据质量测评系统
+            div.right-container
+                el-dropdown(@command="handleCommand").avatar
+                    span {{avatarText}}
+                    el-dropdown-menu(slot="dropdown")
+                        el-dropdown-item(command="logout") 登出
         div.my-mask(ref="myMask" :style="'transition: opacity '+transitionSecond+'s'" @click="handleClick")
         div.my-menu-container
             my-nav-menu.my-menu(:collapse="menuClosed")
@@ -17,10 +23,20 @@
 
 <script>
     import MyNavMenu from "@/components/MyNavMenu";
+    import {getLocalUser, logout} from "@/utils/userUtil";
 
     export default {
         name: 'Resources',
         components: {MyNavMenu},
+        computed: {
+            avatarText() {
+                const user = getLocalUser();
+                if (user && user.name) {
+                    return user.name.slice(0, 1);
+                }
+                return '';
+            }
+        },
         data() {
             return {
                 menuClosed: true,
@@ -44,6 +60,15 @@
                         }, 1000 * this.transitionSecond);
                     }
                     this.menuClosed = !this.menuClosed;
+                }
+            },
+            handleLogout() {
+                logout();
+                this.$router.push('/login');
+            },
+            handleCommand(command) {
+                if (command === 'logout') {
+                    this.handleLogout();
                 }
             }
         }
@@ -170,7 +195,7 @@
             }
         }
 
-        #nav {
+        .nav {
             height: @navHeight;
             min-width: @projectMinWidth;
             position: fixed;
@@ -182,45 +207,77 @@
             z-index: @myNavZIndex;
 
             align-items: center;
+            justify-content: space-between;
 
-            .logo-lg {
-                height: @navHeight;
-                object-fit: fill;
-            }
-
-            .hamburger-container {
+            .left-container {
                 display: flex;
                 align-items: center;
-                justify-content: center;
+                justify-content: left;
                 height: 100%;
-                width: 56px;
-                color: white;
-                font-size: 2rem;
-                cursor: pointer;
-                &:hover {
-                    background-color: @hoverColor;
+
+                .hamburger-container {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    height: 100%;
+                    width: @menuMinWidth;
+                    color: white;
+                    font-size: 2rem;
+                    cursor: pointer;
+                    &:hover {
+                        background-color: @hoverColor;
+                    }
+                }
+
+                .link-container {
+                    width: 200px;
+                    height: 100%;
+                    /*text-align: center;*/
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+
+                    &:hover {
+                        background-color: @hoverColor;
+                    }
+
+                    a {
+                        text-align: center;
+                        font-weight: bold;
+                        color: #fff;
+                        font-size: 20px;
+                        width: 100%;
+                        text-decoration: none;
+
+                        .logo-lg {
+                            height: @navHeight;
+                            object-fit: fill;
+                        }
+                    }
                 }
             }
 
-            .link-container {
-                width: 200px;
-                height: 100%;
-                /*text-align: center;*/
+            .right-container {
                 display: flex;
                 align-items: center;
-                justify-content: center;
+                justify-content: right;
+                height: 100%;
 
-                &:hover {
-                    background-color: @hoverColor;
-                }
-
-                a {
-                    text-align: center;
-                    font-weight: bold;
-                    color: #fff;
-                    font-size: 20px;
-                    width: 100%;
-                    text-decoration: none;
+                .avatar {
+                    border-radius: 50%;
+                    border: 1px solid white;
+                    height: @navHeight * 0.65;
+                    width: @navHeight * 0.65;
+                    background-color: #607d8b;
+                    margin-right: 2rem;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    cursor: pointer;
+                    span {
+                        color: white;
+                        font-size: @navHeight * 0.4;
+                    }
                 }
             }
 

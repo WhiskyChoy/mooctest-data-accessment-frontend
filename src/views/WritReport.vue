@@ -221,7 +221,6 @@
                 this.recoverCollapseStatus();
                 target.classList.remove('report-body-to-print');
                 //以服务的方式调用的 Loading 需要异步关闭
-                await waitVue();
                 loading.close();
             }
         }

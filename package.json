@@ -3,12 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve_debug": "vue-cli-service serve --mode debug",
-    "build_debug": "vue-cli-service build --mode debug",
-    "serve_v1": "vue-cli-service serve --mode v1",
-    "build_v1": "vue-cli-service build --mode v1",
-    "serve_v2": "vue-cli-service serve --mode v2",
-    "build_v2": "vue-cli-service build --mode v2"
+    "serve_local_local_v0": "vue-cli-service serve --mode local_local_v0",
+    "build_local_local_v0": "vue-cli-service build --mode local_local_v0",
+    "serve_github_local_v0": "vue-cli-service serve --mode github_local_v0",
+    "build_github_local_v0": "vue-cli-service build --mode github_local_v0"
   },
   "dependencies": {
     "axios": "^0.19.2",

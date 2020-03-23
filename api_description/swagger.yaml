@@ -21,6 +21,8 @@ tags:
   description: 所有任务总结报告相关的接口
 - name: default-config
   description: 所有与默认配置有关的接口
+- name: user
+  description: 所有与用户相关的接口
 schemes:
 - https
 - http
@@ -282,6 +284,26 @@ paths:
         200:
           description: 成功提交配置项
 
+  # TODO 新增一个用户接口
+  /user:
+    get:
+      tags:
+        - user
+      summary: 用户登录
+      operationId: getUser
+      parameters:
+        - name: code
+          required: true
+          in: query
+          description: 用于向慕测获取用户信息等的授权码
+          type: string
+      responses:
+        200:
+          description: 成功获得用户信息，并且视作登录了系统
+          schema:
+            type: object
+            $ref: '#/definitions/user'
+
 
 
 definitions:
@@ -302,6 +324,18 @@ definitions:
     type: string
     description: 配置型的类型
     enum: [boolean, number, string]
+  user:
+    type: object
+    properties:
+      selfToken:
+        type: string
+        description: 登录本系统使用的token
+      name:
+        type: string
+        description: 用户的名称
+      expires:
+        type: integer
+        description: 过期时对应的时间戳
   report-config:
     required:
     - useDefault

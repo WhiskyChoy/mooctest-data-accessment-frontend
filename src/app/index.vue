@@ -26,6 +26,10 @@
         text-align: center;
     }
 
+    .el-notification {
+        z-index: @elLoadingMaskFullScreenZIndex+1 !important;
+    }
+
     .v-modal {
         z-index: @elLoadingMaskFullScreenZIndex !important;
     }
@@ -54,7 +58,8 @@
     #nprogress .bar {
         background: deeppink !important; //自定义颜色
         height: 5px !important;
-
+        //避免被盖住
+        z-index: @myNavZIndex+1 !important;
     }
 
     #app {

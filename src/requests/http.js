@@ -2,10 +2,9 @@ import axios from 'axios'
 import qs from 'qs'
 import {Notification} from 'element-ui'
 import router from '@/router'
+import {tokenType, getLocalUser, logout} from "@/utils/userUtil";
 
-const tokenType = 'Bearer';
-const tokenKey = 'mooctest-civil-judicial-document-accessment-token';
-const timeOut = 1000;
+const timeout = 2500;
 
 /**
  * 参考了https://juejin.im/post/5b55c118f265da0f6f1aa354
@@ -21,7 +20,7 @@ const showError = (msg, title = '错误提示') => {
     Notification.error({
         title: title,
         message: msg,
-        duration: timeOut,
+        duration: timeout,
     });
 };
 
@@ -57,12 +56,10 @@ const errorHandle = (status, payloadMsg) => {
         // 清除token并跳转登录页
         case 403:
             showError('登录过期，请重新登录');
-            localStorage.removeItem('token');
+            logout();
             // 装载VUEX后再处理
             // store.commit('loginSuccess', null);
-            setTimeout(() => {
-                toLogin();
-            }, timeOut);
+            toLogin();
             break;
         // 404请求不存在
         case 404:
@@ -94,7 +91,8 @@ instance.interceptors.request.use(
         }
         // 本来是在state中拿的
         // const token = store.state.token;
-        const token = localStorage.getItem(tokenKey);
+        const user = getLocalUser();
+        const token = user && user.selfToken ? user.selfToken : null;
         token && (config.headers.Authorization = tokenType + ' ' + token);
         return config;
     },
@@ -127,7 +125,5 @@ instance.interceptors.response.use(
             }
         }
     });
-
-export {tokenType, tokenKey}
 
 export default instance
