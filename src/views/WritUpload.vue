@@ -148,7 +148,7 @@
         }
     }
 
-    @media screen and (min-width: 800px) {
+    @media screen and (min-width: 800px), screen and (orientation : portrait){
         .my-upload {
             display: flex;
             flex-direction: row;

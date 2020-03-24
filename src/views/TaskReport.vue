@@ -251,7 +251,7 @@
         right: 1rem;
     }
 
-    @media screen and (max-width: 815px) {
+    @media screen and (max-width: 815px), screen and (orientation : portrait){
 
         .header-button-container {
             position: static;
@@ -266,7 +266,6 @@
             margin-top: @navHeight+@reportHeaderMargin*2+10px+40px !important;
         }
     }
-
 
     .report-long-container {
         display: flex;

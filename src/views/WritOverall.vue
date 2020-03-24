@@ -168,7 +168,7 @@
         margin-top: @navHeight+@reportHeaderMargin*2+10px+40px !important;
     }
 
-    @media screen and (max-width: 1000px) {
+    @media screen and (max-width: 1000px), screen and (orientation : portrait){
         .center-view-body {
             margin-top: @navHeight+@reportHeaderMargin*2+10px+40px+40px+15px !important;
         }

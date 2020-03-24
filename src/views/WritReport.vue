@@ -236,7 +236,7 @@
         right: 1rem;
     }
 
-    @media screen and (max-width: 815px) {
+    @media screen and (max-width: 815px), screen and (orientation : portrait){
 
         .header-button-container {
             position: static;

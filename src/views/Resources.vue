@@ -112,7 +112,7 @@
             max-width: 1200px !important;
         }
 
-        @media screen and (max-width: 1000px) {
+        @media screen and (max-width: 1000px), screen and (orientation : portrait){
             /deep/ .my-writ-or-task-table .el-tag span {
                 display: none;
             }
@@ -169,7 +169,7 @@
             margin-bottom: @reportHeaderMargin;
         }
 
-        @media screen and (max-width: @hideMenuScreenWidth) {
+        @media screen and (max-width: @hideMenuScreenWidth), screen and (orientation : portrait) {
             /deep/ .el-scrollbar {
                 left: 0
             }
