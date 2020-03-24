@@ -7,7 +7,7 @@
                 div.link-container
                     a(href="http://mooctest.net" target="_blank")
                         img.logo-lg(src="@/assets/logo_200x75_1.png")
-                div.link-container
+                div.link-container.link-self
                     router-link(to="/") 数据质量测评系统
             div.right-container
                 el-dropdown(@command="handleCommand").avatar
@@ -108,7 +108,7 @@
         /*}*/
 
         /deep/ .my-writ-or-task-table {
-            min-height: 485px;
+            min-height: 500px;
             max-width: 1200px !important;
         }
 
@@ -128,7 +128,7 @@
             left: @menuMinWidth;
             right: 0;
             bottom: 0;
-            height: 100%;
+            //不能加height: 100%，否则会探测不到底部
         }
 
         .el-scrollbar /deep/ .el-scrollbar__wrap {
@@ -179,6 +179,10 @@
                 * {
                     display: none;
                 }
+            }
+
+            .link-self{
+                display: none!important;
             }
         }
 

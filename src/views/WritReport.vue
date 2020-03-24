@@ -277,7 +277,7 @@
         border: 2px dotted #000;
         padding: 1rem;
         min-height: 800px;
-        margin-bottom: 5rem;
+        margin-bottom: 1rem;
         /*box-sizing: border-box;*/
     }
 

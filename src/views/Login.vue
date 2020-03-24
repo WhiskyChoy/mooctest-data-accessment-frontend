@@ -40,6 +40,7 @@
             background-color: white;
             box-shadow: 2px 4px 4px #333;
             border-radius: 1%;
+            max-width: 100%;
 
             .logo-container {
                 text-align: center;

@@ -37,6 +37,6 @@
     @import "../assets/global";
 
     .center-view-body {
-        margin-top: @navHeight+@reportHeaderMargin*2+10px+40px !important;
+        margin-top: @configMarginTop !important;
     }
 </style>

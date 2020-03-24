@@ -1,9 +1,9 @@
 <template lang="pug">
     //表的总min-width应该等于project-max-width（见global.less）
-    el-table.my-writ-or-task-table(v-scrollable.el-table ref="myWritTable" :data="writs" v-loading="loading" height="70%" max-height="600" @selection-change="handleSelectionChange" border stripe)
+    el-table.my-writ-or-task-table(ref="myWritTable" :data="writs" v-loading="loading" height="70%" @selection-change="handleSelectionChange" border stripe)
         //总的min-width加上最右侧的gutter应当比projectMinWidth还小一些
-        el-table-column(v-if="!taskId" type="selection" :selectable="checkSelectable" min-width="40" align="center")
-        el-table-column(prop="id" label="文书id" min-width="45" align="center")
+        el-table-column(v-if="!taskId" type="selection" :selectable="checkSelectable" min-width="40" align="center" fixed)
+        el-table-column(prop="id" label="文书id" min-width="70" align="center" fixed)
         //这里name是标题
         el-table-column(prop="title" label="文书标题" :min-width="taskId?165:125")
         el-table-column(label="上传时间" min-width="120")
@@ -35,7 +35,7 @@
                     el-tag(type="warning")
                         i.el-icon-warning
                         span {{statusTable[row.status]}}
-        el-table-column(label="操作"  min-width="80" align="center")
+        el-table-column(label="操作"  min-width="80" align="center" fixed="right")
             template(v-slot="{row, $index}")
                 div(v-if="row.status==='untested'")
                     el-button.my-button(icon="el-icon-s-promotion" @click="handleTest(row.id, $index)") 单独检测

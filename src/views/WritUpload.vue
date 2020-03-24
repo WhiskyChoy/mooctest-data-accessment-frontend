@@ -134,12 +134,6 @@
         color: dodgerblue;
     }
 
-    .upload-tip {
-        overflow: hidden;
-        text-align: center;
-        color: gray;
-    }
-
     .tool-container .my-switch-container {
         margin-top: 1rem;
         .my-label-replace {
@@ -148,11 +142,15 @@
         }
     }
 
-    @media screen and (min-width: 800px), screen and (orientation : portrait){
+    @media screen and (min-width: 800px), screen and (orientation : landscape){
         .my-upload {
             display: flex;
             flex-direction: row;
         }
+    }
+
+    /deep/ .el-upload-dragger{
+        max-width: 100%;
     }
 
     .my-upload /deep/ .upload-list-container {

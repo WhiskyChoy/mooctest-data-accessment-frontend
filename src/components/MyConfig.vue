@@ -79,10 +79,11 @@
 </script>
 
 <style scoped lang="less">
-    @configWidth: 400px;
+    @import "../assets/global";
 
     .my-config-row {
-        width: @configWidth;
+        width: @projectMinWidth;
+        max-width: 100%;
         padding-left: 1rem;
         padding-right: 1rem;
         margin-bottom: 1rem;
@@ -95,7 +96,8 @@
     .el-scrollbar.my-config-container {
         position: relative;
         height: 400px;
-        width: @configWidth;
+        width: @projectMinWidth;
+        max-width: 100%;
         border-radius: 5px;
         border: 1px solid lightgray;
         background-color: aliceblue;

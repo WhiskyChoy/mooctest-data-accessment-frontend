@@ -1,8 +1,8 @@
 <template lang="pug">
     //表的总min-width应该等于project-max-width（见global.less）
-    el-table.my-writ-or-task-table(v-scrollable.el-table :data="tasks" v-loading="loading" height="70%" max-height="600" border stripe)
+    el-table.my-writ-or-task-table(:data="tasks" v-loading="loading" height="70%" max-height="600" border stripe)
         //总的min-width加上最右侧的gutter应当比projectMinWidth还小一些
-        el-table-column(prop="id" label="任务id" min-width="45" align="center")
+        el-table-column(prop="id" label="任务id" min-width="70" align="center" fixed)
         //这里name是标题
         el-table-column(prop="title" label="任务名称" min-width="145")
         el-table-column(label="上传时间" min-width="140")
@@ -26,7 +26,7 @@
                     el-tag(type="danger")
                         i.el-icon-error
                         span {{statusTable[row.status]}}
-        el-table-column(label="操作"  min-width="80" align="center")
+        el-table-column(label="操作"  min-width="80" align="center" fixed="right")
             template(v-slot="{row, $index}")
                 div(v-if="row.status==='waiting'||row.status==='ongoing'")
                     //row必须有fetching属性才行，下面用了map的方法。其实这里有个tricky的方法：row.fetching===undefined?false&&(row.fetching=false):row.fetching

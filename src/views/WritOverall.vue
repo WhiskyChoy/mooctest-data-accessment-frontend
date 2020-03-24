@@ -8,11 +8,11 @@
                     el-date-picker.date-searcher(v-model="searchTime" type="datetimerange" :clearable="false")
                 div.tool-button-container
                     el-button-group
-                        el-button(type="primary" icon="el-icon-search" @click="handleSearch" :disabled="noMsg")
-                        el-button(type="primary" icon="el-icon-refresh" @click="handleRefresh")
-                    el-button.my-upload(@click="handleUpload") 上传文书
+                        el-button(type="primary" size="small" icon="el-icon-search" @click="handleSearch" :disabled="noMsg")
+                        el-button(type="primary" size="small" icon="el-icon-refresh" @click="handleRefresh")
+                    el-button.my-upload(@click="handleUpload" size="medium") 上传文书
                     el-badge.my-badge(:value="selectData.length" :hidden="selectData.length===0" :max="99")
-                        el-button(:disabled="selectData.length===0" @click="handleCreateTask") 创建任务
+                        el-button(:disabled="selectData.length===0" @click="handleCreateTask" size="medium") 创建任务
         div.center-view-body
             my-writ-list(ref="overallWritList" @handle-test="handleTest" @selection-change="handleSelectionChange" :name-str="searchName" :start-date="searchTime[0]" :end-date="searchTime[1]")
         //设置:modal-append-to-body="false" :append-to-body="true" 这样dialog插入body，modal插入dialog的父元素（其实就是两者平级在body）

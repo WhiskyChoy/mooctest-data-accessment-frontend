@@ -8,13 +8,12 @@
                     el-input.input-searcher(v-model="searchName" prefix-icon="el-icon-edit-outline" clearable)
                     el-date-picker.date-searcher(v-model="searchTime" type="datetimerange" :clearable="false")
                 div.tool-button-container
-                    el-button-group
-                        div.long
-                            el-button(type="primary" icon="el-icon-search" @click="handleSearch" :disabled="noMsg")
-                            el-button(type="primary" icon="el-icon-refresh" @click="handleRefresh")
-                        div.short
-                            el-button(type="primary" icon="el-icon-search" @click="handleSearch" :disabled="noMsg") 查找任务
-                            el-button(type="primary" icon="el-icon-refresh" @click="handleRefresh") 刷新所有
+                    div.long
+                        el-button(type="primary" icon="el-icon-search" @click="handleSearch" :disabled="noMsg")
+                        el-button(type="primary" icon="el-icon-refresh" @click="handleRefresh")
+                    div.short
+                        el-button(type="primary" icon="el-icon-search" @click="handleSearch" :disabled="noMsg") 查找任务
+                        el-button(type="primary" icon="el-icon-refresh" @click="handleRefresh") 刷新所有
         div.center-view-body
             my-task-list(ref="overallTaskList" :name-str="searchName" :start-date="searchTime[0]" :end-date="searchTime[1]")
 
