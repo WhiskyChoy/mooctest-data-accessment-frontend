@@ -21,13 +21,15 @@ module.exports = {
         }
     },
     chainWebpack: (config) => {
-        config.optimization.minimizer('terser').tap((args) => {
-            const terserOptions = args[0].terserOptions;
-            terserOptions.compress.drop_console = true;
-            terserOptions.extractComments = true;
-            terserOptions.output.beautify = false;
-            return args;
-        })
+        if (process.env.NODE_ENV === 'production') {
+            config.optimization.minimizer('terser').tap((args) => {
+                const terserOptions = args[0].terserOptions;
+                terserOptions.compress.drop_console = true;
+                terserOptions.extractComments = true;
+                terserOptions.output.beautify = false;
+                return args;
+            })
+        }
     },
     /* 部署生产环境和开发环境下的URL：可对当前环境进行区分，baseUrl 从 Vue CLI 3.3 起已弃用，要使用publicPath */
     /* publicPath对应process.env.BASE_URL */
