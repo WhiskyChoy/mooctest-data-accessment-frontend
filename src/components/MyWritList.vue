@@ -59,6 +59,8 @@
     wrong: 解析错误
     accident: 意外中断，点击重试
      */
+    import {getBaseURL} from "@/utils/urlUtil";
+
     export default {
         name: "MyWritList",
         props: {
@@ -132,10 +134,7 @@
             checkSingleResult(writId) {
                 const url = `/resources/writ-report/${writId}`;
                 if (this.taskId) {
-                    const protocol = location.protocol;
-                    const host = location.host;
-                    const prefix = protocol + '//' + host;
-                    open(prefix + url, "_blank");
+                    open(getBaseURL() + url, "_blank");
                 } else {
                     this.$router.push(url);
                 }

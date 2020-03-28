@@ -5,16 +5,12 @@ import {callbackURL} from "@/router";
 import router from '@/router'
 import qs from 'qs'
 import {checkIfInnerAddress} from "@/utils/ipUtil";
+import {getBaseURL} from "@/utils/urlUtil";
 
 const getAuthCode = () => {
-    const protocol = location.protocol;
-    const host = location.host;
-
     if (!checkIfInnerAddress(host)) {
-        const selfURL = protocol + '//' + host;
-        const response_type = 'code';
         //注意是uri不是url
-        const redirect_uri = encodeURI(selfURL + process.env.BASE_URL.replace(/\/$/, '') + callbackURL);
+        const redirect_uri = encodeURI(getBaseURL() + callbackURL);
         const scope = '';
         const client_id = 'MooctestDataAssessment';
         const query = qs.stringify({response_type, redirect_uri, scope, client_id});
