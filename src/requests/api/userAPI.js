@@ -10,6 +10,7 @@ import {getBaseURL} from "@/utils/urlUtil";
 const getAuthCode = () => {
     if (!checkIfInnerAddress(location.host)) {
         //注意是uri不是url
+        const response_type = 'code';
         const redirect_uri = encodeURI(getBaseURL() + callbackURL);
         const scope = '';
         const client_id = 'MooctestDataAssessment';
