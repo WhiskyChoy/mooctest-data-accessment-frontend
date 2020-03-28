@@ -23,6 +23,7 @@ const getAuthCode = () => {
     } else {
         router.push(callbackURL + '?code=test');
     }
+    return true;
 };
 
 const getUser = async (code) => {
