@@ -3,8 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve_local_local_v0": "vue-cli-service serve --mode local_local_v0",
-    "build_github_local_v0": "vue-cli-service build --mode github_local_v0"
+    "serve_local_dev": "vue-cli-service serve --mode local_dev",
+    "serve_local_pro": "vue-cli-service serve --mode local_pro",
+    "build_github": "vue-cli-service build --mode github"
   },
   "dependencies": {
     "axios": "^0.19.2",
