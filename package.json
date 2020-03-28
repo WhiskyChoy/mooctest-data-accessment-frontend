@@ -4,8 +4,6 @@
   "private": true,
   "scripts": {
     "serve_local_local_v0": "vue-cli-service serve --mode local_local_v0",
-    "build_local_local_v0": "vue-cli-service build --mode local_local_v0",
-    "serve_github_local_v0": "vue-cli-service serve --mode github_local_v0",
     "build_github_local_v0": "vue-cli-service build --mode github_local_v0"
   },
   "dependencies": {
