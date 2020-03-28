@@ -4,6 +4,11 @@ import NProgress from 'nprogress'
 import {getLocalUser} from "@/utils/userUtil"
 import {Notification} from 'element-ui'
 
+
+if (process.env.NODE_ENV !== 'production') {
+    import('nprogress/nprogress.css');
+}
+
 Vue.use(VueRouter);
 
 const callbackURL = '/auth/mooctest/callback';
