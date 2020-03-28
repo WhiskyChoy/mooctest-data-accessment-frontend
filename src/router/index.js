@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import NProgress from 'nprogress'
-import 'nprogress/nprogress.css'
 import {getLocalUser} from "@/utils/userUtil"
 import {Notification} from 'element-ui'
 

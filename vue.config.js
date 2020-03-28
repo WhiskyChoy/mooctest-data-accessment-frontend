@@ -1,3 +1,27 @@
+const inProduction = process.env.NODE_ENV === 'production';
+
+const externals = {
+    vue: 'Vue',
+    echarts: 'echarts',
+    'element-ui': 'ELEMENT',
+    'vue-router': 'VueRouter',
+    'nprogress' : 'NProgress'
+};
+
+const cdn = {
+    css: [
+        'https://cdn.bootcss.com/element-ui/2.13.0/theme-chalk/index.css',
+        'https://cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css'
+    ],
+    js: [
+        'https://cdn.bootcss.com/vue/2.6.11/vue.runtime.min.js',
+        'https://cdn.bootcss.com/vue-router/3.1.3/vue-router.min.js',
+        'https://cdn.bootcss.com/element-ui/2.13.0/index.js',
+        'https://cdn.bootcss.com/echarts/4.7.0/echarts.min.js',
+        'https://cdn.bootcss.com/nprogress/0.2.0/nprogress.js'
+    ]
+};
+
 module.exports = {
     /* 用来放置favicon.ico */
     pwa: {
@@ -27,8 +51,6 @@ module.exports = {
     /* https://xrkffgg.github.io/Knotes/blog/15.html#_1-介绍  pug-html-loader不是必要的 */
     // 修改要vue inspect > output.js来查看
     chainWebpack: config => {
-        // chain要用when，能不能识别到？
-        // 下面的代码没有效果 我也不知道为什么
         config.optimization.minimizer('terser').tap(args => {
             args[0].extractComments = true;
             args[0].terserOptions.compress.drop_console = true;
@@ -37,6 +59,20 @@ module.exports = {
             args[0].terserOptions.output.comments = false;
             return args;
         });
+
+        config.plugin('html').tap(args => {
+            // 生产环境或本地需要cdn时，才注入cdn
+            if (inProduction) {
+                args[0].cdn = cdn;
+            }
+            return args
+        });
+    },
+    configureWebpack: config => {
+        // 用cdn方式引入，则构建时要忽略相关资源
+        if (inProduction) {
+            config.externals = externals;
+        }
     },
     /* webpack-dev-server 相关配置 */
     devServer: {
