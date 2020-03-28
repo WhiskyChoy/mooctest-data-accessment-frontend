@@ -1,5 +1,3 @@
-const CompressionPlugin = require('compression-webpack-plugin');
-
 module.exports = {
     /* 用来放置favicon.ico */
     pwa: {
@@ -9,26 +7,6 @@ module.exports = {
             appleTouchIcon: 'favicon.ico',
             maskIcon: 'favicon.ico',
             msTileImage: 'favicon.ico'
-        }
-    },
-    configureWebpack: config => {
-        if (process.env.NODE_ENV === 'production') {
-            config.plugins.push(new CompressionPlugin({
-                test: /\.js$|\.html$|\css/, // 匹配文件名
-                threshold: 5120, // 对超过5k的文件进行压缩
-                deleteOriginalAssets: true // 是否删除原文件
-            }));
-        }
-    },
-    chainWebpack: (config) => {
-        if (process.env.NODE_ENV === 'production') {
-            config.optimization.minimizer('terser').tap((args) => {
-                args[0].extractComments = true;
-                args[0].terserOptions.compress.drop_console = true;
-                args[0].terserOptions.output.beautify = false;
-                args[0].terserOptions.output.comments = false;
-                return args;
-            })
         }
     },
     /* 部署生产环境和开发环境下的URL：可对当前环境进行区分，baseUrl 从 Vue CLI 3.3 起已弃用，要使用publicPath */
@@ -47,6 +25,19 @@ module.exports = {
     lintOnSave: false,
     /* 本来要设置webpack, 在最新的vue-cli@3.x 配置中，默认已配置好pug的相关loader， 所以安装完可以直接在<template/>中使用 */
     /* https://xrkffgg.github.io/Knotes/blog/15.html#_1-介绍  pug-html-loader不是必要的 */
+    // 修改要vue inspect > output.js来查看
+    chainWebpack: config => {
+        // chain要用when，能不能识别到？
+        // 下面的代码没有效果 我也不知道为什么
+        config.optimization.minimizer('terser').tap(args => {
+            args[0].extractComments = true;
+            args[0].terserOptions.compress.drop_console = true;
+            args[0].terserOptions.output = {};
+            args[0].terserOptions.output.beautify = false;
+            args[0].terserOptions.output.comments = false;
+            return args;
+        })
+    },
     /* webpack-dev-server 相关配置 */
     devServer: {
         /* 自动打开浏览器 */
