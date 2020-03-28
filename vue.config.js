@@ -18,10 +18,16 @@ module.exports = {
                 threshold: 5120, // 对超过5k的文件进行压缩
                 deleteOriginalAssets: true // 是否删除原文件
             }));
-            const terserOptions = config.optimization.minimizer[0].options.terserOptions;
+        }
+    },
+    chainWebpack: (config) => {
+        config.optimization.minimizer('terser').tap((args) => {
+            const terserOptions = args[0].terserOptions;
+            terserOptions.compress.drop_console = true;
             terserOptions.extractComments = true;
             terserOptions.output.beautify = false;
-        }
+            return args;
+        })
     },
     /* 部署生产环境和开发环境下的URL：可对当前环境进行区分，baseUrl 从 Vue CLI 3.3 起已弃用，要使用publicPath */
     /* publicPath对应process.env.BASE_URL */
