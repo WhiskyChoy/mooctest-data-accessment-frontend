@@ -17,7 +17,7 @@ module.exports = {
                 plugins: [
                     new CompressionPlugin({
                         test: /\.js$|\.html$|\css/, // 匹配文件名
-                        threshold: 10240, // 对超过10k的文件进行压缩
+                        threshold: 5120, // 对超过5k的文件进行压缩
                         deleteOriginalAssets: true // 是否删除原文件
                     })]
             }

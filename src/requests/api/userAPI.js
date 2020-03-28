@@ -11,14 +11,18 @@ const getAuthCode = () => {
     const host = location.host;
 
     if (!checkIfInnerAddress(host)) {
-        const URL = protocol + '//' + host;
+        const selfURL = protocol + '//' + host;
         const response_type = 'code';
         //注意是uri不是url
-        const redirect_uri = encodeURI(URL + process.env.BASE_URL.replace(/\/$/, '') + callbackURL);
+        const redirect_uri = encodeURI(selfURL + process.env.BASE_URL.replace(/\/$/, '') + callbackURL);
         const scope = '';
         const client_id = 'MooctestDataAssessment';
         const query = qs.stringify({response_type, redirect_uri, scope, client_id});
-        window.location.href = URL + '?' + query;
+        const oauthURL = process.env.VUE_APP_OAUTH_URL;
+        if (!oauthURL) {
+            return false;
+        }
+        window.location.href = oauthURL + '?' + query;
     } else {
         router.push(callbackURL + '?code=test');
     }

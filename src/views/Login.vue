@@ -14,7 +14,10 @@
         name: "Login",
         methods: {
             getAuthCode() {
-                this.$api.getAuthCode();
+                const result = this.$api.getAuthCode();
+                if(!result){
+                    this.$message.error('未注册OAUTH地址');
+                }
             }
         }
     }
