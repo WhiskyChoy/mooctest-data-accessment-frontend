@@ -1,4 +1,7 @@
 const checkIfInnerAddress = (host) => {
+    if (!host) {
+        return false;
+    }
     let hostWithoutPort = host;
     const regPort = /^(.+)?:(\d+)/;
     if (regPort.test(host)) {

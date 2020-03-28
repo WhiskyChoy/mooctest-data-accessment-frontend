@@ -8,7 +8,7 @@ import {checkIfInnerAddress} from "@/utils/ipUtil";
 import {getBaseURL} from "@/utils/urlUtil";
 
 const getAuthCode = () => {
-    if (!checkIfInnerAddress(host)) {
+    if (!checkIfInnerAddress(location.host)) {
         //注意是uri不是url
         const redirect_uri = encodeURI(getBaseURL() + callbackURL);
         const scope = '';
