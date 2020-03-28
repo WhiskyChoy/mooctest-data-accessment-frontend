@@ -50,6 +50,7 @@
                 const received = await this.$api.putDefaultConfig(config);
                 if (received) {
                     this.$message.success({message: '修改默认配置成功', duration: 1500});
+                    this.cachedConfig = JSON.parse(JSON.stringify(this.defaultConfig));
                 }
                 return true;
             },
