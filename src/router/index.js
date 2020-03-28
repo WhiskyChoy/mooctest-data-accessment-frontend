@@ -1,15 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Resources from '@/views/Resources'
-import WritOverall from '@/views/WritOverall'
-import NotFound from '@/views/NotFound'
-import TaskOverall from '@/views/TaskOverall'
-import ConfigDefault from '@/views/ConfigDefault'
-import Login from '@/views/Login'
-import WritReport from '@/views/WritReport'
-import TaskReport from '@/views/TaskReport'
-import WritUpload from '@/views/WritUpload'
-import Callback from '@/views/Callback'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import {getLocalUser} from "@/utils/userUtil"
@@ -37,6 +27,17 @@ const showWarning = (msg, title = '警告信息') => {
         duration: timeout,
     });
 };
+
+const Resources = () => import('@/views/Resources');
+const WritOverall = () => import('@/views/WritOverall');
+const NotFound = () => import('@/views/NotFound');
+const TaskOverall = () => import('@/views/TaskOverall');
+const ConfigDefault = () => import('@/views/ConfigDefault');
+const Login = () => import('@/views/Login');
+const WritReport = () => import('@/views/WritReport');
+const TaskReport = () => import('@/views/TaskReport');
+const WritUpload = () => import('@/views/WritUpload');
+const Callback = () => import('@/views/Callback');
 
 const routes = [
     {
