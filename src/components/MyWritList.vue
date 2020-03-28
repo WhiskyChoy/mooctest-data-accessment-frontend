@@ -120,6 +120,7 @@
                     data.forEach(item => item.fetching = false);
                     this.writs = data;
                 }
+                await this.$nextTick();
                 this.loading = false;
             },
             loadWrits() {
@@ -129,7 +130,15 @@
                 this.handleLoad();
             },
             checkSingleResult(writId) {
-                this.$router.push(`writ-report/${writId}`);
+                const url = `/resources/writ-report/${writId}`;
+                if (this.taskId) {
+                    const protocol = location.protocol;
+                    const host = location.host;
+                    const prefix = protocol + '//' + host;
+                    open(prefix + url, "_blank");
+                } else {
+                    this.$router.push(url);
+                }
             },
             handleSelectionChange(val) {
                 this.$emit('selection-change', val)
@@ -146,7 +155,6 @@
             changeStatus($index, status) {
                 this.writs[$index].status = status;
             }
-
         }
     }
 </script>

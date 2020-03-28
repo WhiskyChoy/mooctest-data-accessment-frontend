@@ -99,6 +99,7 @@
                     data.forEach(item => item.fetching = false);
                     this.tasks = data;
                 }
+                await this.$nextTick();
                 this.loading = false;
             },
             loadTasks() {
@@ -108,7 +109,7 @@
                 this.handleLoad();
             },
             checkTaskResult(writId) {
-                this.$router.push(`task-report/${writId}`);
+                this.$router.push(`/resources/task-report/${writId}`);
             },
 
         }

@@ -2,7 +2,7 @@ import axios from 'axios'
 import qs from 'qs'
 import {Notification} from 'element-ui'
 import router from '@/router'
-import {tokenType, getLocalUser, logout} from "@/utils/userUtil";
+import {getLocalUser, logout} from "@/utils/userUtil";
 
 const timeout = 2500;
 
@@ -93,15 +93,17 @@ instance.interceptors.request.use(
         // const token = store.state.token;
         const user = getLocalUser();
         const token = user && user.selfToken ? user.selfToken : null;
-        token && (config.headers.Authorization = tokenType + ' ' + token);
+        // 大写tokenType首字母
+        const tokenType = user && user.tokenType ? user.tokenType[0].toUpperCase() + user.tokenType.slice(1) : null;
+        token && tokenType && (config.headers.Authorization = tokenType + ' ' + token);
         return config;
     },
     error => Promise.error(error));
 
 // 响应拦截器
 instance.interceptors.response.use(
-    // 请求成功，原封不动（这里如果写Promise.resolve(response)是一样的，会原样返回Promise）
-    response => response,
+    // 请求成功，送出数据（这里如果写Promise.resolve(response)是一样的，会原样返回Promise）
+    response => response.data,
     // 请求失败
     error => {
         const {response} = error;

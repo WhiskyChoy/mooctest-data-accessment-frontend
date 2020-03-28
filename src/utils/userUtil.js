@@ -1,4 +1,3 @@
-const tokenType = 'Bearer';
 const userKey = 'mooctest-civil-judicial-document-accessment-user';
 
 const getLocalUser = () => {
@@ -27,4 +26,4 @@ const logout = () => {
     localStorage.removeItem(userKey);
 };
 
-export {tokenType, userKey, getLocalUser, login, logout}
+export {userKey, getLocalUser, login, logout}

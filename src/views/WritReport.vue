@@ -3,7 +3,7 @@
         div.center-view-header
             h1.center-view-title 裁判文书单篇测评结果
             div.header-button-container
-                el-button(@click="downloadPDF") 下载为PDF
+                el-button(@click="downloadPDF" :disabled="loading") 下载为PDF
                 //查看原文先不提供
                 el-button(:disabled="true") 查看原文
         div.center-view-body
@@ -93,7 +93,7 @@
                                 template(slot="title")
                                     h4 客观指标雷达图
                                 div.indicator-body.simple-center
-                                    my-radar(v-if="received_data.radar" :rawArr="received_data.radar" title="客观指标得分雷达图" legend="客观指标")
+                                    my-radar-chart(v-if="received_data.radar" :rawArr="received_data.radar" title="客观指标得分雷达图" legend="客观指标")
                     el-collapse-item.indicator-container(name="subjective-indicator")
                         template(slot="title")
                             h3 主观指标
@@ -143,7 +143,7 @@
 <script>
     //el-col大小分布 [xs]768[sm]992[md]1200[lg]1920[xl]
     import MyProgress from "@/components/MyProgress";
-    import MyRadar from "@/components/MyRadar";
+    import MyRadarChart from "@/components/MyRadarChart";
     import MyParagraphColorGradient from "@/components/MyParagraphColorGradient";
     import jsPdfDownload from "@/utils/pdfDownloader"
     import {wait, waitVue} from "@/utils/loadWaiter";
@@ -152,7 +152,7 @@
 
     export default {
         name: "WritReport",
-        components: {MyParagraphColorGradient, MyRadar, MyProgress},
+        components: {MyParagraphColorGradient, MyRadarChart, MyProgress},
         async beforeMount() {
             //展开所有列表
             this.openAllCollapse();
@@ -163,6 +163,7 @@
             if (data) {
                 this.received_data = data;
             }
+            await waitVue();
             this.loading = false;
         },
         props: {
@@ -178,8 +179,7 @@
                 outer_active: null,
                 objective_active: null,
                 subjective_active: null,
-                received_data: null,
-                force_open_gradient: true
+                received_data: null
             }
         },
         methods: {
@@ -202,6 +202,7 @@
             },
             async downloadPDF() {
                 const loading = this.$loading({fullscreen: true});
+                await waitVue();
                 const target = this.$refs['my-report'];
                 let fileName = '单篇裁判文书报告：';
                 if (this.received_data && this.received_data && this.received_data.title) {

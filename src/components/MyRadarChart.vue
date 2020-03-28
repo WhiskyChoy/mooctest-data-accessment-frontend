@@ -1,9 +1,9 @@
 <template lang="pug">
-    div(ref="radar" style="width: 600px;height:600px;")
+    div(ref="radar" style="width: 600px; height:600px;")
 </template>
 
 <script>
-    import echart from 'echarts'
+    import echarts from 'echarts'
 
     const tranform = (arr) => {
         let indicator = [];
@@ -19,7 +19,7 @@
     };
 
     export default {
-        name: "MyRadar",
+        name: "MyRadarChart",
         props: {
             rawArr: {
                 type: Array,
@@ -44,9 +44,10 @@
                 name: this.legend
             }];
         },
-        mounted() {
+        async mounted() {
+            await this.$nextTick();
             const radar = this.$refs['radar'];
-            const chart = echart.init(radar);
+            const chart = echarts.init(radar);
             chart.setOption(this.option);
         },
         data() {
@@ -55,7 +56,12 @@
                     title: {
                         text: ''
                     },
-                    tooltip: {},
+                    toolbox: {
+                        show: true,
+                        feature: {
+                            saveAsImage: {show: true}
+                        }
+                    },
                     legend: {
                         data: []
                     },

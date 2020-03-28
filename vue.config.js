@@ -1,3 +1,5 @@
+const CompressionPlugin = require('compression-webpack-plugin');
+
 module.exports = {
     /* 用来放置favicon.ico */
     pwa: {
@@ -9,10 +11,22 @@ module.exports = {
             msTileImage: 'favicon.ico'
         }
     },
+    configureWebpack: () => {
+        if (process.env.NODE_ENV === 'production') {
+            return {
+                plugins: [
+                    new CompressionPlugin({
+                        test: /\.js$|\.html$|\css/, // 匹配文件名
+                        threshold: 10240, // 对超过10k的文件进行压缩
+                        deleteOriginalAssets: true // 是否删除原文件
+                    })]
+            }
+        }
+    },
     /* 部署生产环境和开发环境下的URL：可对当前环境进行区分，baseUrl 从 Vue CLI 3.3 起已弃用，要使用publicPath */
     /* publicPath对应process.env.BASE_URL */
     /* 下面那个是给github配的 */
-    publicPath: process.env.BASE_URL ? process.env.BASE_URL : '/',
+    publicPath: process.env.BASE_URL || '/',
     /* 输出文件目录：在npm run build时，生成文件的目录名称 */
     outputDir: 'dist',
     /* 放置生成的静态资源 (js、css、img、fonts) 的 (相对于 outputDir 的) 目录 */
@@ -20,7 +34,7 @@ module.exports = {
     /* 是否在构建生产包时生成 sourceMap 文件，false将提高构建速度 */
     productionSourceMap: false,
     /* 默认情况下，生成的静态资源在它们的文件名中包含了 hash 以便更好的控制缓存，你可以通过将这个选项设为 false 来关闭文件名哈希。(false的时候就是让原来的文件名不改变) */
-    filenameHashing: false,
+    filenameHashing: true,
     /* 代码保存时是否进行eslint检测 */
     lintOnSave: false,
     /* 本来要设置webpack, 在最新的vue-cli@3.x 配置中，默认已配置好pug的相关loader， 所以安装完可以直接在<template/>中使用 */
@@ -30,7 +44,9 @@ module.exports = {
         /* 自动打开浏览器 */
         open: true,
         /* 设置为0.0.0.0则所有的地址均能访问 */
-        host: 'localhost',
+        // host: 'localhost',
+        // 新版的webpack-dev-server出于安全考虑，默认检查hostname，如果hostname不是配置内的，将中断访问
+        disableHostCheck: true,
         port: 8066,
         https: false,
         hotOnly: false,

@@ -2,13 +2,13 @@ import {getWritReport, postWritReport} from "@/requests/api/writReportAPI";
 import {getWrits, getWritStatus, postWrit} from "@/requests/api/writAPI";
 import {getDefaultConfig, putDefaultConfig} from "@/requests/api/configAPI";
 import {postTask, getTaskStatus, getTasks} from "@/requests/api/taskAPI";
-import {getTaskReport, getTaskReportJSON} from "@/requests/api/taskReportAPI";
-import {getUser,getAuthCode} from "@/requests/api/userAPI";
+import {getTaskReport, getTaskReportJSON, downloadTaskReportJSON} from "@/requests/api/taskReportAPI";
+import {getUser, getAuthCode} from "@/requests/api/userAPI";
 
 const api = {
     getWritReport, postWritReport, getWrits, getWritStatus, postWrit,
     getDefaultConfig, putDefaultConfig, postTask, getTaskStatus, getTasks,
-    getTaskReport, getTaskReportJSON, getAuthCode, getUser
+    getTaskReport, getTaskReportJSON, downloadTaskReportJSON, getAuthCode, getUser
 };
 
 const install = (Vue) => {

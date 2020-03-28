@@ -26,7 +26,7 @@ const getTaskReportJSON = async (taskId) => {
     if (process.env.VUE_APP_AJAX_VERSION === 'v0') {
         //模拟等一会
         await wait(200);
-        return 'a.json';
+        return 'https://geo.datav.aliyun.com/areas/bound/100000.json';
     }
     let URL;
     if (process.env.VUE_APP_AJAX_VERSION === 'v1') {
@@ -38,4 +38,9 @@ const getTaskReportJSON = async (taskId) => {
     return http.get(URL);
 };
 
-export {getTaskReport, getTaskReportJSON}
+
+const downloadTaskReportJSON = async (URL) => {
+    return http.get(URL, {responseType: 'blob'})
+};
+
+export {getTaskReport, getTaskReportJSON, downloadTaskReportJSON}

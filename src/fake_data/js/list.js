@@ -1,6 +1,6 @@
 //按webpack的规则，import不带尾缀的话一个文件夹里的文件类型应该是一样的，所以js和json分开放
 const keyWords = ['非法占有', '交通犯罪', '人身损害', '寻衅滋事', '伪造', '扣押'];
-const courts = ['北京市高级', '苏州市中级', '中山市中级', '广东省高级', '湖南省高级', '浙江省高级'];
+const courts = ['青海省高级', '苏州市中级', '中山市中级', '广东省高级', '湖南省高级', '浙江省高级'];
 // untested, waiting, ongoing, finished, wrong, accident
 const writListStatus = ['untested', 'waiting', 'ongoing', 'finished', 'wrong', 'accident'];
 const taskListStatus = ['waiting', 'ongoing', 'finished', 'failed'];
