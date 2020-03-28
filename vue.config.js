@@ -23,10 +23,10 @@ module.exports = {
     chainWebpack: (config) => {
         if (process.env.NODE_ENV === 'production') {
             config.optimization.minimizer('terser').tap((args) => {
-                const option = args[0];
-                option.terserOptions.compress.drop_console = true;
-                option.extractComments = true;
-                option.output.beautify = false;
+                args[0].extractComments = true;
+                args[0].terserOptions.compress.drop_console = true;
+                args[0].terserOptions.output.beautify = false;
+                args[0].terserOptions.output.comments = false;
                 return args;
             })
         }
