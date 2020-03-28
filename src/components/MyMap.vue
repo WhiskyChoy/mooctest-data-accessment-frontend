@@ -4,18 +4,17 @@
 
 <script>
     import echarts from 'echarts'
-    import chinaMap from '@/data/json/china.json'
 
     export default {
         name: "MyMap",
         props: {
             cities: {
                 type: Array,
-                default: ()=>[]
+                default: () => []
             },
             values: {
                 type: Array,
-                default: ()=>[]
+                default: () => []
             },
             title: {
                 type: String,
@@ -45,8 +44,12 @@
             await this.$nextTick();
             const map = this.$refs['map'];
             const chart = echarts.init(map);
-            echarts.registerMap('china', chinaMap);
-            chart.setOption(this.option);
+            //await import过来的是一个module，里面的default是结果
+            const {default: chinaMap} = await import('@/data/json/china.json');
+            if (chinaMap) {
+                echarts.registerMap('china', chinaMap);
+                chart.setOption(this.option);
+            }
         },
         data() {
             return {
