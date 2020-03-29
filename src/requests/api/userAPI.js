@@ -1,6 +1,5 @@
 import http from '@/requests/http'
 import {wait} from "@/utils/loadWaiter";
-import user from "@/fake_data/js/user";
 import {callbackURL} from "@/router";
 import router from '@/router'
 import qs from 'qs'
@@ -29,6 +28,7 @@ const getAuthCode = () => {
 const getUser = async (code) => {
     if (process.env.VUE_APP_AJAX_VERSION === 'v0') {
         //模拟等一会
+        const {default:user} = await import('@/fake_data/js/user');
         await wait(1000);
         return user;
     }

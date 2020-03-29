@@ -76,7 +76,8 @@ const randomDistribute = (offer, servingNum) => {
  */
 const postWrit = async ({file, onProgress}) => {
     if (process.env.VUE_APP_AJAX_VERSION === 'v0') {
-        const failRate = 0.3;
+        //上传失败率failRate
+        const failRate = 0;
         if (Math.random() < failRate) {
             return false;
         }

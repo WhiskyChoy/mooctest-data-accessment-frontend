@@ -1,4 +1,3 @@
-import testReport from '@/fake_data/json/test_report'
 import http from '@/requests/http'
 import {wait} from "@/utils/loadWaiter";
 
@@ -8,6 +7,7 @@ import {wait} from "@/utils/loadWaiter";
  */
 const getWritReport = async (writId) => {
     if (process.env.VUE_APP_AJAX_VERSION === 'v0') {
+        const {default: testReport} = await import('@/fake_data/json/test_report');
         //模拟等一会
         await wait(1000);
         return testReport;

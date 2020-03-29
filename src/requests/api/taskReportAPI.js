@@ -1,4 +1,3 @@
-import testTaskReport from '@/fake_data/json/test_task_report'
 import http from '@/requests/http'
 import {wait} from "@/utils/loadWaiter";
 
@@ -9,6 +8,7 @@ import {wait} from "@/utils/loadWaiter";
 const getTaskReport = async (taskId) => {
     if (process.env.VUE_APP_AJAX_VERSION === 'v0') {
         //模拟等一会
+        const {default:testTaskReport} = await import('@/fake_data/json/test_task_report');
         await wait(1000);
         return testTaskReport;
     }

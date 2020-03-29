@@ -1,4 +1,3 @@
-import config_array from '@/fake_data/json/config_data'
 import http from '@/requests/http'
 import {wait} from "@/utils/loadWaiter";
 
@@ -9,6 +8,7 @@ import {wait} from "@/utils/loadWaiter";
  */
 const getDefaultConfig = async () => {
     if (process.env.VUE_APP_AJAX_VERSION === 'v0') {
+        const {default: config_array} = await import('@/fake_data/json/config_data');
         //模拟等一会
         await wait(1000);
         return config_array;
