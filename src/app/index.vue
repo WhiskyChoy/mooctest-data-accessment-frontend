@@ -34,6 +34,10 @@
         z-index: @elLoadingMaskFullScreenZIndex !important;
     }
 
+    .el-popover{
+        z-index: @elLoadingMaskFullScreenZIndex+1 !important;
+    }
+
     .el-message-box__wrapper {
         z-index: @elLoadingMaskFullScreenZIndex+1 !important;
     }
