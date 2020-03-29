@@ -322,7 +322,7 @@
     }
 
     .my-info {
-        font-size: 1rem;
+        font-size: 2rem;
         &.el-icon-success {
             color: green;
         }
