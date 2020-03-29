@@ -3,6 +3,8 @@
         el-row.my-config-row(v-for="item of defaultConfig" :gutter="10")
             el-col(:span="18")
                 label.my-label {{item.label}}
+                el-popover(placement="top-start" title="配置项描述" width="200" trigger="hover" :content="item.description||'【未设置描述信息】'" :ref="item.label")
+                    i.my-question.el-icon-question(slot="reference")
             el-col(:span="6")
                 el-switch(v-if="item.component==='switch'" v-model="item.result" :active-value="getSwitchActive(item.type)" :inactive-value="getSwitchInactive(item.type)")
             // 其他类型的conponent以后再写，用v-if判断，并用type判断result的值
@@ -115,5 +117,10 @@
         align-items: center;
         flex-direction: column;
         margin-top: 1rem;
+    }
+
+    .my-question{
+        margin-left: 0.5rem;
+        color: darkblue;
     }
 </style>

@@ -5,12 +5,12 @@ const externals = {
     echarts: 'echarts',
     'element-ui': 'ELEMENT',
     'vue-router': 'VueRouter',
-    'nprogress' : 'NProgress',
+    'nprogress': 'NProgress',
     axios: 'axios',
-    'jspdf':'jsPDF',
+    'jspdf': 'jsPDF',
     'perfect-scrollbar': 'PerfectScrollbar',
-    'html2canvas':'html2canvas',
-    'qs':'Qs'
+    'html2canvas': 'html2canvas',
+    'qs': 'Qs'
 };
 
 const cdn = {
@@ -65,14 +65,16 @@ module.exports = {
             .rule('images')
             .use('image-webpack-loader')
             .loader('image-webpack-loader')
-            .options({ bypassOnDebug: true });
+            .options({bypassOnDebug: true});
 
         config.optimization.minimizer('terser').tap(args => {
-            args[0].extractComments = true;
-            args[0].terserOptions.compress.drop_console = true;
-            args[0].terserOptions.output = {};
-            args[0].terserOptions.output.beautify = false;
-            args[0].terserOptions.output.comments = false;
+            if (inProduction) {
+                args[0].extractComments = true;
+                args[0].terserOptions.compress.drop_console = true;
+                args[0].terserOptions.output = {};
+                args[0].terserOptions.output.beautify = false;
+                args[0].terserOptions.output.comments = false;
+            }
             return args;
         });
 

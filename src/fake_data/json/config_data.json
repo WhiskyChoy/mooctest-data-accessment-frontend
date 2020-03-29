@@ -2,12 +2,14 @@
   {
     "value": "met_CSR_",
     "label": "参诉人信息细致性",
+    "description": "度量文书中所有参诉人字段解析得到的信息项数量",
     "component": "switch",
     "type": "number"
   },
   {
     "value": "met_AJJBQK_",
     "label": "事实部分细致性",
+    "description":"度量文书事实描述文本解析得到的信息项总数",
     "component": "switch",
     "type": "number"
   },
@@ -20,6 +22,7 @@
   {
     "value": "del_date_",
     "label": "延迟性",
+    "description":"",
     "component": "switch",
     "type": "number"
   },

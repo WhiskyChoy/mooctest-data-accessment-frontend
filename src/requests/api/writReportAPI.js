@@ -8,6 +8,14 @@ import {wait} from "@/utils/loadWaiter";
 const getWritReport = async (writId) => {
     if (process.env.VUE_APP_AJAX_VERSION === 'v0') {
         const {default: testReport} = await import('@/fake_data/json/test_report');
+        const {fakeGetWrits} = await import('@/fake_data/js/dataPool');
+        const writs = fakeGetWrits({writId});
+        if (!writs || writs.length === 0) {
+            return;
+        }
+        const writ = writs[0];
+        testReport.title = writ.title;
+        testReport.time = writ.time;
         //模拟等一会
         await wait(1000);
         return testReport;
@@ -29,7 +37,7 @@ const getWritReport = async (writId) => {
  * @param{String} writId
  * @returns {Promise<*>}
  */
-const postWritReport = async ({useDefault, config, writId}) => {
+const postWritReport = async ({useDefault, config, writId} = {}) => {
     if (process.env.VUE_APP_AJAX_VERSION === 'v0') {
         await wait(500);
         return true;

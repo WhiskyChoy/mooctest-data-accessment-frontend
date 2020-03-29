@@ -1,6 +1,5 @@
 import http from '@/requests/http'
 import {wait} from "@/utils/loadWaiter";
-import {getTaskList} from "@/fake_data/js/list";
 
 /**
  * @param{String} title
@@ -9,7 +8,7 @@ import {getTaskList} from "@/fake_data/js/list";
  * @param{Array} writs
  * @returns {Promise<*>}
  */
-const postTask = async ({title, useDefault, config, writs}) => {
+const postTask = async ({title, useDefault, config, writs} = {}) => {
     if (process.env.VUE_APP_AJAX_VERSION === 'v0') {
         await wait(500);
         return true;
@@ -41,11 +40,12 @@ const getTaskStatus = async (taskId) => {
     return http.get(URL);
 };
 
-const getTasks = async ({nameStr, startDate, endDate}) => {
+const getTasks = async ({nameStr, startDate, endDate} = {}) => {
     if (process.env.VUE_APP_AJAX_VERSION === 'v0') {
+        const {fakeGetTasks} = await import('@/fake_data/js/dataPool');
         //模拟等一会
         await wait(1000);
-        return getTaskList();
+        return fakeGetTasks({nameStr, startDate, endDate});
     }
     const name = nameStr ? nameStr : '';
     const startTime = startDate && startDate.getTime ? startDate.getTime() : '';

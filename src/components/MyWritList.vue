@@ -85,7 +85,7 @@
                 default: null
             }
         },
-        async beforeMount() {
+        beforeMount() {
             //结构参数需要传一个空对象，否则会undefined.undefined
             if (this.preLoad) {
                 this.loadWrits();

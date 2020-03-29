@@ -1,4 +1,3 @@
-import {getWritList} from '@/fake_data/js/list'
 import http from '@/requests/http'
 import {wait} from "@/utils/loadWaiter";
 
@@ -8,11 +7,12 @@ import {wait} from "@/utils/loadWaiter";
  * @param{Date} endDate
  * @param{String} taskId
  */
-const getWrits = async ({nameStr, startDate, endDate, taskId}) => {
+const getWrits = async ({nameStr, startDate, endDate, taskId} = {}) => {
     if (process.env.VUE_APP_AJAX_VERSION === 'v0') {
+        const {fakeGetWrits} = await import('@/fake_data/js/dataPool');
         //模拟等一会
         await wait(1000);
-        return getWritList();
+        return fakeGetWrits({nameStr, startDate, endDate, taskId});
     }
     let URL;
     if (process.env.VUE_APP_AJAX_VERSION === 'v1') {

@@ -131,13 +131,13 @@
   "ycx": {
     "name": "延迟性",
     "content": {
-      "cat_score": 10,
-      "tol_score": 8,
+      "cat_score": 8,
+      "tol_score": 10,
       "submetric": [
         {
           "metric": "延迟性",
-          "score": 10,
-          "total": 8
+          "score": 8,
+          "total": 10
         }
       ]
     }
