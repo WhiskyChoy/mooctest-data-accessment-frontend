@@ -1,6 +1,6 @@
 const user = {
     selfToken: '',
-    name: '张三',
+    name: '黎宇',
     expires: 1944963134317,
     tokenType: 'Bearer'
 };

@@ -1,5 +1,5 @@
 <template lang="pug">
-    div(ref="map" style="width: 480px; height:480px;")
+    div(ref="map" style="width: 520px; height:520px;")
 </template>
 
 <script>
