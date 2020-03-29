@@ -1,5 +1,5 @@
 <template lang="pug">
-    div(ref="line" style="width: 600px; height:600px;")
+    div(ref="line" style="width: 480px; height:480px;")
 </template>
 
 <script>
@@ -21,8 +21,8 @@
             this.option.title.text = this.title;
             let xAxis = this.option.xAxis[0];
             xAxis.data = this.rawData && this.rawData.x_axis_data ? this.rawData.x_axis_data : [];
-            xAxis.axisLabel.interval = xAxis.data.length <= 12 ? 0 : 'auto';
-            xAxis.axisLabel.show = xAxis.data.length <= 12;
+            xAxis.axisLabel.interval = xAxis.data.length <= 8 ? 0 : 'auto';
+            xAxis.axisLabel.show = xAxis.data.length <= 8;
             const series = this.rawData && this.rawData.series ? this.rawData.series : [];
             let legend_data = [];
             series.forEach(item => {

@@ -49,7 +49,7 @@
                             el-collapse-item.indicator-container(name="location_distribution")
                                 template(slot="title")
                                     h4 文书地域分布
-                                div.indicator-body.simple-center
+                                div.indicator-body.simple-center(v-if="false")
                                     my-simple-distribution(title="文书地域分布" :raw-data="received_data.location_distribution")
                                 div.indicator-body.simple-center
                                     my-map(title="文书地域分布地图",

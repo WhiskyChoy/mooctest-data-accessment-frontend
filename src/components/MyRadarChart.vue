@@ -1,5 +1,5 @@
 <template lang="pug">
-    div(ref="radar" style="width: 600px; height:600px;")
+    div(ref="radar" style="width: 480px; height:480px;")
 </template>
 
 <script>
