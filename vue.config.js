@@ -5,20 +5,30 @@ const externals = {
     echarts: 'echarts',
     'element-ui': 'ELEMENT',
     'vue-router': 'VueRouter',
-    'nprogress' : 'NProgress'
+    'nprogress' : 'NProgress',
+    axios: 'axios',
+    'jspdf':'jsPDF',
+    'perfect-scrollbar': 'PerfectScrollbar',
+    'html2canvas':'html2canvas',
+    'qs':'Qs'
 };
 
 const cdn = {
     css: [
-        'https://cdn.bootcss.com/element-ui/2.13.0/theme-chalk/index.css',
+        'https://unpkg.com/element-ui@2.13.0/lib/theme-chalk/index.css',
         'https://cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css'
     ],
     js: [
-        'https://cdn.bootcss.com/vue/2.6.11/vue.runtime.min.js',
-        'https://cdn.bootcss.com/vue-router/3.1.3/vue-router.min.js',
-        'https://cdn.bootcss.com/element-ui/2.13.0/index.js',
-        'https://cdn.bootcss.com/echarts/4.7.0/echarts.min.js',
-        'https://cdn.bootcss.com/nprogress/0.2.0/nprogress.js'
+        'https://unpkg.com/vue@2.6.11/dist/vue.runtime.min.js',
+        'https://unpkg.com/vue-router@3.1.6/dist/vue-router.min.js',
+        'https://unpkg.com/element-ui@2.13.0/lib/index.js',
+        'https://unpkg.com/echarts@4.7.0/dist/echarts.min.js',
+        'https://cdn.bootcss.com/nprogress/0.2.0/nprogress.js',
+        'https://unpkg.com/axios@0.19.2/dist/axios.min.js',
+        'https://unpkg.com/jspdf@1.5.3/dist/jspdf.min.js',
+        'https://unpkg.com/perfect-scrollbar@1.5.0/dist/perfect-scrollbar.min.js',
+        'https://unpkg.com/html2canvas@1.0.0-rc.1/dist/html2canvas.min.js',
+        'https://cdn.bootcss.com/qs/6.9.3/qs.min.js'
     ]
 };
 
