@@ -44,7 +44,7 @@ const getWritStatus = async (writId) => {
     if (process.env.VUE_APP_AJAX_VERSION === 'v0') {
         //模拟等一会
         await wait(1000);
-        return 'finished';
+        return 'ongoing';
     }
     let URL;
     if (process.env.VUE_APP_AJAX_VERSION === 'v1') {

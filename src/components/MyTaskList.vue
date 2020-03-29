@@ -87,7 +87,7 @@
                 this.tasks[index].fetching = true;
                 const status = await this.$api.getTaskStatus(taskId);
                 if (status) {
-                    this.$message.success({message: `${taskId}号任务状态为"${this.statusTable[status]}"`, duration: 1500});
+                    this.$message.info({message: `${taskId}号任务状态为"${this.statusTable[status]}"`, duration: 1500});
                     this.tasks[index].status = status;
                 }
                 this.tasks[index].fetching = false;

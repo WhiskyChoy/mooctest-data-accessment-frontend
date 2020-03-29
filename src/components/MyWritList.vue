@@ -110,7 +110,7 @@
                 this.writs[index].fetching = true;
                 const status = await this.$api.getWritStatus(writId);
                 if (status) {
-                    this.$message.success({message: `${writId}号文书状态为"${this.statusTable[status]}"`, duration: 1500});
+                    this.$message.info({message: `${writId}号文书状态为"${this.statusTable[status]}"`, duration: 1500});
                     this.writs[index].status = status;
                 }
                 this.writs[index].fetching = false;
