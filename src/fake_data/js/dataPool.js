@@ -127,7 +127,7 @@ while (areas.length > 0) {
 }
 
 
-const fakeGetWrits = ({taskId, writId} = {}) => {
+const fakeGetWrits = ({nameStr, startDate, endDate, taskId, writId} = {}) => {
     if (writId) {
         for (let writ of writs) {
             if (writId === writ.id) {
@@ -142,11 +142,40 @@ const fakeGetWrits = ({taskId, writId} = {}) => {
             }
         }
     }
-    return writs;
+    let result = writs;
+    let saver = [];
+    if(nameStr){
+        for (let writ of result){
+            if(writ.title.indexOf(nameStr) !== -1){
+                saver.push(writ);
+            }
+        }
+        result = saver;
+        saver = [];
+    }
+    if(startDate){
+        for (let writ of result){
+            if(writ.time > startDate.getTime()){
+                saver.push(writ);
+            }
+        }
+        result = saver;
+        saver = [];
+    }
+    if(endDate){
+        for (let writ of result){
+            if(writ.time < endDate.getTime()){
+                saver.push(writ);
+            }
+        }
+        result = saver;
+    }
+
+    return result;
 };
 
 
-const fakeGetTasks = ({taskId}) => {
+const fakeGetTasks = ({nameStr, startDate, endDate, taskId}) => {
     if (taskId) {
         for (let task of tasks) {
             if (taskId === task.id) {
@@ -154,7 +183,36 @@ const fakeGetTasks = ({taskId}) => {
             }
         }
     }
-    return tasks;
+    let result = tasks;
+    let saver = [];
+    if(nameStr){
+        for (let task of result){
+            if(task.title.indexOf(nameStr)!==-1){
+                saver.push(task);
+            }
+        }
+        result = saver;
+        saver = [];
+    }
+    if(startDate){
+        for (let task of result){
+            if(task.time > startDate.getTime()){
+                saver.push(task);
+            }
+        }
+        result = saver;
+        saver = [];
+    }
+    if(endDate){
+        for (let task of result){
+            if(task.time < endDate.getTime()){
+                saver.push(task);
+            }
+        }
+        result = saver;
+    }
+
+    return result;
 };
 
 export {fakeGetWrits, fakeGetTasks}
