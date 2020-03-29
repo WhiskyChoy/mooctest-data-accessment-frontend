@@ -19,7 +19,10 @@
         },
         beforeMount() {
             this.option.title.text = this.title;
-            this.option.xAxis.data = this.rawData && this.rawData.x_axis_data ? this.rawData.x_axis_data : [];
+            let xAxis = this.option.xAxis[0];
+            xAxis.data = this.rawData && this.rawData.x_axis_data ? this.rawData.x_axis_data : [];
+            xAxis.axisLabel.interval = xAxis.data.length <= 12 ? 0 : 'auto';
+            xAxis.axisLabel.show = xAxis.data.length <= 12;
             const series = this.rawData && this.rawData.series ? this.rawData.series : [];
             let legend_data = [];
             series.forEach(item => {
@@ -70,7 +73,11 @@
                     xAxis: [
                         {
                             type: 'category',
-                            data: []
+                            data: [],
+                            axisLabel: {
+                                show: true,
+                                interval: 'auto'
+                            }
                         }
                     ],
                     yAxis: [
