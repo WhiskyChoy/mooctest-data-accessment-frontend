@@ -61,6 +61,12 @@ module.exports = {
     /* https://xrkffgg.github.io/Knotes/blog/15.html#_1-介绍  pug-html-loader不是必要的 */
     // 修改要vue inspect > output.js来查看
     chainWebpack: config => {
+        config.module
+            .rule('images')
+            .use('image-webpack-loader')
+            .loader('image-webpack-loader')
+            .options({ bypassOnDebug: true });
+
         config.optimization.minimizer('terser').tap(args => {
             args[0].extractComments = true;
             args[0].terserOptions.compress.drop_console = true;

@@ -5,8 +5,8 @@
             h1.center-view-title 我创建的任务
             div.tool-container
                 div.search-container
-                    el-input.input-searcher(v-model="searchName" prefix-icon="el-icon-edit-outline" clearable)
-                    el-date-picker.date-searcher(v-model="searchTime" type="datetimerange" :clearable="false")
+                    el-input.input-searcher(v-model="searchName" prefix-icon="el-icon-edit-outline" clearable placeholder="任务名称（部分）")
+                    el-date-picker.date-searcher(v-model="searchTime" type="datetimerange" :clearable="false" start-placeholder="开始时间" end-placeholder="结束时间")
                 div.tool-button-container
                     div.long
                         el-button(type="primary" icon="el-icon-search" @click="handleSearch" :disabled="noMsg")
