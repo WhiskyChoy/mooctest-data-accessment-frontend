@@ -128,6 +128,9 @@ if (!(localStorage.getItem('writs') && localStorage.getItem('tasks'))) {
         task && tasks.push(task);
     }
 
+    writs.shuffle();
+    tasks.shuffle();
+
     localStorage.setItem('writs', JSON.stringify(writs));
     localStorage.setItem('tasks', JSON.stringify(tasks));
 }
