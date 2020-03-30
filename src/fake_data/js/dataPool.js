@@ -36,7 +36,6 @@ if (!(localStorage.getItem('writs') && localStorage.getItem('tasks'))) {
     });
 
     const startDate = new Date(2020, 0, 24, 11, 33, 0);
-    const endDate = new Date();
     const remainCourtNum = 200;
     const untestedWritNum = 20;
     const maxWritNum = 64;
@@ -56,14 +55,17 @@ if (!(localStorage.getItem('writs') && localStorage.getItem('tasks'))) {
     const getWritUseCS = (court, status) => {
         status = status === 'failed' ? 'wrong' : status;
         const id = getRandomNum(0, 10000).toString();
-
+        const endDate = new Date();
+        endDate.setDate(endDate.getDate() - 1);
         const materialType = materialTypes.random();
-        const time = getRandomDate(startDate, endDate);
+        let time = getRandomDate(startDate, endDate);
+        let year = time.getFullYear();
+        time = time.getTime();
         const caseType = caseTypes.random();
         const caseDetailType = caseDetailTypes.random();
         const num = getRandomNum(1, 10000);
         const length = getRandomNum(800, 2000);
-        const title = court.courtName + materialType + '（' + time.getFullYear() + '）'
+        const title = court.courtName + materialType + '（' + year + '）'
             + court.represent + caseType + caseDetailType + '字' + '第' + num + '号';
         return {id, title, time, length, status}
     };
@@ -113,12 +115,14 @@ if (!(localStorage.getItem('writs') && localStorage.getItem('tasks'))) {
         if (length === 0) {
             return false;
         }
-        const time = getRandomDate(startDate, endDate);
+        const endDate = new Date();
+        const time = getRandomDate(startDate, endDate).getTime();
         const title = (area || '特殊') + '地区' + length + '篇裁判文书合集';
         return {id, title, time, length, status, insideWrits}
     };
 
     const tasks = [];
+
 
     while (areas.length > 0) {
         const task = getRandomTask();
@@ -127,6 +131,17 @@ if (!(localStorage.getItem('writs') && localStorage.getItem('tasks'))) {
         }
         task && tasks.push(task);
     }
+
+    const additionalTask = {
+        id: getRandomNum(0, 10000).toString().toString(),
+        title: '测试多地裁判文书合集',
+        time: new Date().getTime(),
+        length: 495,
+        status: 'ongoing',
+        insideWrits: writs
+    };
+
+    tasks.push(additionalTask);
 
     writs.shuffle();
     tasks.shuffle();
@@ -166,7 +181,7 @@ const fakeGetWrits = ({nameStr, startDate, endDate, taskId, writId} = {}) => {
     }
     if (startDate) {
         for (let writ of result) {
-            if (writ.time > startDate.getTime()) {
+            if (writ.time > startDate) {
                 saver.push(writ);
             }
         }
@@ -175,7 +190,7 @@ const fakeGetWrits = ({nameStr, startDate, endDate, taskId, writId} = {}) => {
     }
     if (endDate) {
         for (let writ of result) {
-            if (writ.time < endDate.getTime()) {
+            if (writ.time < endDate) {
                 saver.push(writ);
             }
         }
@@ -209,7 +224,7 @@ const fakeGetTasks = ({nameStr, startDate, endDate, taskId}) => {
     }
     if (startDate) {
         for (let task of result) {
-            if (task.time > startDate.getTime()) {
+            if (task.time > startDate) {
                 saver.push(task);
             }
         }
@@ -218,7 +233,7 @@ const fakeGetTasks = ({nameStr, startDate, endDate, taskId}) => {
     }
     if (endDate) {
         for (let task of result) {
-            if (task.time < endDate.getTime()) {
+            if (task.time < endDate) {
                 saver.push(task);
             }
         }

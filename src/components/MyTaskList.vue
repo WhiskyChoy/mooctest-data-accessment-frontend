@@ -96,7 +96,7 @@
                 this.loading = true;
                 const data = await this.$api.getTasks({nameStr, startDate, endDate});
                 if (data) {
-                    data.forEach(item => item.fetching = false);
+                    data.forEach(item => {item.fetching = false; item.time=new Date(item.time);});
                     this.tasks = data;
                 }
                 await this.$nextTick();

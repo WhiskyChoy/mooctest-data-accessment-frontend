@@ -119,7 +119,7 @@
                 this.loading = true;
                 const data = await this.$api.getWrits({nameStr, startDate, endDate, taskId});
                 if (data) {
-                    data.forEach(item => item.fetching = false);
+                    data.forEach(item => {item.fetching = false; item.time=new Date(item.time);});
                     this.writs = data;
                 }
                 await this.$nextTick();

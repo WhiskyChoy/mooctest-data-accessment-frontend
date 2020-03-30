@@ -11,7 +11,7 @@
                         el-button(type="primary" size="small" icon="el-icon-search" @click="handleSearch" :disabled="noMsg")
                         el-button(type="primary" size="small" icon="el-icon-refresh" @click="handleRefresh")
                     el-button.my-upload(@click="handleUpload" size="medium") 上传文书
-                    el-badge.my-badge(:value="selectData.length" :hidden="selectData.length===0" :max="99")
+                    el-badge.my-badge(:value="selectData.length" :hidden="selectData.length===0" :max="maxBadgeNum")
                         el-button(:disabled="selectData.length===0" @click="handleCreateTask" size="medium") 创建任务
         div.center-view-body
             my-writ-list(ref="overallWritList" @handle-test="handleTest" @selection-change="handleSelectionChange" :name-str="searchName" :start-date="searchTime[0]" :end-date="searchTime[1]")
@@ -49,6 +49,7 @@
         },
         data() {
             return {
+                maxBadgeNum: 10,
                 searchName: '',
                 searchTime: [],
                 selectData: [],
@@ -168,7 +169,7 @@
         margin-top: @navHeight+@reportHeaderMargin*2+10px+40px !important;
     }
 
-    @media screen and (max-width: 1000px), screen and (orientation : portrait){
+    @media screen and (max-width: 1000px), screen and (orientation: portrait) {
         .center-view-body {
             margin-top: @navHeight+@reportHeaderMargin*2+10px+40px+40px+15px !important;
         }
