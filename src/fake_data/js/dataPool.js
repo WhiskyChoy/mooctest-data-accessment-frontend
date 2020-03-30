@@ -137,8 +137,12 @@ if (!(localStorage.getItem('writs') && localStorage.getItem('tasks'))) {
         title: '测试多地裁判文书合集',
         time: new Date().getTime(),
         length: 495,
-        status: 'ongoing',
-        insideWrits: writs
+        status: 'finished',
+        insideWrits: (() => {
+            const copyWrits = JSON.parse(JSON.stringify(writs));
+            copyWrits.forEach(item => item.status = 'finished');
+            return copyWrits;
+        })()
     };
 
     tasks.push(additionalTask);
