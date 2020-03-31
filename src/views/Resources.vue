@@ -31,8 +31,8 @@
         computed: {
             avatarText() {
                 const user = getLocalUser();
-                if (user && user.name) {
-                    return user.name.slice(0, 1);
+                if (user && user.username) {
+                    return user.username.slice(0, 1);
                 }
                 return '';
             }
