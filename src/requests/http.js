@@ -74,7 +74,7 @@ const errorHandle = (status, payloadMsg) => {
     }
 };
 
-const baseURL = process.env.AJAX_BASE_URL ? process.env.AJAX_BASE_URL : '';
+const baseURL = process.env.VUE_APP_AJAX_BASE_URL ? process.env.VUE_APP_AJAX_BASE_URL : '';
 
 const instance = axios.create({baseURL});
 
