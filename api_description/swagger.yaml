@@ -402,7 +402,7 @@ definitions:
       # TODO 注意查用的字段是name.回用的字段是title（按name查询title）
       title:
         type: string
-        description: 文书的标题
+        description: 文书的文件名（和writ-report里面的不一样）
       time:
         type: integer
         format: int64
@@ -433,6 +433,9 @@ definitions:
         $ref: '#/definitions/config-type'
       result:
         description: 目前该配置项的存储结果
+      description:
+        type: string
+        description: 配置项的描述
   config:
     type: array
     items:

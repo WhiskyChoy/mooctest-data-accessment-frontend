@@ -5,7 +5,7 @@
         el-table-column(v-if="!taskId" type="selection" :selectable="checkSelectable" min-width="40" align="center" fixed)
         el-table-column(prop="id" label="文书id" min-width="70" align="center" fixed)
         //这里name是标题
-        el-table-column(prop="title" label="文书标题" :min-width="taskId?165:125")
+        el-table-column(prop="title" label="文书文件名" :min-width="taskId?165:125")
         el-table-column(label="上传时间" min-width="120")
             template(slot-scope="scope") {{scope.row.time.toLocaleString()}}
         el-table-column(prop="length" label="文书长度"  min-width="80")
