@@ -6,7 +6,7 @@
             div.tool-container
                 div.search-container
                     el-input.input-searcher(v-model="searchName" prefix-icon="el-icon-edit-outline" clearable placeholder="任务名称（部分）")
-                    el-date-picker.date-searcher(v-model="searchTime" type="datetimerange" :clearable="false" start-placeholder="开始时间" end-placeholder="结束时间" value-format="yyyy-MM-dd HH:mm:ss")
+                    el-date-picker.date-searcher(v-model="searchTime" type="datetimerange" :clearable="false" start-placeholder="开始时间" end-placeholder="结束时间")
                 div.tool-button-container
                     div.long
                         el-button(type="primary" icon="el-icon-search" @click="handleSearch" :disabled="noMsg")
