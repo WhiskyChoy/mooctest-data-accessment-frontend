@@ -33,7 +33,6 @@
             return {
                 searchName: '',
                 searchTime: [],
-                selectData: [],
             }
         },
         methods: {

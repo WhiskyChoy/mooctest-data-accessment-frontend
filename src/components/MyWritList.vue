@@ -1,13 +1,18 @@
 <template lang="pug">
     //表的总min-width应该等于project-max-width（见global.less）
-    el-table.my-writ-or-task-table(ref="myWritTable" :data="writs" v-loading="loading" height="70%" @selection-change="handleSelectionChange" border stripe)
+    el-table.my-writ-or-task-table(ref="myWritTable" :data="writs" v-loading="loading" height="70%" border stripe)
         //总的min-width加上最右侧的gutter应当比projectMinWidth还小一些
-        el-table-column(v-if="!taskId" type="selection" :selectable="checkSelectable" min-width="40" align="center" fixed)
+        // debug de了半天，原来是type="selection"没删掉
+        el-table-column(v-if="!taskId" min-width="40" align="center" fixed)
+            template(slot="header" slot-scope="scope")
+                el-checkbox(:indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange")
+            template(v-slot="{row,$index}")
+                el-checkbox(v-model="row.checked" @change="(val)=>{handleCheck(getWrit($index),val);handleSelectionChange()}" :disabled="!selectable(row)")
         el-table-column(prop="id" label="文书id" min-width="70" align="center" fixed)
         //这里name是标题
         el-table-column(prop="title" label="文书文件名" :min-width="taskId?165:125")
         el-table-column(label="上传时间" min-width="120")
-            template(slot-scope="scope") {{scope.row.time.toLocaleString()}}
+            template(v-slot="{row}") {{row.time.toLocaleString()}}
         el-table-column(prop="length" label="文书长度"  min-width="80")
         el-table-column(label="文书状态" min-width="80" align="center")
             template(v-slot="{row}")
@@ -61,6 +66,48 @@
      */
     import {getBaseURL} from "@/utils/urlUtil";
 
+    class WritSet {
+        constructor() {
+            this.writs = []
+        }
+
+        indexOf(writ) {
+            for (let i = 0; i < this.writs.length; i++) {
+                let item = this.writs[i];
+                if (item.id === writ.id) {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        add(writ) {
+            if (this.indexOf(writ) === -1) {
+                this.writs.push(writ);
+                return true;
+            }
+            return false;
+        }
+
+        remove(writ) {
+            let index = this.indexOf(writ);
+            if (index !== -1) {
+                this.writs.splice(index, 1);
+                return true;
+            }
+            return false;
+        }
+
+        getWrits() {
+            return this.writs;
+        }
+
+        clear() {
+            this.writs = [];
+        }
+
+    }
+
     export default {
         name: "MyWritList",
         props: {
@@ -102,10 +149,37 @@
                     accident: '意外中断',
                 },
                 loading: false,
-                writs: []
+                writs: [],
+                checkedCache: new WritSet(),
+                checkAll: false,
+                isIndeterminate: false,
+                checkedCounter: 0
             }
         },
         methods: {
+            handleCheckAllChange(val) {
+                this.writs.forEach(item => {
+                    this.handleCheck(item, val)
+                });
+                this.isIndeterminate = this.checkedCounter > 0 && this.checkedCounter < this.writs.length;
+                this.handleSelectionChange();
+            },
+            getWrit(index) {
+                return this.writs[index]
+            },
+            handleCheck(writ, val) {
+                if (this.selectable(writ)) {
+                    if (writ.checked !== val) {
+                        writ.checked = val;
+                    }
+                    if (val) {
+                        this.checkedCache.add(writ) && this.checkedCounter++;
+                    } else {
+                        this.checkedCache.remove(writ) && this.checkedCounter--;
+                    }
+                    this.isIndeterminate = this.checkedCounter > 0 && this.checkedCounter < this.writs.length;
+                }
+            },
             async updateStatus(writId, index) {
                 this.writs[index].fetching = true;
                 const status = await this.$api.getWritStatus(writId);
@@ -119,8 +193,20 @@
                 this.loading = true;
                 const data = await this.$api.getWrits({nameStr, startDate, endDate, taskId});
                 if (data) {
-                    data.forEach(item => {item.fetching = false; item.time=new Date(item.time);});
+                    let tempCounter = 0;
+                    data.forEach(item => {
+                        const checked = this.checkedCache.indexOf(item) !== -1;
+                        if (checked) {
+                            tempCounter++;
+                        }
+                        item.checked = checked;
+                        item.fetching = false;
+                        item.time = new Date(item.time);
+                    });
                     this.writs = data;
+                    this.checkedCounter = tempCounter;
+                    this.checkAll = this.checkedCounter === this.writs.length;
+                    this.isIndeterminate = this.checkedCounter > 0 && this.checkedCounter < this.writs.length;
                 }
                 await this.$nextTick();
                 this.loading = false;
@@ -139,21 +225,22 @@
                     this.$router.push(url);
                 }
             },
-            handleSelectionChange(val) {
-                this.$emit('selection-change', val)
+            handleSelectionChange() {
+                this.$emit('selection-change', this.checkedCache.getWrits())
             },
-            checkSelectable(row) {
-                return row.status === 'untested' || row.status === 'accident'
+            selectable(row) {
+                return row.status === 'untested' || row.status === 'accident';
             },
             handleTest(writId, $index) {
                 this.$emit('handle-test', writId, $index);
             },
             clearSelection() {
-                this.$refs['myWritTable'].clearSelection();
+                this.checkedCache.clear();
+                this.handleSelectionChange();
             },
             changeStatus($index, status) {
                 this.writs[$index].status = status;
-            }
+            },
         }
     }
 </script>
