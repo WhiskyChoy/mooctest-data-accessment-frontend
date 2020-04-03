@@ -14,7 +14,12 @@
                     el-badge.my-badge(:value="selectData.length" :hidden="selectData.length===0" :max="maxBadgeNum")
                         el-button(:disabled="selectData.length===0" @click="handleCreateTask" size="medium") 创建任务
         div.center-view-body
-            my-writ-list(ref="overallWritList" @handle-test="handleTest" @selection-change="handleSelectionChange" :name-str="searchName" :start-date="searchTime[0]" :end-date="searchTime[1]")
+            my-writ-list(ref="overallWritList"
+            @handle-test="handleTest"
+            @selection-change="handleSelectionChange"
+            :name-str="searchName"
+            :start-date="searchTime[0]"
+            :end-date="searchTime[1]")
         //设置:modal-append-to-body="false" :append-to-body="true" 这样dialog插入body，modal插入dialog的父元素（其实就是两者平级在body）
         el-dialog(v-draggable title="提交前的配置" :visible.sync="dialogVisible" center :modal-append-to-body="false" :append-to-body="true" top="6vh")
             div.dialog-body

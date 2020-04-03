@@ -51,6 +51,7 @@ paths:
           description: 服务器内部出错
           schema:
             type: string
+    # TODO 加了pageIndex和pageSize, 返回结果本来是数组，现在包装成{result:原来的数组, total:除去页面参数查询到的数量}
     get:
       tags:
       - writ
@@ -80,13 +81,30 @@ paths:
         in: query
         type: string
         required: false
+      - name: pageIndex
+        description: 第几页（从1开始，没有指明就返回第一页）
+        in: query
+        type: integer
+        required: false
+      - name: pageSize
+        description: 页面大小（没有指明就是任意大）
+        in: query
+        type: integer
+        required: false
       responses:
         200:
           description: 正常查询
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/writ'
+            type: object
+            properties:
+              result:
+                type: array
+                description: 按指定条件查询到的文书
+                items:
+                  $ref: '#/definitions/writ'
+              total:
+                description: 除去页面相关参数查询到的所有数据的数量
+                type: number
 
   /writ/{writ-id}/status:
     get:
@@ -146,7 +164,7 @@ paths:
         200:
           description: 查到对应报告
 
-
+  # TODO 加了pageIndex和pageSize, 返回结果本来是数组，现在包装成{result:原来的数组, total:除去页面参数查询到的数量}
   /task:
     get:
       tags:
@@ -171,13 +189,30 @@ paths:
         type: integer
         format: int64
         required: false
+      - name: pageIndex
+        description: 第几页（从1开始，没有指明就返回第一页）
+        in: query
+        type: integer
+        required: false
+      - name: pageSize
+        description: 页面大小（没有指明就是任意大）
+        in: query
+        type: integer
+        required: false
       responses:
         200:
           description: 正常查询
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/task'
+            type: object
+            properties:
+              result:
+                type: array
+                description: 按指定条件查询到的任务
+                items:
+                  $ref: '#/definitions/task'
+              total:
+                description: 除页面相关参数得到的查询结果总数
+                type: number
     post:
       tags:
       - task

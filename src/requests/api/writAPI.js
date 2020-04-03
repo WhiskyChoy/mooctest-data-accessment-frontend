@@ -6,13 +6,15 @@ import {wait} from "@/utils/loadWaiter";
  * @param{Date} startDate
  * @param{Date} endDate
  * @param{String} taskId
+ * @param{Number} pageIndex
+ * @param{Number} pageSize
  */
-const getWrits = async ({nameStr, startDate, endDate, taskId} = {}) => {
+const getWrits = async ({nameStr, startDate, endDate, taskId, pageIndex, pageSize} = {}) => {
     if (process.env.VUE_APP_AJAX_VERSION === 'v0') {
         const {fakeGetWrits} = await import('@/fake_data/js/dataPool');
         //模拟等一会
         await wait(1000);
-        return fakeGetWrits({nameStr, startDate, endDate, taskId});
+        return fakeGetWrits({nameStr, startDate, endDate, taskId, pageIndex, pageSize});
     }
     let URL;
     if (process.env.VUE_APP_AJAX_VERSION === 'v1') {
@@ -33,7 +35,7 @@ const getWrits = async ({nameStr, startDate, endDate, taskId} = {}) => {
     // 而Promise.resolve(Promise.resolve(return_val))和Promise.resolve(await Promise.resolve(return_val))相当于是一样的
     // 本来就要等待
     //get要给params来传参
-    return http.get(URL, {params: {name, startTime, endTime}});
+    return http.get(URL, {params: {name, startTime, endTime, pageIndex, pageSize}});
 };
 
 /**

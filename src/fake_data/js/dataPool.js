@@ -201,7 +201,7 @@ const fakeGetWrits = ({nameStr, startDate, endDate, taskId, writId} = {}) => {
         result = saver;
     }
 
-    return result;
+    return {result, total: result.length};
 };
 
 
@@ -244,7 +244,7 @@ const fakeGetTasks = ({nameStr, startDate, endDate, taskId}) => {
         result = saver;
     }
 
-    return result;
+    return {result, total: result.length};
 };
 
 export {fakeGetWrits, fakeGetTasks}

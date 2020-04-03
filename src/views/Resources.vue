@@ -107,12 +107,19 @@
         /*}*/
         /*}*/
 
-        /deep/ .my-writ-or-task-table {
-            min-height: 500px;
-            max-width: 1200px !important;
+        /deep/ .my-table-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            .my-writ-or-task-table {
+                min-height: 450px;
+                max-width: 1200px !important;
+                margin-bottom: 1rem;
+            }
         }
 
-        @media screen and (max-width: 1000px), screen and (orientation : portrait){
+        @media screen and (max-width: 1000px), screen and (orientation: portrait) {
             /deep/ .my-writ-or-task-table .el-tag span {
                 display: none;
             }
@@ -169,7 +176,7 @@
             margin-bottom: @reportHeaderMargin;
         }
 
-        @media screen and (max-width: @hideMenuScreenWidth), screen and (orientation : portrait) {
+        @media screen and (max-width: @hideMenuScreenWidth), screen and (orientation: portrait) {
             /deep/ .el-scrollbar {
                 left: 0
             }
@@ -181,8 +188,8 @@
                 }
             }
 
-            .link-self{
-                display: none!important;
+            .link-self {
+                display: none !important;
             }
         }
 
