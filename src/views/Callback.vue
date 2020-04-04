@@ -23,6 +23,7 @@
                 const duration = 1500;
                 this.$notify.success({title: '登录成功', message: '点击左侧汉堡菜单开始工作', duration});
                 this.$router.push(localStorage.getItem(redirectKey) || '/');
+                localStorage.removeItem(redirectKey);
             } else {
                 this.$router.push('/login');
             }
