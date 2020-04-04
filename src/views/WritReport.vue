@@ -115,18 +115,24 @@
                         el-collapse(v-model="subjective_active")
                             el-collapse-item.indicator-container(name="yyfg")
                                 template(slot="title")
-                                    h4 语言风格
+                                    div.sub-title-container
+                                        h4 语言风格
+                                        div(@click.stop).emphasize-slider
+                                            el-slider(v-model="emphasize_rate_yyfg" :format-tooltip="formatTooltip")
                                 div.indicator-body
-                                    my-paragraph-color-gradient.my-gradient(:show-advance="show_gradient_advance" :h-val="0" :sentence-seq="received_data.yyfg")
+                                    my-paragraph-color-gradient.my-gradient(:show-advance="show_gradient_advance" :h-val="0" :sentence-seq="received_data.yyfg" :emphasize-rate="getActualRate(emphasize_rate_yyfg)")
                                     div 可能存在问题的句子/词组：
                                     ul
                                         li(v-for="item of received_data.yyfg.filter(val=>{return val.delta>0.5})") {{item.sentence}}
                         el-collapse(v-model="subjective_active")
                             el-collapse-item.indicator-container(name="kgcd")
                                 template(slot="title")
-                                    h4 客观程度
+                                    div.sub-title-container
+                                        h4 客观程度
+                                        div(@click.stop).emphasize-slider
+                                            el-slider(v-model="emphasize_rate_kgcd" :format-tooltip="formatTooltip")
                                 div.indicator-body
-                                    my-paragraph-color-gradient.my-gradient(:show-advance="show_gradient_advance" :h-val="60" :sentence-seq="received_data.kgcd")
+                                    my-paragraph-color-gradient.my-gradient(:show-advance="show_gradient_advance" :h-val="60" :sentence-seq="received_data.kgcd" :emphasize-rate="getActualRate(emphasize_rate_kgcd)")
                                     div 可能存在问题的句子/词组：
                                     ul
                                         li(v-for="item of received_data.kgcd.filter(val=>{return val.delta>0.5})") {{item.sentence}}
@@ -179,7 +185,9 @@
                 outer_active: null,
                 objective_active: null,
                 subjective_active: null,
-                received_data: null
+                received_data: null,
+                emphasize_rate_yyfg: 0,
+                emphasize_rate_kgcd: 0,
             }
         },
         methods: {
@@ -223,6 +231,12 @@
                 target.classList.remove('report-body-to-print');
                 //以服务的方式调用的 Loading 需要异步关闭
                 loading.close();
+            },
+            getActualRate(val) {
+                return (1 + val / 100);
+            },
+            formatTooltip(val) {
+                return '显示效果增强：' + this.getActualRate(val).toFixed(2) + ' 倍';
             }
         }
     }
@@ -237,7 +251,7 @@
         right: 1rem;
     }
 
-    @media screen and (max-width: 815px), screen and (orientation : portrait){
+    @media screen and (max-width: 815px), screen and (orientation: portrait) {
 
         .header-button-container {
             position: static;
@@ -293,6 +307,25 @@
             text-align: left;
             padding-bottom: 0.5rem;
             font-size: 1.2rem;
+        }
+
+        .sub-title-container {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+
+            h4, .emphasize-slider {
+                margin-top: 17.29px;
+                margin-bottom: 17.29px;
+            }
+
+            .emphasize-slider {
+                width: 20%;
+                min-width: 8rem;
+                max-width: 12rem;
+                margin-right: 1rem;
+            }
         }
     }
 

@@ -1,6 +1,6 @@
 <template lang="pug">
     span(v-if="sequence")
-        my-word-color-gradient(v-for="item of sequence" :h-val="hVal" :start-val="item.startVal" :end-val="item.endVal" :char="item.char" :show-advance="showAdvance")
+        my-word-color-gradient(v-for="item of sequence" :h-val="hVal" :start-val="item.startVal" :end-val="item.endVal" :char="item.char" :show-advance="showAdvance" :emphasize-rate="emphasizeRate")
 </template>
 
 <script>
@@ -43,6 +43,10 @@
             showAdvance: {
                 type: Boolean,
                 default: true
+            },
+            emphasizeRate:{
+                type: Number,
+                default: 1
             }
         },
         beforeMount() {
