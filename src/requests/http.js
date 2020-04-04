@@ -5,7 +5,7 @@ import router from '@/router'
 import {getLocalUser, logout} from "@/utils/userUtil";
 
 const timeout = 2500;
-
+let waitList = Promise.resolve();
 /**
  * 参考了https://juejin.im/post/5b55c118f265da0f6f1aa354
  */
@@ -17,10 +17,12 @@ const timeout = 2500;
  * @param {String} title 标题，默认为错误提示
  */
 const showError = (msg, title = '错误提示') => {
-    Notification.error({
-        title: title,
-        message: msg,
-        duration: timeout,
+    waitList = waitList.then(()=>{
+        Notification.error({
+            title: title,
+            message: msg,
+            duration: timeout,
+        });
     });
 };
 
