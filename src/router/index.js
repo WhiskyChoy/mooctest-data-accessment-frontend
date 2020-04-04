@@ -3,11 +3,13 @@ import VueRouter from 'vue-router'
 import NProgress from 'nprogress'
 import {getLocalUser} from "@/utils/userUtil"
 import {Notification} from 'element-ui'
-
+import {redirectKey} from "@/utils/urlUtil";
 
 if (process.env.NODE_ENV !== 'production') {
     import('nprogress/nprogress.css');
 }
+
+let waitList = Promise.resolve();
 
 Vue.use(VueRouter);
 
@@ -16,19 +18,22 @@ const callbackURL = '/auth/mooctest/callback';
 const timeout = 2500;
 
 const showInfo = (msg, title = '提示信息') => {
-    Notification.info({
-        title: title,
-        message: msg,
-        duration: timeout,
+    waitList = waitList.then(() => {
+        Notification.info({
+            title: title,
+            message: msg,
+            duration: timeout,
+        });
     });
 };
 
-
 const showWarning = (msg, title = '警告信息') => {
-    Notification.warning({
-        title: title,
-        message: msg,
-        duration: timeout,
+    waitList = waitList.then(() => {
+        Notification.warning({
+            title: title,
+            message: msg,
+            duration: timeout,
+        });
     });
 };
 
@@ -148,10 +153,11 @@ router.beforeEach((to, from, next) => {
     } else {
         // requireAuth:可以在路由元信息指定哪些页面需要登录权限
         if (to.matched.some(record => record.meta.requiresAuth) && user) {
-
             myNext();
         } else {
             showWarning('未登录，请重新登录');
+            //登陆后到原本想去的页面
+            localStorage.setItem(redirectKey, to.fullPath);
             myNext('/login');
         }
     }

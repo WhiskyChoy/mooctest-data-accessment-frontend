@@ -38,7 +38,7 @@
                         el-button.my-button(icon="el-icon-document-delete" disabled) 检测失败
         el-pagination.my-pagination(
         @current-change="handleChangePage"
-        @size-change="loadWrits"
+        @size-change="loadTasks"
         :disabled="loading"
         :current-page.sync="currentPage"
         :page-sizes="pageSizes"

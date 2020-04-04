@@ -3,6 +3,7 @@ import qs from 'qs'
 import {Notification} from 'element-ui'
 import router from '@/router'
 import {getLocalUser, logout} from "@/utils/userUtil";
+import {redirectKey} from "@/utils/urlUtil";
 
 const timeout = 2500;
 let waitList = Promise.resolve();
@@ -17,7 +18,7 @@ let waitList = Promise.resolve();
  * @param {String} title 标题，默认为错误提示
  */
 const showError = (msg, title = '错误提示') => {
-    waitList = waitList.then(()=>{
+    waitList = waitList.then(() => {
         Notification.error({
             title: title,
             message: msg,
@@ -28,14 +29,15 @@ const showError = (msg, title = '错误提示') => {
 
 /**
  * 跳转登录页
- * 携带当前页面路由，以期在登录页面完成登录后返回当前页面
+ * 携带当前页面路由，以期在登录页面完成登录后返回当前页面(这里不是，第三方授权要暂存本地存储)
  */
 const toLogin = () => {
+    localStorage.setItem(redirectKey, router.currentRoute.fullPath); //要先存储，不然路径就没了
     router.replace({
         path: '/login',
-        query: {
-            redirect: router.currentRoute.fullPath
-        }
+        // query: {
+        //     redirect: router.currentRoute.fullPath
+        // }
     });
 };
 

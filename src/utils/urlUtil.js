@@ -6,4 +6,7 @@ const getBaseURL = () => {
     return prefix + mid;
 };
 
-export {getBaseURL}
+const redirectKey = 'loginRedirect';
+
+
+export {getBaseURL,redirectKey}
