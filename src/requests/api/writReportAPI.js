@@ -9,11 +9,11 @@ const getWritReport = async (writId) => {
     if (process.env.VUE_APP_AJAX_VERSION === 'v0') {
         const {default: testReport} = await import('@/fake_data/json/test_report');
         const {fakeGetWrits} = await import('@/fake_data/js/dataPool');
-        const writs = fakeGetWrits({writId});
-        if (!writs || writs.length === 0) {
+        const data = fakeGetWrits({writId});
+        if (!data || !data.result || data.result.length === 0) {
             return;
         }
-        const writ = writs[0];
+        const writ = data.result[0];
         testReport.title = writ.title;
         testReport.time = writ.time;
         //模拟等一会

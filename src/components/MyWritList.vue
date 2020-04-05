@@ -118,6 +118,20 @@
             this.writs = [];
         }
 
+        removeByIndex(index) {
+            if (index < this.writs.length) {
+                this.writs[index].checked = false;
+                this.writs.splice(index, 1);
+                return true;
+            }
+            return false;
+        }
+
+        getByIndex(index){
+            if (index < this.writs.length) {
+                return this.writs[index];
+            }
+        }
     }
 
     export default {
@@ -194,8 +208,15 @@
                     } else {
                         this.checkedCache.remove(writ) && this.checkedCounter--;
                     }
+                    this.checkAll = this.checkedCounter === this.writs.length;
                     this.isIndeterminate = this.checkedCounter > 0 && this.checkedCounter < this.writs.length;
                 }
+            },
+            removeByIndex(index) {
+                this.checkedCache.removeByIndex(index) && this.checkedCounter--;
+                this.checkAll = this.checkedCounter === this.writs.length;
+                this.isIndeterminate = this.checkedCounter > 0 && this.checkedCounter < this.writs.length;
+                this.handleSelectionChange();
             },
             async updateStatus(writId, index) {
                 this.writs[index].fetching = true;
@@ -211,15 +232,22 @@
                 const data = await this.$api.getWrits({nameStr, startDate, endDate, taskId, pageIndex, pageSize});
                 if (data && data.result) {
                     let tempCounter = 0;
-                    data.result.forEach(item => {
-                        const checked = this.checkedCache.indexOf(item) !== -1;
-                        if (checked) {
+                    for(let i = 0; i < data.result.length; i++){
+                        let item = data.result[i];
+                        const index = this.checkedCache.indexOf(item);
+                        const found = index !== -1;
+                        if (found) {
+                            let original = this.checkedCache.getByIndex(index);
+                            //找到了就更新cache状态，置为cache里的
+                            original.status = item.status;
+                            original.fetching = item.fetching || false;
+                            data.result[i] = original;
                             tempCounter++;
+                        }else{
+                            item.checked = false;
+                            item.fetching = false;
                         }
-                        item.checked = checked;
-                        item.fetching = false;
-                        item.time = new Date(item.time);
-                    });
+                    }
                     this.writs = data.result;
                     this.checkedCounter = tempCounter;
                     this.total = data.total || 0;

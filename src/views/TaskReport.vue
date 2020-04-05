@@ -213,17 +213,17 @@
         }
     }
 
-    .my-list-dialog /deep/ .el-dialog{
-        width: 70%!important;
+    .my-list-dialog /deep/ .el-dialog {
+        width: 70% !important;
         min-width: 300px;
     }
 
-    .my-list-dialog /deep/ .el-dialog__body{
+    .my-list-dialog /deep/ .el-dialog__body {
         height: 500px;
     }
 
-    .my-list-dialog /deep/.my-writ-or-task-table{
-        height: 500px!important;
+    .my-list-dialog /deep/ .my-writ-or-task-table {
+        height: 500px !important;
     }
 
     .my-list-dialog /deep/ .my-writ-or-task-table .el-tag span {
@@ -297,4 +297,19 @@
         justify-content: center;
         align-items: center;
     }
+
+    .my-table-container {
+        width: 100%;
+
+        /deep/ .my-writ-or-task-table {
+            max-height: 450px;
+            margin-bottom: 1rem;
+        }
+
+        /deep/ .my-pagination {
+            display: flex;
+            justify-content: center;
+        }
+    }
+
 </style>

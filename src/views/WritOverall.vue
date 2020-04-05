@@ -11,6 +11,7 @@
                         el-button(type="primary" size="small" icon="el-icon-search" @click="handleSearch" :disabled="noMsg")
                         el-button(type="primary" size="small" icon="el-icon-refresh" @click="handleRefresh")
                     el-button.my-upload(@click="handleUpload" size="medium") 上传文书
+                    el-button.my-check-selct(@click="handleCheckSelect" :disabled="selectData.length===0" size="medium") 查看已选
                     el-badge.my-badge(:value="selectData.length" :hidden="selectData.length===0" :max="maxBadgeNum")
                         el-button(:disabled="selectData.length===0" @click="handleCreateTask" size="medium") 创建任务
         div.center-view-body
@@ -21,7 +22,7 @@
             :start-date="searchTime[0]"
             :end-date="searchTime[1]")
         //设置:modal-append-to-body="false" :append-to-body="true" 这样dialog插入body，modal插入dialog的父元素（其实就是两者平级在body）
-        el-dialog(v-draggable title="提交前的配置" :visible.sync="dialogVisible" center :modal-append-to-body="false" :append-to-body="true" top="6vh")
+        el-dialog(v-draggable title="提交前的配置" :visible.sync="dialogSubmitVisible" center :modal-append-to-body="false" :append-to-body="true" top="6vh")
             div.dialog-body
                 el-input.task-title-container(v-if="submitType===SUBMIT_TYPE.TASK" placeholder="请输入任务名称" v-model="title" prefix-icon="el-icon-edit-outline" clearable)
                 el-row(:gutter="10").default-config-switch-container
@@ -31,13 +32,18 @@
                         el-switch(v-model="useDefaultConfig")
                 my-config(v-if="!useDefaultConfig" ref="writConfig")
             div(slot="footer")
-                el-button(@click="dialogVisible=false") 取消
+                el-button(@click="dialogSubmitVisible=false") 取消
                 el-button(type="primary" @click="handleSubmit" :disabled="submitType===SUBMIT_TYPE.TASK&&!title") 提交
+        el-dialog(v-draggable title="已选择的文书" :visible.sync="dialogSelectVisible" center :modal-append-to-body="false" :append-to-body="true" top="6vh")
+            div.dialog-body
+                my-select-writ-list(:result="batchSelectData" :total="selectData.length" ref="selectWritList" @update-result="updateResult" @remove-select="removeSelect")
+
 </template>
 
 <script>
     import MyWritList from "@/components/MyWritList";
     import MyConfig from "@/components/MyConfig";
+    import MySelectWritList from "@/components/MySelectWritList";
 
     const SUBMIT_TYPE = {
         SINGLE: 'single',
@@ -46,7 +52,7 @@
 
     export default {
         name: "WritOverall",
-        components: {MyConfig, MyWritList},
+        components: {MySelectWritList, MyConfig, MyWritList},
         computed: {
             noMsg() {
                 return !(this.searchName || (this.searchTime && this.searchTime.length > 0))
@@ -54,11 +60,13 @@
         },
         data() {
             return {
-                maxBadgeNum: 10,
+                maxBadgeNum: 99,
                 searchName: '',
                 searchTime: [],
                 selectData: [],
-                dialogVisible: false,
+                batchSelectData: [],
+                dialogSubmitVisible: false,
+                dialogSelectVisible: false,
                 useDefaultConfig: true,
                 currentWritId: null,
                 currentWritIndex: null,
@@ -68,6 +76,18 @@
             }
         },
         methods: {
+            updateResult(pageIndex, pageSize) {
+                const start = (pageIndex - 1) * pageSize;
+                this.batchSelectData = this.selectData.slice(start, start + pageSize)
+            },
+            removeSelect(acutalIndex) {
+                this.$refs['overallWritList'].removeByIndex(acutalIndex);
+            },
+            async handleCheckSelect() {
+                this.dialogSelectVisible = true;
+                await this.$nextTick();
+                this.$refs['selectWritList'].reset();
+            },
             handleSelectionChange(val) {
                 this.selectData = val;
             },
@@ -85,12 +105,12 @@
             handleTest(writId, $index) {
                 this.currentWritId = writId;
                 this.currentWritIndex = $index;
-                this.dialogVisible = true;
+                this.dialogSubmitVisible = true;
                 this.submitType = SUBMIT_TYPE.SINGLE;
             },
             handleCreateTask() {
                 this.submitType = SUBMIT_TYPE.TASK;
-                this.dialogVisible = true;
+                this.dialogSubmitVisible = true;
             },
             handleSubmit() {
                 if (this.submitType === SUBMIT_TYPE.SINGLE) {
@@ -111,7 +131,7 @@
                     this.currentWritId = null;
                     this.currentWritIndex = null;
                 }
-                this.dialogVisible = false;
+                this.dialogSubmitVisible = false;
             },
             getSendWrits() {
                 let result = [];
@@ -129,7 +149,7 @@
                     this.selectData.forEach(item => item.status = "waiting");
                     this.$refs['overallWritList'].clearSelection();
                 }
-                this.dialogVisible = false;
+                this.dialogSubmitVisible = false;
             }
         }
     }

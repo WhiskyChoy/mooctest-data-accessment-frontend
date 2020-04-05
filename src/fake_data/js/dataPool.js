@@ -1,7 +1,6 @@
 import rawCourts from '../json/courts'
 
-if (!(localStorage.getItem('writs') && localStorage.getItem('tasks'))) {
-
+const init = () => {
     const getRandomNum = (startNum, endNum) => {
         return startNum + Math.floor((endNum - startNum) * Math.random());
     };
@@ -133,7 +132,7 @@ if (!(localStorage.getItem('writs') && localStorage.getItem('tasks'))) {
     }
 
     const additionalTask = {
-        id: getRandomNum(0, 10000).toString().toString(),
+        id: getRandomNum(0, 10000).toString(),
         title: '测试多地裁判文书合集',
         time: new Date().getTime(),
         length: 495,
@@ -152,23 +151,28 @@ if (!(localStorage.getItem('writs') && localStorage.getItem('tasks'))) {
 
     localStorage.setItem('writs', JSON.stringify(writs));
     localStorage.setItem('tasks', JSON.stringify(tasks));
-}
+};
 
 const fakeGetWrits = ({nameStr, startDate, endDate, taskId, writId} = {}) => {
+    if (!(localStorage.getItem('writs') && localStorage.getItem('tasks'))) {
+        init();
+    }
+
     const writs = JSON.parse(localStorage.getItem('writs'));
     const tasks = JSON.parse(localStorage.getItem('tasks'));
 
     if (writId) {
         for (let writ of writs) {
             if (writId === writ.id) {
-                return [writ];
+                return {result: [writ]};
             }
         }
     }
+
     if (taskId) {
         for (let task of tasks) {
             if (taskId === task.id) {
-                return task.insideWrits;
+                return {result: task.insideWrits, total: task.insideWrits.length};
             }
         }
     }
@@ -206,12 +210,15 @@ const fakeGetWrits = ({nameStr, startDate, endDate, taskId, writId} = {}) => {
 
 
 const fakeGetTasks = ({nameStr, startDate, endDate, taskId}) => {
+    if (!(localStorage.getItem('writs') && localStorage.getItem('tasks'))) {
+        init();
+    }
     const tasks = JSON.parse(localStorage.getItem('tasks'));
 
     if (taskId) {
         for (let task of tasks) {
             if (taskId === task.id) {
-                return [task];
+                return {result: [task]};
             }
         }
     }

@@ -8,13 +8,13 @@ import {wait} from "@/utils/loadWaiter";
 const getTaskReport = async (taskId) => {
     if (process.env.VUE_APP_AJAX_VERSION === 'v0') {
         //模拟等一会
-        const {default:testTaskReport} = await import('@/fake_data/json/test_task_report');
+        const {default: testTaskReport} = await import('@/fake_data/json/test_task_report');
         const {fakeGetTasks} = await import('@/fake_data/js/dataPool');
-        const tasks = fakeGetTasks({taskId});
-        if(!tasks||tasks.length===0){
+        const data = fakeGetTasks({taskId});
+        if (!data || !data.result || data.result.length === 0) {
             return;
         }
-        const task = tasks[0];
+        const task = data.result[0];
         testTaskReport.task_name = task.title;
         testTaskReport.task_time = task.time;
         testTaskReport.writ_num = task.length;
