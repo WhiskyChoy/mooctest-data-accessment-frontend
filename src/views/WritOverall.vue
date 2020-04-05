@@ -4,8 +4,8 @@
             h1.center-view-title 我上传的文书
             div.tool-container
                 div.search-container
-                    el-input.input-searcher(v-model="searchName" prefix-icon="el-icon-edit-outline" clearable placeholder="文书名称（部分）")
-                    el-date-picker.date-searcher(v-model="searchTime" type="datetimerange" :clearable="false" start-placeholder="开始时间" end-placeholder="结束时间")
+                    el-input.input-searcher(v-model="searchName" prefix-icon="el-icon-edit-outline" clearable placeholder="文书名称（部分）" @keyup.enter.native="handleSearch" @clear="handleSearch")
+                    el-date-picker.date-searcher(v-model="searchTime" type="datetimerange" :clearable="false" start-placeholder="开始时间" end-placeholder="结束时间" @change="handleSearch")
                 div.tool-button-container
                     el-button-group
                         el-button(type="primary" size="small" icon="el-icon-search" @click="handleSearch" :disabled="noMsg")
@@ -91,12 +91,14 @@
             handleSelectionChange(val) {
                 this.selectData = val;
             },
-            handleSearch() {
+            async handleSearch() {
+                await this.$nextTick();
                 this.$refs['overallWritList'].loadWrits();
             },
-            handleRefresh() {
+            async handleRefresh() {
                 this.searchName = '';
                 this.searchTime = [];
+                await this.$nextTick();
                 this.$refs['overallWritList'].refreshWrits();
             },
             handleUpload() {
