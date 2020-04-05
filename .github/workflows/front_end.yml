@@ -3,6 +3,7 @@ name: frontend build and deploy
 on:
   push:
     paths:
+    - '!api_description'
     - '**'
     branches:
     - master

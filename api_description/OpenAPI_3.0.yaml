@@ -1,0 +1,513 @@
+openapi: 3.0.0
+info:
+  description: This is a product for MoocTest. You can find more about MoocTest at [mooctest.net](http://mooctest.net).
+  version: 1.0.0
+  title: MoocTest Data Assessment - customized for civil judgment document
+  contact:
+    email: 161250002@smail.nju.edu.cn
+  license:
+    name: Closed Source
+servers: 
+  - url: http://localhost:5000
+    description: 开放接口的服务器
+tags:
+- name: writ
+  description: 所有与文书相关的接口.
+- name: writ-report
+  description: 所有单篇文书相关的接口
+- name: task
+  description: 所有与任务相关的接口
+- name: task-report
+  description: 所有任务总结报告相关的接口
+- name: default-config
+  description: 所有与默认配置有关的接口
+- name: user
+  description: 所有与用户相关的接口
+paths:
+  /writ:
+    post:
+      tags:
+      - writ
+      summary: 文件上传、图片上传
+      operationId: postWrit
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+      responses:
+        200:
+          description: 文件上传成功
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type:
+                    string
+        500:
+          description: 服务器内部出错
+          content:
+            application/json:
+              schema:
+                type: string
+    # TODO 加了pageIndex和pageSize, 返回结果本来是数组，现在包装成{result:原来的数组, total:除去页面参数查询到的数量}
+    get:
+      tags:
+      - writ
+      summary: 根据文书名或时间获取文件列表
+      # TODO 这里改了，getWrit->getWrits
+      operationId: getWrits
+      parameters:
+      - name: name
+        description: 文书名的一部分，如果查询字段为空，为全匹配，使用like检索
+        in: query
+        schema:
+          type: string
+        required: false
+      - name: startTime
+        description: 起始时间（晚于）
+        in: query
+        schema:
+          type: integer
+          format: int64
+        required: false
+      - name: endTime
+        description: 结束时间（早于）
+        in: query
+        schema:
+          type: integer
+          format: int64
+        required: false
+      - name: taskId
+        description: 所属的任务id
+        in: query
+        schema:
+          type: string
+        required: false
+      - name: pageIndex
+        description: 第几页（从1开始，没有指明就返回第一页）
+        in: query
+        schema:
+          type: integer
+        required: false
+      - name: pageSize
+        description: 页面大小（没有指明就是任意大）
+        in: query
+        schema:
+          type: integer
+        required: false
+      responses:
+        200:
+          description: 正常查询
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: array
+                    description: 按指定条件查询到的文书
+                    items:
+                      $ref: '#/components/schemas/writ'
+                  total:
+                    description: 除去页面相关参数查询到的所有数据的数量
+                    type: number
+
+  /writ/{writ-id}/status:
+    get:
+      tags:
+      - writ
+      summary: 获得一篇已上传文书的状态信息
+      operationId: getWritStatus
+      parameters:
+      - name: 'writ-id'
+        in: path
+        required: true
+        description: 文书的id
+        schema:
+          type: string
+      responses:
+        200:
+          description: 查到该文书了
+          content:
+            application/json:
+              schema:
+                # json是可以只有一个字符串/一个布尔值/一个数字/一个数组的，不一定要是一个对象
+                $ref: '#/components/schemas/writ-status'
+        404:
+          description: 该文书不存在
+
+
+
+  /writ-report:
+    post:
+      tags:
+      - 'writ-report'
+      summary: 发起生成单篇报告的请求
+      operationId: postWritReport
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/report-config'
+      responses:
+        200:
+          description: 提交成功
+
+  /writ-report/{writ-id}:
+    get:
+      tags:
+      - 'writ-report'
+      summary: 拿取报告。
+      operationId: getWritReport
+      parameters:
+      - name: 'writ-id'
+        required: true
+        description: 文书的id，由于一篇文书只有一篇报告，这里用文书id拿去报告，本来应该用writ-report-id的
+        schema:
+          type: string
+        in: path
+      responses:
+        200:
+          description: 查到对应报告
+
+  # TODO 加了pageIndex和pageSize, 返回结果本来是数组，现在包装成{result:原来的数组, total:除去页面参数查询到的数量}
+  /task:
+    get:
+      tags:
+      - task
+      summary: 获取任务列表的请求
+      operationId: getTasks
+      parameters:
+      - name: name
+        description: 任务名的一部分，如果查询字段为空，为全匹配，使用like检索
+        in: query
+        schema:
+          type: string
+        required: false
+      - name: startTime
+        description: 起始时间（晚于）
+        in: query
+        schema:
+          type: integer
+          format: int64
+        required: false
+      - name: endTime
+        description: 结束时间（早于）
+        in: query
+        schema:
+          type: integer
+          format: int64
+        required: false
+      - name: pageIndex
+        description: 第几页（从1开始，没有指明就返回第一页）
+        in: query
+        schema:
+          type: integer
+        required: false
+      - name: pageSize
+        description: 页面大小（没有指明就是任意大）
+        in: query
+        schema:
+          type: integer
+        required: false
+      responses:
+        200:
+          description: 正常查询
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: array
+                    description: 按指定条件查询到的任务
+                    items:
+                      $ref: '#/components/schemas/task'
+                  total:
+                    description: 除页面相关参数得到的查询结果总数
+                    type: number
+    post:
+      tags:
+      - task
+      summary: 发起任务的请求
+      operationId: postTask
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/task-config'
+      responses:
+        200:
+          description: 提交成功
+
+  # TODO 新增
+  /task/{task-id}/status:
+    get:
+      tags:
+      - task
+      summary: 获得一篇已创建任务的状态信息
+      operationId: getTaskStatus
+      parameters:
+      - name: 'task-id'
+        in: path
+        required: true
+        description: 任务的id
+        schema:
+          type: string
+      responses:
+        200:
+          description: 查到该任务了
+          content:
+            application/json:
+              schema:
+                # json是可以只有一个字符串/一个布尔值/一个数字/一个数组的，不一定要是一个对象
+                $ref: '#/components/schemas/task-status'
+        404:
+          description: 该任务不存在
+
+  /task-report/{task-id}:
+    get:
+      tags:
+      - 'task-report'
+      summary: 拿取总体报告
+      operationId: getTaskReport
+      parameters:
+      - name: 'task-id'
+        required: true
+        description: 任务的id
+        schema:
+          type: string
+        in: path
+      responses:
+        200:
+          description: 查到对应报告
+
+
+  # TODO 新增
+  /task-report/{task-id}/json:
+    get:
+      tags:
+      - 'task-report'
+      summary: 获取JSON形式报告的下载地址
+      operationId: getTaskReportJSON
+      parameters:
+      - name: 'task-id'
+        required: true
+        description: 任务的id
+        schema:
+          type: string
+        in: path
+      responses:
+        200:
+          description: 提供下载地址
+          content:
+            application/json:
+              schema:
+                type: string
+                description: 该JSON的下载地址
+
+  /default-config:
+    get:
+      tags:
+      - 'default-config'
+      summary: 获取默认配置
+      operationId: getDefaultConfig
+      responses:
+        200:
+          description: 拿到默认配置
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/config'
+    put:
+      tags:
+      - 'default-config'
+      summary: 提交/更改默认配置（idempotent的，只是覆盖，不会产生新的）
+      operationId: putDefaultConfig
+      requestBody:
+        description: 各种默认配置项
+        content:
+          application/json:
+            schema:
+              type: object
+              description: key是config-item的value，value是指定的config-type的值
+      responses:
+        200:
+          description: 成功提交配置项
+
+  # TODO 新增一个用户接口
+  /user:
+    get:
+      tags:
+      - user
+      summary: 用户登录
+      operationId: getUser
+      parameters:
+      - name: code
+        required: true
+        in: query
+        description: 用于向慕测获取用户信息等的授权码
+        schema:
+         type: string
+      responses:
+        200:
+          description: 成功获得用户信息，并且视作登录了系统
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+
+components:
+  securitySchemes:
+    bearerAuth:            # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT    # optional, arbitrary value for documentation purposes
+  schemas:
+    writ-status:
+      type: string
+      description: 文书当前所处的状态，分别是未检测，等待检测，检测中，检测完成，格式错误，意外中止
+      # TODO ongoing 拼错了
+      enum: [untested, waiting, ongoing, finished, wrong, accident]
+    task-status:
+      type: string
+      description: 任务当前所处的状态，分别是等待检测，检测中，检测完成，检测失败
+      enum: [waiting, ongoing, finished, failed]
+    config-component:
+      type: string
+      description: 配置项的展现方式
+      enum: [radio, checkbox, input, select, switch, slider, time, date, datetime]
+    config-type:
+      type: string
+      description: 配置型的类型
+      enum: [boolean, number, string]
+    user:
+      type: object
+      properties:
+        selfToken:
+          type: string
+          description: 登录本系统使用的token
+        name:
+          type: string
+          description: 用户的名称
+        expires:
+          type: integer
+          description: 过期时对应的时间戳
+    report-config:
+      required:
+      - useDefault
+      type: object
+      properties:
+        #  TODO 这里改成useDefault了，default在JS里是保留字，不好解构
+        useDefault:
+          type: boolean
+          description: 是否使用默认配置
+        config:
+          type: array
+          items:
+            $ref: '#/components/schemas/config-item'
+        writId:
+          type: string
+          description: 要生成单篇报告的文书的Id
+    task-config:
+      type: object
+      required:
+      - useDefault
+      - writs
+      properties:
+        title:
+          type: string
+          description: 任务的名称
+        useDefault:
+          type: boolean
+          description: 是否使用默认配置
+        config:
+          type: array
+          items:
+            $ref: '#/components/schemas/config-item'
+        writs:
+          type: array
+          items:
+            type: string
+            description: 文书的id
+    task:
+      type: object
+      properties:
+        id:
+          type: string
+          description: 任务的id
+        title:
+          type: string
+          description: 新建任务时的任务名（为和writ保持统一就叫title了）
+        time:
+          type: integer
+          format: int64
+          description: 时间戳，从1970年1月1日开始的毫秒数，可以是负数
+        length:
+          type: integer
+          format: int32
+          description: 任务的数量
+        status:
+          $ref: '#/components/schemas/task-status'
+  
+    writ:
+      type: object
+      properties:
+        id:
+          type: string
+          description: 文书的id
+        # TODO 注意查用的字段是name.回用的字段是title（按name查询title）
+        title:
+          type: string
+          description: 文书的文件名（和writ-report里面的不一样）
+        time:
+          type: integer
+          format: int64
+          description: 时间戳，从1970年1月1日开始的毫秒数，可以是负数
+        length:
+          type: integer
+          format: int32
+          description: 文书的长度
+        status:
+          $ref: '#/components/schemas/writ-status'
+    config-item:
+      type: object
+      required:
+      - value
+      - label
+      - compnent
+      - type
+      properties:
+        value:
+          type: string
+          description: 传给后端的值
+        label:
+          type: string
+          description: 要显示在网页上的字符
+        component:
+          $ref: '#/components/schemas/config-component'
+        type:
+          $ref: '#/components/schemas/config-type'
+        result:
+          description: 目前该配置项的存储结果
+        description:
+          type: string
+          description: 配置项的描述
+    config:
+      type: array
+      items:
+        $ref: '#/components/schemas/config-item'
+
+
+security:
+- bearerAuth: []
+
+
