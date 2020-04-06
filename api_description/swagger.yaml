@@ -383,7 +383,7 @@ definitions:
       config:
         type: array
         items:
-          $ref: '#/definitions/config-item'
+          type: object
       writId:
         type: string
         description: 要生成单篇报告的文书的Id
@@ -402,7 +402,7 @@ definitions:
       config:
         type: array
         items:
-          $ref: '#/definitions/config-item'
+          type: object
       writs:
         type: array
         items:

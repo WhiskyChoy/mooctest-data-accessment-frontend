@@ -411,7 +411,7 @@ components:
         config:
           type: array
           items:
-            $ref: '#/components/schemas/config-item'
+            type: object
         writId:
           type: string
           description: 要生成单篇报告的文书的Id
@@ -430,7 +430,7 @@ components:
         config:
           type: array
           items:
-            $ref: '#/components/schemas/config-item'
+            type: object
         writs:
           type: array
           items:
