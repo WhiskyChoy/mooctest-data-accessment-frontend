@@ -22,26 +22,26 @@
                                         div.report-long-indicator 任务名称：
                                         div.report-long {{received_data.task_name}}
                                 el-col(:sm="24" :lg="6") 单篇均分：
-                                    span.score-total {{received_data.score_avg.toFixed(1)}}
+                                    span.score-total {{received_data.score_avg&&received_data.score_avg.toFixed&&received_data.score_avg.toFixed(1)||'NaN'}}
                             el-row(:gutter="10")
                                 el-col(:sm="24" :lg="18")
                                     div.report-long-container
                                         div.report-long-indicator 生成时间：
-                                        div.report-long {{new Date(received_data.task_time).toLocaleString()}}
+                                        div.report-long {{received_data.task_time&&new Date(received_data.task_time).toLocaleString()||'缺少数据'}}
                                 el-col(:sm="24" :lg="6") 主观均分：
-                                    span.score-total {{received_data.subject_score_avg.toFixed(1)}}
+                                    span.score-total {{received_data.subject_score_avg&&received_data.subject_score_avg.toFixed&&received_data.subject_score_avg.toFixed(1)||'NaN'}}
                             el-row(:gutter="10")
                                 el-col(:sm="24" :lg="18")
                                     div.report-long-container
                                         div.report-long-indicator 文书数量：
-                                        div.report-long {{Math.ceil(received_data.writ_num)}}
+                                        div.report-long {{received_data.writ_num&&Math.ceil(received_data.writ_num)||'缺少数据'}}
                                 el-col(:sm="24" :lg="6") 客观均分：
-                                    span.score-total {{received_data.object_score_avg.toFixed(1)}}
+                                    span.score-total {{received_data.object_score_avg&&received_data.object_score_avg.toFixed&&received_data.object_score_avg.toFixed(1)||'NaN'}}
                             div.metrics
                                 div.report-long-container
                                     div.report-long-indicator 度量指标：
                                     div.report-long
-                                        el-tag.my-tag(v-for="metric of received_data.metrics") {{metric}}
+                                        el-tag.my-tag(v-for="metric of (received_data.metrics||[])") {{metric}}
                     el-collapse-item.indicator-container(name="sample-summary")
                         template(slot="title")
                             h3 样本概况
@@ -59,7 +59,7 @@
                                 template(slot="title")
                                     h4 文书时间分布
                                 div.indicator-body.simple-center
-                                    my-simple-distribution(title="文书时间分布" :raw-data="received_data.time_distribution")
+                                    my-simple-distribution(title="文书时间分布" v-if="received_data.time_distribution" :raw-data="received_data.time_distribution")
                     el-collapse-item.indicator-container(name="test-result")
                         template(slot="title")
                             h3 度量结果
@@ -74,7 +74,7 @@
                                 template(slot="title")
                                     h4 对比标准数据集
                                 div.indicator-body.simple-center
-                                    my-simple-distribution(title="得分对比" :raw-data="received_data.vs_standard_distribution")
+                                    my-simple-distribution(title="得分对比" v-if="received_data.vs_standard_distribution" :raw-data="received_data.vs_standard_distribution")
         el-dialog.my-list-dialog(v-draggable :title="($safeFetch(received_data,'task_name','')||(task_id+'号'))+'任务文书列表'"
         :visible.sync="dialogVisible" center
         :modal-append-to-body="false"

@@ -21,19 +21,19 @@
                                         div.report-long-indicator 文书标题：
                                         div.report-long {{received_data.title}}
                                 el-col(:sm="24" :lg="6") 客观总分：
-                                    span.score-total {{received_data.object_score.toFixed(1)}}
+                                    span.score-total {{received_data.object_score&&received_data.object_score.toFixed&&received_data.object_score.toFixed(1)||'NaN'}}
                             el-row(:gutter="10")
                                 el-col(:sm="24" :lg="18")
                                     div.report-long-container
                                         div.report-long-indicator 生成时间：
                                         div.report-long {{new Date(received_data.time).toLocaleString()}}
                                 el-col(:sm="24" :lg="6") 主观总分：
-                                    span.score-total {{received_data.subject_score.toFixed(1)}}
+                                    span.score-total {{received_data.subject_score&&received_data.subject_score.toFixed&&received_data.subject_score.toFixed(1)||'NaN'}}
                             div.metrics
                                 div.report-long-container
                                     div.report-long-indicator 度量指标：
                                     div.report-long
-                                        el-tag.my-tag(v-for="metric of received_data.metrics") {{metric}}
+                                        el-tag.my-tag(v-for="metric of (received_data.metrics||[])") {{metric}}
                     el-collapse-item.indicator-container(name="objective-indicator")
                         template(slot="title")
                             h3 客观指标
@@ -43,7 +43,7 @@
                                     h4 篇章完整性
                                 div.indicator-body
                                     div.check-point-container
-                                        div.check-point(v-for="item of received_data.pzwzx")
+                                        div.check-point(v-for="item of (received_data.pzwzx||[])")
                                             div {{item.name}}
                                             i.my-info(:class="item.score===0?'el-icon-success':item.score===1?'el-icon-error':item.score===2?'el-icon-warning':'el-icon-question'")
                                                 el-collapse(v-model="subjective_active")
@@ -107,7 +107,7 @@
                                             el-col(:span="8") 整体情况
                                             el-col(:span="16")
                                                 my-progress(:score="received_data.cxjc.score" :total="received_data.cxjc.total")
-                                        el-row(:gutter="10")
+                                        el-row(:gutter="10" v-if="received_data.cxjc&&received_data.cxjc.conclusion")
                                             el-col(:span="8") 抄袭推测
                                             el-col(:span="16")
                                                 span(style="color:red" v-if="received_data.cxjc.conclusion") {{received_data.cxjc.conclusion}}
