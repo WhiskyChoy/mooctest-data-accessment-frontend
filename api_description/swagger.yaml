@@ -91,6 +91,11 @@ paths:
         in: query
         type: integer
         required: false
+      - name: status
+        description: 文书的状态
+        in: query
+        type: string
+        required: false
       responses:
         200:
           description: 正常查询
@@ -198,6 +203,11 @@ paths:
         description: 页面大小（没有指明就是任意大）
         in: query
         type: integer
+        required: false
+      - name: status
+        description: 任务的状态
+        in: query
+        type: string
         required: false
       responses:
         200:
