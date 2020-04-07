@@ -46,14 +46,15 @@ const getTaskStatus = async (taskId) => {
  * @param{Date} endDate
  * @param{Number} pageIndex
  * @param{Number} pageSize
+ * @param{String} status
  * @returns {Promise<*>}
  */
-const getTasks = async ({nameStr, startDate, endDate, pageIndex, pageSize} = {}) => {
+const getTasks = async ({nameStr, startDate, endDate, pageIndex, pageSize, status} = {}) => {
     if (process.env.VUE_APP_AJAX_VERSION === 'v0') {
         const {fakeGetTasks} = await import('@/fake_data/js/dataPool');
         //模拟等一会
         await wait(1000);
-        return fakeGetTasks({nameStr, startDate, endDate, pageIndex, pageSize});
+        return fakeGetTasks({nameStr, startDate, endDate, pageIndex, pageSize, status});
     }
     const name = nameStr ? nameStr : '';
     const startTime = startDate && startDate.getTime ? startDate.getTime() : '';
@@ -70,7 +71,7 @@ const getTasks = async ({nameStr, startDate, endDate, pageIndex, pageSize} = {})
     // 而Promise.resolve(Promise.resolve(return_val))和Promise.resolve(await Promise.resolve(return_val))相当于是一样的
     // 本来就要等待
     //get要给params来传参
-    return http.get(URL, {params: {name, startTime, endTime, pageIndex, pageSize}});
+    return http.get(URL, {params: {name, startTime, endTime, pageIndex, pageSize, status}});
 };
 
 export {postTask, getTaskStatus, getTasks}

@@ -49,6 +49,7 @@
 
 <script>
     const pageSizes = [30, 50, 100];
+    import {taskStatusTable} from "@/utils/infoUtil";
     /*
     waiting: 任务中，等待检测
     ongoing: 检测中，等待结果
@@ -73,6 +74,10 @@
             endDate: {
                 type: Date,
                 default: null
+            },
+            status: {
+                type: String,
+                default: null
             }
         },
         beforeMount() {
@@ -83,12 +88,7 @@
         },
         data() {
             return {
-                statusTable: {
-                    waiting: '等待检测',
-                    ongoing: '在检测中',
-                    finished: '检测完成',
-                    failed: '检测失败',
-                },
+                statusTable: taskStatusTable,
                 loading: false,
                 tasks: [],
                 currentPage: 1,
@@ -107,9 +107,9 @@
                 }
                 this.tasks[index].fetching = false;
             },
-            async handleLoad(nameStr, startDate, endDate, pageIndex, pageSize) {
+            async handleLoad(nameStr, startDate, endDate, pageIndex, pageSize, status) {
                 this.loading = true;
-                const data = await this.$api.getTasks({nameStr, startDate, endDate, pageIndex, pageSize});
+                const data = await this.$api.getTasks({nameStr, startDate, endDate, pageIndex, pageSize, status});
                 if (data && data.result) {
                     data.result.forEach(item => {
                         item.fetching = false;
@@ -121,20 +121,29 @@
                 await this.$nextTick();
                 this.loading = false;
             },
-            loadTasks() {
-                this.loading = true;
-                this.currentPage = 1;
-                this.handleLoad(this.nameStr, this.startDate, this.endDate, this.currentPage, this.pageSize);
-            },
-            handleChangePage() {
+            async loadTasks() {
                 if (!this.loading) {
-                    this.handleLoad(this.nameStr, this.startDate, this.endDate, this.currentPage, this.pageSize);
+                    this.loading = true;
+                    this.currentPage = 1;
+                    await this.handleLoad(this.nameStr, this.startDate, this.endDate, this.currentPage, this.pageSize, this.status);
+                } else {
+                    this.$message.warning('请在加载结束后再检索');
                 }
             },
-            refreshTasks() {
-                this.loading = true;
-                this.currentPage = 1;
-                this.handleLoad();
+            async handleChangePage() {
+                if (!this.loading) {
+                    await this.handleLoad(this.nameStr, this.startDate, this.endDate, this.currentPage, this.pageSize, this.status);
+                }
+            },
+            async refreshTasks() {
+                if (!this.loading) {
+                    this.loading = true;
+                    this.currentPage = 1;
+                    this.pageSize = pageSizes[0];
+                    await this.handleLoad();
+                } else {
+                    this.$message.warning('请在加载结束后再刷新');
+                }
             },
             checkTaskResult(writId) {
                 this.$router.push(`/resources/task-report/${writId}`);

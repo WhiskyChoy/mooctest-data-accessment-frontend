@@ -153,7 +153,7 @@ const init = () => {
     localStorage.setItem('tasks', JSON.stringify(tasks));
 };
 
-const fakeGetWrits = ({nameStr, startDate, endDate, taskId, writId} = {}) => {
+const fakeGetWrits = ({nameStr, startDate, endDate, taskId, writId, status} = {}) => {
     if (!(localStorage.getItem('writs') && localStorage.getItem('tasks'))) {
         init();
     }
@@ -203,13 +203,22 @@ const fakeGetWrits = ({nameStr, startDate, endDate, taskId, writId} = {}) => {
             }
         }
         result = saver;
+        saver = [];
+    }
+    if (status) {
+        for (let writ of result) {
+            if (writ.status === status) {
+                saver.push(writ);
+            }
+        }
+        result = saver;
     }
 
     return {result, total: result.length};
 };
 
 
-const fakeGetTasks = ({nameStr, startDate, endDate, taskId}) => {
+const fakeGetTasks = ({nameStr, startDate, endDate, taskId, status}) => {
     if (!(localStorage.getItem('writs') && localStorage.getItem('tasks'))) {
         init();
     }
@@ -245,6 +254,15 @@ const fakeGetTasks = ({nameStr, startDate, endDate, taskId}) => {
     if (endDate) {
         for (let task of result) {
             if (task.time < endDate) {
+                saver.push(task);
+            }
+        }
+        result = saver;
+        saver = [];
+    }
+    if (status) {
+        for (let task of result) {
+            if (task.status === status) {
                 saver.push(task);
             }
         }

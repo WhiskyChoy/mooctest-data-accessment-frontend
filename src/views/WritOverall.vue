@@ -6,16 +6,20 @@
                 div.search-container
                     el-input.input-searcher(v-model="searchName" prefix-icon="el-icon-edit-outline" clearable placeholder="文书名称（部分）" @keyup.enter.native="handleSearch" @clear="handleSearch")
                     el-date-picker.date-searcher(v-model="searchTime" type="datetimerange" :clearable="false" start-placeholder="开始时间" end-placeholder="结束时间" @change="handleSearch")
+                    el-select.status-searcher( v-model="searchStatus" placeholder="按状态筛选" @change="handleSearch" clearable)
+                        el-option(v-for="item of options" :key="item.value" :label="item.label" :value="item.value")
                 div.tool-button-container
                     el-button-group
-                        el-button(type="primary" size="small" icon="el-icon-search" @click="handleSearch" :disabled="noMsg")
-                        el-button(type="primary" size="small" icon="el-icon-refresh" @click="handleRefresh")
-                    el-button.my-upload(@click="handleUpload" size="medium") 上传文书
-                    el-button.my-check-selct(@click="handleCheckSelect" :disabled="selectData.length===0" size="medium") 查看已选
+                        el-button(type="primary" size="small" icon="el-icon-search" @click="handleSearch" :disabled="noMsg||loading")
+                        el-button(size="small" icon="el-icon-refresh" @click="handleRefresh" :disabled="loading")
+                        el-button(size="small" icon="el-icon-upload2" @click="handleUpload")
                     el-badge.my-badge(:value="selectData.length" :hidden="selectData.length===0" :max="maxBadgeNum")
-                        el-button(:disabled="selectData.length===0" @click="handleCreateTask" size="medium") 创建任务
+                        el-button-group
+                            el-button.my-check-select(@click="handleCheckSelect" :disabled="selectData.length===0" size="small" icon="el-icon-view")
+                            el-button(:disabled="selectData.length===0" @click="handleCreateTask" size="small") 创建任务
         div.center-view-body
             my-writ-list(ref="overallWritList"
+            :status="searchStatus"
             @handle-test="handleTest"
             @selection-change="handleSelectionChange"
             :name-str="searchName"
@@ -44,6 +48,7 @@
     import MyWritList from "@/components/MyWritList";
     import MyConfig from "@/components/MyConfig";
     import MySelectWritList from "@/components/MySelectWritList";
+    import {writStatusList} from "@/utils/infoUtil";
 
     const SUBMIT_TYPE = {
         SINGLE: 'single',
@@ -55,7 +60,7 @@
         components: {MySelectWritList, MyConfig, MyWritList},
         computed: {
             noMsg() {
-                return !(this.searchName || (this.searchTime && this.searchTime.length > 0))
+                return !(this.searchName || (this.searchTime && this.searchTime.length > 0) || this.searchStatus)
             }
         },
         data() {
@@ -72,7 +77,10 @@
                 currentWritIndex: null,
                 submitType: SUBMIT_TYPE.TASK,
                 title: '',
-                SUBMIT_TYPE
+                SUBMIT_TYPE,
+                options: writStatusList,
+                searchStatus: null,
+                loading: false
             }
         },
         methods: {
@@ -93,13 +101,17 @@
             },
             async handleSearch() {
                 await this.$nextTick();
-                this.$refs['overallWritList'].loadWrits();
+                this.loading = true;
+                await this.$refs['overallWritList'].loadWrits();
+                this.loading = false;
             },
             async handleRefresh() {
                 this.searchName = '';
                 this.searchTime = [];
                 await this.$nextTick();
-                this.$refs['overallWritList'].refreshWrits();
+                this.loading = true;
+                await this.$refs['overallWritList'].refreshWrits();
+                this.loading = false;
             },
             handleUpload() {
                 this.$router.push('/resources/writ-upload');
@@ -163,6 +175,7 @@
     .tool-container {
         display: flex;
         justify-content: center;
+        align-items: center;
         flex-direction: row;
 
         .search-container {
@@ -183,11 +196,17 @@
                     display: none;
                 }
             }
+            .status-searcher {
+                width: 150px !important;
+            }
         }
 
         .tool-button-container {
-            .my-badge, .my-upload {
+            .my-badge{
                 margin-left: 10px;
+                /deep/ .el-badge__content {
+                    z-index: 1 !important;
+                }
             }
         }
     }
@@ -196,7 +215,7 @@
         margin-top: @navHeight+@reportHeaderMargin*2+10px+40px !important;
     }
 
-    @media screen and (max-width: 1000px), screen and (orientation: portrait) {
+    @media screen and (max-width: 1200px), screen and (orientation: portrait) {
         .center-view-body {
             margin-top: @navHeight+@reportHeaderMargin*2+10px+40px+40px+15px !important;
         }

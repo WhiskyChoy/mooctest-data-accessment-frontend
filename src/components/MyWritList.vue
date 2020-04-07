@@ -75,6 +75,7 @@
     accident: 意外中断，点击重试
      */
     import {getBaseURL} from "@/utils/urlUtil";
+    import {writStatusTable} from "@/utils/infoUtil";
 
     const pageSizes = [30, 50, 100];
 
@@ -127,7 +128,7 @@
             return false;
         }
 
-        getByIndex(index){
+        getByIndex(index) {
             if (index < this.writs.length) {
                 return this.writs[index];
             }
@@ -156,6 +157,10 @@
             taskId: {
                 type: String,
                 default: null
+            },
+            status: {
+                type: String,
+                default: null
             }
         },
         beforeMount() {
@@ -166,14 +171,7 @@
         },
         data() {
             return {
-                statusTable: {
-                    untested: '尚未检测',
-                    waiting: '等待检测',
-                    ongoing: '在检测中',
-                    finished: '检测完成',
-                    wrong: '解析错误',
-                    accident: '意外中断',
-                },
+                statusTable: writStatusTable,
                 loading: false,
                 writs: [],
                 checkedCache: new WritSet(),
@@ -227,12 +225,12 @@
                 }
                 this.writs[index].fetching = false;
             },
-            async handleLoad(nameStr, startDate, endDate, taskId, pageIndex, pageSize) {
+            async handleLoad(nameStr, startDate, endDate, taskId, pageIndex, pageSize, status) {
                 this.loading = true;
-                const data = await this.$api.getWrits({nameStr, startDate, endDate, taskId, pageIndex, pageSize});
+                const data = await this.$api.getWrits({nameStr, startDate, endDate, taskId, pageIndex, pageSize, status});
                 if (data && data.result) {
                     let tempCounter = 0;
-                    for(let i = 0; i < data.result.length; i++){
+                    for (let i = 0; i < data.result.length; i++) {
                         let item = data.result[i];
                         const index = this.checkedCache.indexOf(item);
                         const found = index !== -1;
@@ -243,7 +241,7 @@
                             original.fetching = item.fetching || false;
                             data.result[i] = original;
                             tempCounter++;
-                        }else{
+                        } else {
                             item.checked = false;
                             item.fetching = false;
                         }
@@ -257,20 +255,29 @@
                 await this.$nextTick();
                 this.loading = false;
             },
-            loadWrits() {
-                this.loading = true;
-                this.currentPage = 1;
-                this.handleLoad(this.nameStr, this.startDate, this.endDate, this.taskId, this.currentPage, this.pageSize);
-            },
-            handleChangePage() {
-                if (!this.loading) {
-                    this.handleLoad(this.nameStr, this.startDate, this.endDate, this.taskId, this.currentPage, this.pageSize);
+            async loadWrits() {
+                if(!this.loading) {
+                    this.loading = true;
+                    this.currentPage = 1;
+                    await this.handleLoad(this.nameStr, this.startDate, this.endDate, this.taskId, this.currentPage, this.pageSize, this.status);
+                }else{
+                    this.$message.warning('请在加载结束后再检索');
                 }
             },
-            refreshWrits() {
-                this.loading = true;
-                this.currentPage = 1;
-                this.handleLoad();
+            async handleChangePage() {
+                if (!this.loading) {
+                    await this.handleLoad(this.nameStr, this.startDate, this.endDate, this.taskId, this.currentPage, this.pageSize, this.status);
+                }
+            },
+            async refreshWrits() {
+                if(!this.loading) {
+                    this.loading = true;
+                    this.currentPage = 1;
+                    this.pageSize = pageSizes[0];
+                    await this.handleLoad();
+                }else{
+                    this.$message.warning('请在加载结束后再检索');
+                }
             },
             checkSingleResult(writId) {
                 const url = `/resources/writ-report/${writId}`;

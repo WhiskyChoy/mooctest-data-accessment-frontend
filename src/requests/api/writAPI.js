@@ -8,13 +8,14 @@ import {wait} from "@/utils/loadWaiter";
  * @param{String} taskId
  * @param{Number} pageIndex
  * @param{Number} pageSize
+ * @param{String} status
  */
-const getWrits = async ({nameStr, startDate, endDate, taskId, pageIndex, pageSize} = {}) => {
+const getWrits = async ({nameStr, startDate, endDate, taskId, pageIndex, pageSize, status} = {}) => {
     if (process.env.VUE_APP_AJAX_VERSION === 'v0') {
         const {fakeGetWrits} = await import('@/fake_data/js/dataPool');
         //模拟等一会
         await wait(1000);
-        return fakeGetWrits({nameStr, startDate, endDate, taskId, pageIndex, pageSize});
+        return fakeGetWrits({nameStr, startDate, endDate, taskId, pageIndex, pageSize, status});
     }
     let URL;
     if (process.env.VUE_APP_AJAX_VERSION === 'v1') {
@@ -24,18 +25,18 @@ const getWrits = async ({nameStr, startDate, endDate, taskId, pageIndex, pageSiz
         URL = '/writ'
     }
     //给taskId的情况下先不给复合搜索了
-    if (taskId) {
-        return http.get(URL, {params: {taskId}});
-    }
-    const name = nameStr ? nameStr : '';
-    const startTime = startDate && startDate.getTime ? startDate.getTime() : '';
-    const endTime = endDate && endDate.getTime ? endDate.getTime() : '';
+    // if (taskId) {
+    //     return http.get(URL, {params: {taskId}});
+    // }
+    const name = nameStr || null;
+    const startTime = startDate && startDate.getTime ? startDate.getTime() : null;
+    const endTime = endDate && endDate.getTime ? endDate.getTime() : null;
     // 这里不用return await，async函数遇到返回值为Promise的情况：
     // 本来就是去掉async变成普通函数，返回Promise.resolve(return_val)
     // 而Promise.resolve(Promise.resolve(return_val))和Promise.resolve(await Promise.resolve(return_val))相当于是一样的
     // 本来就要等待
     //get要给params来传参
-    return http.get(URL, {params: {name, startTime, endTime, pageIndex, pageSize}});
+    return http.get(URL, {params: {name, startTime, endTime, taskId, pageIndex, pageSize, status}});
 };
 
 /**
