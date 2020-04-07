@@ -245,6 +245,7 @@
                             item.checked = false;
                             item.fetching = false;
                         }
+                        item.time = new Date(item.time);
                     }
                     this.writs = data.result;
                     this.checkedCounter = tempCounter;
