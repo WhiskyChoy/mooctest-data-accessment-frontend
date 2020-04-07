@@ -186,11 +186,17 @@
             }
         },
         methods: {
+            refreshCheckAll() {
+                this.checkAll = this.writs.length > 0 && this.checkedCounter === this.writs.length;
+            },
+            refreshIndeterminate() {
+                this.isIndeterminate = this.checkedCounter > 0 && this.checkedCounter < this.writs.length;
+            },
             handleCheckAllChange(val) {
                 this.writs.forEach(item => {
                     this.handleCheck(item, val)
                 });
-                this.isIndeterminate = this.checkedCounter > 0 && this.checkedCounter < this.writs.length;
+                this.refreshIndeterminate();
                 this.handleSelectionChange();
             },
             getWrit(index) {
@@ -206,14 +212,14 @@
                     } else {
                         this.checkedCache.remove(writ) && this.checkedCounter--;
                     }
-                    this.checkAll = this.checkedCounter === this.writs.length;
-                    this.isIndeterminate = this.checkedCounter > 0 && this.checkedCounter < this.writs.length;
+                    this.refreshCheckAll();
+                    this.refreshIndeterminate();
                 }
             },
             removeByIndex(index) {
                 this.checkedCache.removeByIndex(index) && this.checkedCounter--;
-                this.checkAll = this.checkedCounter === this.writs.length;
-                this.isIndeterminate = this.checkedCounter > 0 && this.checkedCounter < this.writs.length;
+                this.refreshCheckAll();
+                this.refreshIndeterminate();
                 this.handleSelectionChange();
             },
             async updateStatus(writId, index) {
@@ -227,7 +233,15 @@
             },
             async handleLoad(nameStr, startDate, endDate, taskId, pageIndex, pageSize, status) {
                 this.loading = true;
-                const data = await this.$api.getWrits({nameStr, startDate, endDate, taskId, pageIndex, pageSize, status});
+                const data = await this.$api.getWrits({
+                    nameStr,
+                    startDate,
+                    endDate,
+                    taskId,
+                    pageIndex,
+                    pageSize,
+                    status
+                });
                 if (data && data.result) {
                     let tempCounter = 0;
                     for (let i = 0; i < data.result.length; i++) {
@@ -250,18 +264,18 @@
                     this.writs = data.result;
                     this.checkedCounter = tempCounter;
                     this.total = data.total || 0;
-                    this.checkAll = this.checkedCounter === this.writs.length;
-                    this.isIndeterminate = this.checkedCounter > 0 && this.checkedCounter < this.writs.length;
+                    this.refreshCheckAll();
+                    this.refreshIndeterminate();
                 }
                 await this.$nextTick();
                 this.loading = false;
             },
             async loadWrits() {
-                if(!this.loading) {
+                if (!this.loading) {
                     this.loading = true;
                     this.currentPage = 1;
                     await this.handleLoad(this.nameStr, this.startDate, this.endDate, this.taskId, this.currentPage, this.pageSize, this.status);
-                }else{
+                } else {
                     this.$message.warning('请在加载结束后再检索');
                 }
             },
@@ -271,12 +285,12 @@
                 }
             },
             async refreshWrits() {
-                if(!this.loading) {
+                if (!this.loading) {
                     this.loading = true;
                     this.currentPage = 1;
                     this.pageSize = pageSizes[0];
                     await this.handleLoad();
-                }else{
+                } else {
                     this.$message.warning('请在加载结束后再检索');
                 }
             },
