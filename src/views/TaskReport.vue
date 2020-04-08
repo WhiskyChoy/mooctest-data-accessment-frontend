@@ -152,7 +152,7 @@
                 this.dialogVisible = true;
                 this.year = null;
                 this.province = province;
-                this.dialogTitle = this.getTaskTitle() + '任务中' + province + '省份的文书';
+                this.dialogTitle = this.getTaskTitle() + '任务中【' + province + '】省份的文书';
                 await this.$nextTick();
                 this.$refs['myWritList'].loadWrits();
             },
@@ -161,7 +161,7 @@
                 this.dialogVisible = true;
                 this.year = year;
                 this.province = null;
-                this.dialogTitle = this.getTaskTitle() + '任务中' + year + '年的文书';
+                this.dialogTitle = this.getTaskTitle() + '任务中【' + year + '】年的文书';
                 await this.$nextTick();
                 this.$refs['myWritList'].loadWrits();
             },
