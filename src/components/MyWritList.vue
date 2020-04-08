@@ -161,6 +161,14 @@
             status: {
                 type: String,
                 default: null
+            },
+            year: {
+                type: String,
+                default: null
+            },
+            province: {
+                type: String,
+                default: null
             }
         },
         beforeMount() {
@@ -231,7 +239,7 @@
                 }
                 this.writs[index].fetching = false;
             },
-            async handleLoad(nameStr, startDate, endDate, taskId, pageIndex, pageSize, status) {
+            async handleLoad(nameStr, startDate, endDate, taskId, pageIndex, pageSize, status, year, province) {
                 this.loading = true;
                 const data = await this.$api.getWrits({
                     nameStr,
@@ -240,7 +248,9 @@
                     taskId,
                     pageIndex,
                     pageSize,
-                    status
+                    status,
+                    year,
+                    province
                 });
                 if (data && data.result) {
                     let tempCounter = 0;
@@ -274,14 +284,14 @@
                 if (!this.loading) {
                     this.loading = true;
                     this.currentPage = 1;
-                    await this.handleLoad(this.nameStr, this.startDate, this.endDate, this.taskId, this.currentPage, this.pageSize, this.status);
+                    await this.handleLoad(this.nameStr, this.startDate, this.endDate, this.taskId, this.currentPage, this.pageSize, this.status, this.year, this.province);
                 } else {
                     this.$message.warning('请在加载结束后再检索');
                 }
             },
             async handleChangePage() {
                 if (!this.loading) {
-                    await this.handleLoad(this.nameStr, this.startDate, this.endDate, this.taskId, this.currentPage, this.pageSize, this.status);
+                    await this.handleLoad(this.nameStr, this.startDate, this.endDate, this.taskId, this.currentPage, this.pageSize, this.status, this.year, this.province);
                 }
             },
             async refreshWrits() {

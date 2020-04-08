@@ -96,6 +96,16 @@ paths:
         in: query
         type: string
         required: false
+      - name: year
+        description: 文书书写时的年份
+        in: query
+        type: string
+        required: false
+      - name: province
+        description: 文书所属的省份
+        in: query
+        type: string
+        required: false
       responses:
         200:
           description: 正常查询

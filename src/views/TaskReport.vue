@@ -53,13 +53,18 @@
                                     my-simple-distribution(title="文书地域分布" :raw-data="received_data.location_distribution")
                                 div.indicator-body.simple-center
                                     my-map(title="文书地域分布地图",
+                                    @province-click="handleProvinceClick",
                                     :cities="$safeFetch(received_data,'location_distribution.x_axis_data',[])"
                                     :values="$safeFetch(received_data,'location_distribution.series[0].data',[])")
                             el-collapse-item.indicator-container(name="time_distribution")
                                 template(slot="title")
                                     h4 文书时间分布
                                 div.indicator-body.simple-center
-                                    my-simple-distribution(title="文书时间分布" v-if="received_data.time_distribution" :raw-data="received_data.time_distribution")
+                                    my-simple-distribution(
+                                    @year-click="handleYearClick"
+                                    title="文书时间分布"
+                                    v-if="received_data.time_distribution"
+                                    :raw-data="received_data.time_distribution")
                     el-collapse-item.indicator-container(name="test-result")
                         template(slot="title")
                             h3 度量结果
@@ -74,12 +79,21 @@
                                 template(slot="title")
                                     h4 对比标准数据集
                                 div.indicator-body.simple-center
-                                    my-simple-distribution(title="得分对比" v-if="received_data.vs_standard_distribution" :raw-data="received_data.vs_standard_distribution")
-        el-dialog.my-list-dialog(v-draggable :title="($safeFetch(received_data,'task_name','')||(task_id+'号'))+'任务文书列表'"
+                                    my-simple-distribution(
+                                    title="得分对比"
+                                    v-if="received_data.vs_standard_distribution"
+                                    :raw-data="received_data.vs_standard_distribution")
+        el-dialog.my-list-dialog(v-draggable
+        :title="dialogTitle"
         :visible.sync="dialogVisible" center
         :modal-append-to-body="false"
         :append-to-body="true" top="6vh")
-            my-writ-list(:task-id="task_id")
+            my-writ-list(
+            ref="myWritList"
+            :task-id="task_id"
+            :pre-load="false"
+            :province="province"
+            :year="year")
 
 
 </template>
@@ -126,10 +140,31 @@
                 outer_active: null,
                 sample_summary_active: null,
                 test_result_active: null,
-                received_data: null
+                received_data: null,
+                year: null,
+                province: null,
+                dialogTitle: ''
             }
         },
         methods: {
+            async handleProvinceClick(province) {
+                console.log(province);
+                this.dialogVisible = true;
+                this.year = null;
+                this.province = province;
+                this.dialogTitle = this.getTaskTitle() + '任务中' + province + '省份的文书';
+                await this.$nextTick();
+                this.$refs['myWritList'].loadWrits();
+            },
+            async handleYearClick(year) {
+                console.log(year);
+                this.dialogVisible = true;
+                this.year = year;
+                this.province = null;
+                this.dialogTitle = this.getTaskTitle() + '任务中' + year + '年的文书';
+                await this.$nextTick();
+                this.$refs['myWritList'].loadWrits();
+            },
             openAllCollapse() {
                 this.outer_active = ["basic-info", "sample-summary", "test-result"];
                 this.sample_summary_active = ["location_distribution", "time_distribution"];
@@ -167,6 +202,9 @@
                 //以服务的方式调用的 Loading 需要异步关闭说的是引入{Loading}的还是this.$loading?
                 loading.close();
             },
+            getTaskTitle() {
+                return this.$safeFetch(this.received_data, 'task_name', '') || (this.task_id + '号');
+            },
             async downloadJSON() {
                 const loading = this.$loading({fullscreen: true});
                 const download_url = await this.$api.getTaskReportJSON(this.task_id);
@@ -175,14 +213,18 @@
                     if (file) {
                         let a = document.createElement('a');
                         a.href = URL.createObjectURL(file);
-                        a.download = this.$safeFetch(this.received_data, 'task_name', '') || (this.task_id + '号') + '任务分析结果.json';
+                        a.download = this.getTaskTitle() + '任务分析结果.json';
                         a.click();
                     }
                 }
                 loading.close();
             },
-            getWritsInTask() {
+            async getWritsInTask() {
                 this.dialogVisible = true;
+                this.dialogTitle = this.getTaskTitle() + '任务文书列表';
+                await this.$nextTick();
+                //dialog还没出来拿不到，要等nextTick
+                this.$refs['myWritList'].loadWrits();
             },
         }
     }

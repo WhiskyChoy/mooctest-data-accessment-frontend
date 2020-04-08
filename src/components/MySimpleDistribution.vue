@@ -5,6 +5,10 @@
 <script>
     import echarts from 'echarts'
 
+    const minStr = '最小值';
+    const maxStr = '最大值';
+    const avgStr = '平均值';
+
     export default {
         name: "MySimpleDistribution",
         props: {
@@ -31,13 +35,13 @@
                 item.data || (item.data = []);
                 item.markPoint = {
                     data: [
-                        {type: 'max', name: '最大值'},
-                        {type: 'min', name: '最小值'}
+                        {type: 'max', name: maxStr},
+                        {type: 'min', name: minStr}
                     ]
                 };
                 item.markLine = {
                     data: [
-                        {type: 'average', name: '平均值'}
+                        {type: 'average', name: avgStr}
                     ]
                 }
             });
@@ -49,6 +53,26 @@
             const radar = this.$refs['line'];
             const chart = echarts.init(radar);
             chart.setOption(this.option);
+            chart.on('click', ({name, seriesIndex}) => {
+                if (/(\d{4})?年/.test(name)) {
+                    const year = RegExp.$1;
+                    this.$emit('year-click', year);
+                    return;
+                }
+                if(seriesIndex===0) {
+                    if (name === maxStr) {
+                        this.$emit('max-click');
+                        return;
+                    }
+                    if (name === minStr) {
+                        this.$emit('min-click');
+                        return;
+                    }
+                    if (name === avgStr) {
+                        this.$emit('avg-click', seriesName);
+                    }
+                }
+            });
         },
         data() {
             return {

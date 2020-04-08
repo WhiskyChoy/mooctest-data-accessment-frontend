@@ -49,6 +49,11 @@
             if (chinaMap) {
                 echarts.registerMap('china', chinaMap);
                 chart.setOption(this.option);
+                chart.on('click', ({name, value}) => {
+                    if(!isNaN(value)) {
+                        this.$emit('province-click', name);
+                    }
+                })
             }
         },
         data() {
@@ -59,7 +64,9 @@
                     },
                     tooltip: {
                         trigger: 'item',
-                        formatter: '{b}<br/>{c}份'
+                        formatter(val) {
+                            return val.name + '<br>' + (val.value ? val.value + '份' : '暂无数据')
+                        }
                     },
                     toolbox: {
                         show: true,

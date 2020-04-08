@@ -7,9 +7,9 @@ info:
     email: 161250002@smail.nju.edu.cn
   license:
     name: Closed Source
-servers: 
-  - url: http://localhost:5000
-    description: 开放接口的服务器
+servers:
+- url: http://localhost:5000
+  description: 开放接口的服务器
 tags:
 - name: writ
   description: 所有与文书相关的接口.
@@ -103,6 +103,18 @@ paths:
         required: false
       - name: status
         description: 文书的状态
+        in: query
+        schema:
+          type: string
+        required: false
+      - name: year
+        description: 文书书写时的年份
+        in: query
+        schema:
+          type: string
+        required: false
+      - name: province
+        description: 文书所属的省份
         in: query
         schema:
           type: string
@@ -366,7 +378,7 @@ paths:
         in: query
         description: 用于向慕测获取用户信息等的授权码
         schema:
-         type: string
+          type: string
       responses:
         200:
           description: 成功获得用户信息，并且视作登录了系统
@@ -467,7 +479,7 @@ components:
           description: 任务的数量
         status:
           $ref: '#/components/schemas/task-status'
-  
+
     writ:
       type: object
       properties:
