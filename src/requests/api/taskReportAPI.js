@@ -49,7 +49,7 @@ const getTaskReportJSON = async (taskId) => {
 
 
 const downloadTaskReportJSON = async (URL) => {
-    return http.get(URL, {responseType: 'blob'})
+    return http.get(URL, {responseType: 'blob', baseURL: ''})
 };
 
 export {getTaskReport, getTaskReportJSON, downloadTaskReportJSON}
