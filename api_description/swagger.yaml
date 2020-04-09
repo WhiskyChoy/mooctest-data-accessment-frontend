@@ -307,6 +307,7 @@ paths:
           description: 提供下载地址
           schema:
             type: string
+            format: binary
             description: 该JSON的下载地址
 
   /default-config:

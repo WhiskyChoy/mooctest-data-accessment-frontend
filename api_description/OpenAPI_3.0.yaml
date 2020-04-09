@@ -334,6 +334,7 @@ paths:
             application/json:
               schema:
                 type: string
+                format: binary
                 description: 该JSON的下载地址
 
   /default-config:

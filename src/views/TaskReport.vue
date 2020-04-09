@@ -207,15 +207,12 @@
             },
             async downloadJSON() {
                 const loading = this.$loading({fullscreen: true});
-                const download_url = await this.$api.getTaskReportJSON(this.task_id);
-                if (download_url) {
-                    let file = await this.$api.downloadTaskReportJSON(download_url);
-                    if (file) {
-                        let a = document.createElement('a');
-                        a.href = URL.createObjectURL(file);
-                        a.download = this.getTaskTitle() + '任务分析结果.json';
-                        a.click();
-                    }
+                let file = await this.$api.getTaskReportJSON(this.task_id);
+                if (file) {
+                    let a = document.createElement('a');
+                    a.href = URL.createObjectURL(file);
+                    a.download = this.getTaskTitle() + '任务分析结果.json';
+                    a.click();
                 }
                 loading.close();
             },
