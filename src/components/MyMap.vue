@@ -37,7 +37,7 @@
             this.option.series[0].data = result;
             this.option.series[0].name = this.title;
             this.option.title.text = this.title;
-            this.option.visualMap.min = min;
+            this.option.visualMap.min = min - 1 || 0;
             this.option.visualMap.max = max;
         },
         async mounted() {
@@ -50,7 +50,7 @@
                 echarts.registerMap('china', chinaMap);
                 chart.setOption(this.option);
                 chart.on('click', ({name, value}) => {
-                    if(!isNaN(value)) {
+                    if (!isNaN(value)) {
                         this.$emit('province-click', name);
                     }
                 })
