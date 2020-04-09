@@ -1,5 +1,5 @@
 <template lang="pug">
-    el-tooltip(effect="dark" :content="'得分：'+score.toFixed(1)+'，总分'+total.toFixed(1)" placement="right")
+    el-tooltip(effect="dark" :content="'得分：'+score&&score.toFixed(1)+'，总分'+total&&total.toFixed(1)" placement="right")
         el-progress(:percentage="percentage" :status="status" :color="customColors")
 </template>
 
