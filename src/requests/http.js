@@ -56,10 +56,10 @@ const errorHandle = (status, payloadMsg) => {
         case 401:
             toLogin();
             break;
-        // 403 token过期
+        // 403 token过期？无权限？
         // 清除token并跳转登录页
         case 403:
-            showError('登录过期，请重新登录');
+            showError('无权限');
             logout();
             // 装载VUEX后再处理
             // store.commit('loginSuccess', null);

@@ -18,7 +18,7 @@
                             el-row(:gutter="10")
                                 el-col(:sm="24" :lg="18")
                                     div.report-long-container
-                                        div.report-long-indicator 文书标题：
+                                        div.report-long-indicator 文件名称：
                                         div.report-long {{received_data.title}}
                                 el-col(:sm="24" :lg="6") 客观总分：
                                     span.score-total {{received_data.object_score&&received_data.object_score.toFixed&&received_data.object_score.toFixed(1)||'NaN'}}
