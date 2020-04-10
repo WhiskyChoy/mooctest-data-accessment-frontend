@@ -60,10 +60,10 @@ const errorHandle = (status, payloadMsg) => {
         // 清除token并跳转登录页
         case 403:
             showError('无权限');
-            logout();
+            // logout();
             // 装载VUEX后再处理
             // store.commit('loginSuccess', null);
-            toLogin();
+            // toLogin();
             break;
         // 404请求不存在
         case 404:
