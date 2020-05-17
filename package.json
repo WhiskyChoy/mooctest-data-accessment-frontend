@@ -33,7 +33,7 @@
     "vue-template-compiler": "^2.6.11"
   },
   "browserslist": [
-    "> 1%",
+    "> 1% in CN",
     "last 2 versions"
   ]
 }

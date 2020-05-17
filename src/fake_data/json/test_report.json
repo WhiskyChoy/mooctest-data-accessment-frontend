@@ -174,7 +174,7 @@
       "total": 10
     },
     {
-      "metric": "完整性",
+      "metric": "准确性",
       "score": 21.0,
       "total": 25
     }
