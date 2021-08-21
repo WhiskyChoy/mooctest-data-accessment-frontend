@@ -22,7 +22,7 @@ npm run serve_local_pro
 npm run serve_local_pro
 ```
 
-Note that we don't have to use this command. The code in [.github/workflow](.github/workflow) will automatically call this command. For gitlab without git-action the workflow doesn't work.
+Note that we don't have to use this command. The code in [.github/workflows](.github/workflows) will automatically call this command. For gitlab without git-action the workflow doesn't work.
 
 ### Customize configuration
 
