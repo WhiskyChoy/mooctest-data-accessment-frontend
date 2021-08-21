@@ -1,0 +1,1 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["chunk-2d21a33e"],{bb08:function(e,n,s){"use strict";s.r(n);var a={selfToken:"",username:"黎宇",expires:1944963134317,tokenType:"Bearer"};n["default"]=a}}]);
