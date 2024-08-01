@@ -1,43 +1,41 @@
 {
-  "name": "mooctest-data-accessment-frontend",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "serve_local_dev": "vue-cli-service serve --mode local_dev",
-    "serve_local_pro": "vue-cli-service serve --mode local_pro",
-    "build_local_pro": "vue-cli-service build --mode local_pro",
-    "build_github": "vue-cli-service build --mode github"
-  },
-  "dependencies": {
-    "axios": "^0.19.2",
-    "core-js": "^3.6.4",
-    "echarts": "^4.6.0",
-    "element-ui": "^2.4.5",
-    "graceful-fs": "^4.2.11",
-    "html2canvas": "^1.0.0-rc.1",
-    "image-webpack-loader": "^8.1.0",
-    "jspdf": "^1.5.3",
-    "nprogress": "^0.2.0",
-    "perfect-scrollbar": "^1.5.0",
-    "qs": "^6.9.1",
-    "vue": "^2.6.11",
-    "vue-router": "^3.1.5"
-  },
-  "devDependencies": {
-    "@vue/cli-plugin-babel": "~4.2.0",
-    "@vue/cli-plugin-router": "~4.2.0",
-    "@vue/cli-service": "~4.2.0",
-    "image-webpack-loader": "^6.0.0",
-    "less": "^3.0.4",
-    "less-loader": "^5.0.0",
-    "pug": "^2.0.4",
-    "pug-plain-loader": "^1.0.0",
-    "vue-cli-plugin-element": "~1.0.1",
-    "vue-template-compiler": "^2.6.11"
-  },
-  "browserslist": [
-    "> 1% in CN",
-    "last 2 versions",
-    "not dead"
-  ]
-}
+    "name": "mooctest-data-accessment-frontend",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+      "serve_local_dev": "vue-cli-service serve --mode local_dev",
+      "serve_local_pro": "vue-cli-service serve --mode local_pro",
+      "build_local_pro": "vue-cli-service build --mode local_pro",
+      "build_github": "vue-cli-service build --mode github"
+    },
+    "dependencies": {
+      "axios": "^0.19.2",
+      "core-js": "^3.6.4",
+      "echarts": "^4.6.0",
+      "element-ui": "^2.4.5",
+      "html2canvas": "^1.0.0-rc.1",
+      "jspdf": "^1.5.3",
+      "nprogress": "^0.2.0",
+      "perfect-scrollbar": "^1.5.0",
+      "qs": "^6.9.1",
+      "vue": "^2.6.11",
+      "vue-router": "^3.1.5"
+    },
+    "devDependencies": {
+      "@vue/cli-plugin-babel": "~4.2.0",
+      "@vue/cli-plugin-router": "~4.2.0",
+      "@vue/cli-service": "~4.2.0",
+      "image-webpack-loader": "^6.0.0",
+      "less": "^3.0.4",
+      "less-loader": "^5.0.0",
+      "pug": "^2.0.4",
+      "pug-plain-loader": "^1.0.0",
+      "vue-cli-plugin-element": "~1.0.1",
+      "vue-template-compiler": "^2.6.11"
+    },
+    "browserslist": [
+      "> 1% in CN",
+      "last 2 versions",
+      "not dead"
+    ]
+  }
