@@ -7,12 +7,14 @@ import {checkIfInnerAddress} from "@/utils/ipUtil";
 import {getBaseURL} from "@/utils/urlUtil";
 
 const getAuthCode = () => {
-    if (!checkIfInnerAddress(location.host)) {
+    const use_oauth = (process.env.VUE_APP_USE_OAUTH === "true")
+    if (!checkIfInnerAddress(location.host) && use_oauth) {
         //注意是uri不是url
         const response_type = 'code';
         const redirect_uri = encodeURI(getBaseURL() + callbackURL);
         const scope = '';
-        const client_id = 'MooctestDataAssessment';
+        // const client_id = 'MooctestDataAssessment';
+        const client_id = process.env.VUE_APP_OAUTH_CLIENT_ID;
         const query = qs.stringify({response_type, redirect_uri, scope, client_id});
         const oauthURL = process.env.VUE_APP_OAUTH_URL;
         if (!oauthURL) {
@@ -20,7 +22,9 @@ const getAuthCode = () => {
         }
         window.location.href = oauthURL + '?' + query;
     } else {
-        router.push(callbackURL + '?code=test');
+        let code = process.env.VUE_APP_OAUTH_BYPASS_MATIC_CODE;
+        code = code ? code : 'test';
+        router.push(callbackURL + '?code=' + code);
     }
     return true;
 };
