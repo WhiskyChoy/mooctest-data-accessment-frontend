@@ -5,6 +5,7 @@
     "scripts": {
       "serve_local_dev": "vue-cli-service serve --mode local_dev",
       "serve_local_pro": "vue-cli-service serve --mode local_pro",
+      "build_local_dev": "vue-cli-service build --mode local_dev",
       "build_local_pro": "vue-cli-service build --mode local_pro",
       "build_github": "vue-cli-service build --mode github"
     },
